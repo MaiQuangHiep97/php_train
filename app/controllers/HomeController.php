@@ -5,7 +5,7 @@ class HomeController extends Controller
     public $data = array();
     public function index()
     {
-        var_dump($this->db->table('tbl_users')->get());
+        var_dump($this->db->table('tbl_users')->where('id', '=', 2)->get());
     }
     public function __construct()
     {

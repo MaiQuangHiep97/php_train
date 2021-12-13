@@ -21,4 +21,10 @@ class Controller
             require_once _DIR_ROOT.'/app/views/'.$view.'.php';
         }
     }
+    public function redirect($url)
+    {
+        if (!empty($url)) {
+            header("location: {$url}");
+        }
+    }
 }

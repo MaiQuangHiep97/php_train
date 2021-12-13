@@ -27,7 +27,12 @@
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                     <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
                                     <div class="card-body">
-                                        <form method="POST" id="login-form" action="">
+                                        <?php if (!empty($_SESSION['error'])) {?>
+    <div class="alert alert-danger text-danger text-center"><?php echo $_SESSION['error']?></div>
+    <?php unset($_SESSION['error']);
+} ?>
+                                            
+                                        <form method="POST" id="login-form" action="<?php echo _WEB_ROOT;?>/admin/authcontroller/login">
                                             <label for="email">Email address</label>
                                             <div class="form-floating mb-3">
                                             <input type = "text" id="email" class = "form-control" name = "email" placeholder = "Email"/>
@@ -36,7 +41,7 @@
                                             <div class="form-floating mb-3">
                                             <input type = "password" class = "form-control" name = "password" placeholder = "Password" id = "password"/></div>            
                                             <div class="form-check mb-3">
-                                                <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
+                                                <input class="form-check-input" id="inputRememberPassword" type="checkbox" name="remember" value="remember" />
                                                 <label class="form-check-label" for="inputRememberPassword">Remember Password</label>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">

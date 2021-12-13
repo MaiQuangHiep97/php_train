@@ -5,7 +5,6 @@ class HomeModel extends Model
     public function getList()
     {
         $data = $this->db->table('tbl_users')->where('id', '=', 1)->get();
-        // $data = $this->get();
         return $data;
     }
     public function tableFill()
