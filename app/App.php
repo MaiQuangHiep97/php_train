@@ -5,12 +5,17 @@ class App
     private $__action;
     private $__params;
     private $__routes;
+    private $__db;
     public function __construct()
     {
         global $routes, $config;
         $this->__routes = new Route();
         if (!empty($routes['default_controller'])) {
             $this->__controller = $routes['default_controller'];
+        }
+        if (class_exists('DB')) {
+            $dbOject = new DB();
+            $this->__db = $dbOject->db;
         }
         $this->__action = 'index';
         $this->__params = [];

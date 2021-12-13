@@ -4,8 +4,8 @@ class HomeModel extends Model
     protected $_table = 'tbl_users';
     public function getList()
     {
-        //$data = $this->db->query("SELECT*FROM $this->_table")->fetchAll(PDO::FETCH_ASSOC);
-        $data = $this->get();
+        $data = $this->db->table('tbl_users')->where('id', '=', 1)->get();
+        // $data = $this->get();
         return $data;
     }
     public function tableFill()
