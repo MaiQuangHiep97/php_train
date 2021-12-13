@@ -9,7 +9,7 @@ class AuthController extends Controller
     }
     public function index()
     {
-        if (isset($_COOKIE['remember'])&&$_COOKIE['remember']==true) {
+        if (isset($_COOKIE['is_login'])&&isset($_COOKIE['user_login'])) {
             $response = new Response();
             $response->redirect('admin/dashboardcontroller/');
         }
@@ -25,7 +25,8 @@ class AuthController extends Controller
                 $_SESSION['is_login']=true;
                 $_SESSION['user_login']=$this->data['user'];
                 if (!empty($_POST['remember'])) {
-                    setcookie('remember', $_SESSION['is_login'], time() + (3600));
+                    setcookie('is_login', $_SESSION['is_login'], time() + (3600));
+                    setcookie('user_login', $_SESSION['user_login']['id'], time() + (3600));
                 }
                 $response->redirect('admin/dashboardcontroller/');
             } else {
@@ -33,5 +34,16 @@ class AuthController extends Controller
                 $response->redirect('admin/authcontroller/');
             }
         }
+    }
+    public function logout()
+    {
+        if (isset($_COOKIE['is_login'])&&isset($_COOKIE['user_login'])) {
+            setcookie('is_login', $_SESSION['is_login'], time() - (3600));
+            setcookie('user_login', $_SESSION['user_login']['id'], time() - (3600));
+        }
+        unset($_SESSION['is_login']);
+        unset($_SESSION['user_login']);
+        $response = new Response();
+        $response->redirect('admin/authcontroller/');
     }
 }
