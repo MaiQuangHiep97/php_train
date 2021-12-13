@@ -1,4 +1,5 @@
 <?php
 $routes['default_controller'] = 'homecontroller';
-$routes['san-pham'] = 'admin/usercontroller/detail';
+$routes['admin/login'] = 'admin/authcontroller';
+$routes['admin/dash-board'] = 'admin/dashboardcontroller';
 $routes['tin-tuc'] = 'homecontroller/detail';

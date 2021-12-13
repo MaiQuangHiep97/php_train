@@ -25,4 +25,15 @@ class Route
 
         return $handleUrl;
     }
+    public function getUri()
+    {
+        return $this->__keyRoute;
+    }
+
+    public static function getFullUrl()
+    {
+        $uri = App::$app->getUrl();
+        $url = _WEB_ROOT.$uri;
+        return $url;
+    }
 }

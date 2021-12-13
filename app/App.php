@@ -6,9 +6,11 @@ class App
     private $__params;
     private $__routes;
     private $__db;
+    public static $app;
     public function __construct()
     {
         global $routes, $config;
+        self::$app = $this;
         $this->__routes = new Route();
         if (!empty($routes['default_controller'])) {
             $this->__controller = $routes['default_controller'];
