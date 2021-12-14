@@ -23,7 +23,7 @@ class Controller
     }
     public function auth()
     {
-        if (isset($_SESSION['is_login'])&&isset($_SESSION['user_login'])) {
+        if (isset($_SESSION['is_login'])&&isset($_SESSION['user_login'])&&$_SESSION['user_login']['type']=='admin') {
             return true;
         }
         return false;

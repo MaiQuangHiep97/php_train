@@ -3,6 +3,10 @@
 <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
+                    <?php if (!empty($_SESSION['success'])) {?>
+    <div class="alert alert-success text-success text-center"><?php echo $_SESSION['success']?></div>
+    <?php unset($_SESSION['success']);
+} ?>
                         <h1 class="mt-4">List user</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="<?php echo _DIR_ROOT;?>/dashboardcontroller/">Dashboard</a></li>

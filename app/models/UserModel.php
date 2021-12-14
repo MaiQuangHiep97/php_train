@@ -19,6 +19,12 @@ class UserModel extends Model
             ->where('type', '=', 'admin')->update($data);
         }
     }
+    public function insertUser($data)
+    {
+        if (!empty($data)) {
+            $data = $this->db->table('tbl_users')->insert($data);
+        }
+    }
     public function tableFill()
     {
         return 'tbl_users';

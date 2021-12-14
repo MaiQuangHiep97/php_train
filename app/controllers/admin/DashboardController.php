@@ -3,7 +3,7 @@ class DashboardController extends Controller
 {
     public function __construct()
     {
-        if (!isset($_SESSION['is_login'])&&!isset($_SESSION['user_login'])) {
+        if (!$this->auth()) {
             $response = new Response();
             $response->redirect('admin/authcontroller/');
         }

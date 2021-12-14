@@ -5,7 +5,7 @@ class UserController extends Controller
     public $data = array();
     public function __construct()
     {
-        if (!isset($_SESSION['is_login'])&&!isset($_SESSION['user_login'])) {
+        if (!$this->auth()) {
             $response = new Response();
             $response->redirect('admin/authcontroller/');
         }
@@ -28,5 +28,26 @@ class UserController extends Controller
     public function edit()
     {
         echo $_GET['id'];
+    }
+    public function add()
+    {
+        $this->render('admins/user/add');
+    }
+    public function store()
+    {
+        if (isset($_POST)) {
+            $data = [
+            'name'=>$_POST['username'],
+            'email'=>$_POST['email'],
+            'phone'=>$_POST['phone'],
+            'password'=>md5($_POST['password']),
+            'type'=>'admin',
+        ];
+            $user = $this->model('UserModel');
+            $user->insertUser($data);
+            $_SESSION['success'] = "Add user successfully";
+            $response = new Response();
+            $response->redirect('admin/usercontroller');
+        }
     }
 }

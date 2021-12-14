@@ -14,7 +14,7 @@
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/adminproductcontroller/store">Add product</a>
+                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/adminproductcontroller/add">Add product</a>
                                     <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/adminproductcontroller/">List Product</a>
                                 </nav>
                             </div>
@@ -25,7 +25,7 @@
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/usercontroller/store">Add User</a>
+                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/usercontroller/add">Add User</a>
                                     <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/usercontroller/">List User</a>
                                 </nav>
                             </div>
