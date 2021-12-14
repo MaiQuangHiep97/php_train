@@ -25,6 +25,12 @@ class UserModel extends Model
             $data = $this->db->table('tbl_users')->insert($data);
         }
     }
+    public function deleteUser($id)
+    {
+        if (!empty($id)) {
+            $this->db->table('tbl_users')->where('id', '=', $id)->delete();
+        }
+    }
     public function tableFill()
     {
         return 'tbl_users';

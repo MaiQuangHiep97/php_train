@@ -41,7 +41,8 @@
                                             <td>    
                                                 <a href="http://localhost/demo/admin/usercontroller/edit?id=<?php echo $value['id']?>">Edit</a>
                                                 <span>/</span>
-                                                <a href="http://localhost/demo/admin/usercontroller/delete?id=<?php echo $value['id']?>">Delete</a>                     
+                                                <?php if ($value['id'] !== $_SESSION['user_login']['id']) {?><a href="http://localhost/demo/admin/usercontroller/delete?id=<?php echo $value['id']?>">Delete</a>  
+                                                <?php } ?>                   
                                             </td>
                                         </tr>
                                         <?php

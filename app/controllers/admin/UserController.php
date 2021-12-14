@@ -55,4 +55,17 @@ class UserController extends Controller
             }
         }
     }
+    public function delete()
+    {
+        $response = new Response();
+        $id = $_GET['id'];
+        if ($id !== $_SESSION['user_login']['id']) {
+            $user = $this->model('UserModel');
+            $user->deleteUser($id);
+            $_SESSION['success'] = "Delete user successfully";
+            $response->redirect('admin/usercontroller');
+        }
+        $_SESSION['error'] = "Can not delele this user";
+        $response->redirect('admin/usercontroller');
+    }
 }
