@@ -9,11 +9,12 @@ class AuthController extends Controller
     }
     public function index()
     {
-        if (isset($_COOKIE['is_login'])&&isset($_COOKIE['user_login'])) {
+        if ($this->auth()) {
             $response = new Response();
             $response->redirect('admin/dashboardcontroller/');
+        } else {
+            $this->render('admins/authenticate/login');
         }
-        $this->render('admins/login');
     }
     public function login()
     {
@@ -46,7 +47,17 @@ class AuthController extends Controller
         $response = new Response();
         $response->redirect('admin/authcontroller/');
     }
-    public function change()
+    public function getChange()
+    {
+        if ($this->auth()) {
+            $this->data['user'] = $_SESSION['user_login'];
+            $this->render('admins/authenticate/change', $this->data);
+        } else {
+            $response = new Response();
+            $response->redirect('admin/authcontroller/');
+        }
+    }
+    public function postChange()
     {
     }
 }

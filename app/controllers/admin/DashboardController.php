@@ -11,6 +11,6 @@ class DashboardController extends Controller
     public function index()
     {
         $this->data['user'] = $_SESSION['user_login'];
-        $this->render('admins/dashboard', $this->data);
+        $this->render('admins/dashboard/dashboard', $this->data);
     }
 }

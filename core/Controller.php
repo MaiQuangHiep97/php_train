@@ -21,10 +21,11 @@ class Controller
             require_once _DIR_ROOT.'/app/views/'.$view.'.php';
         }
     }
-    public function redirect($url)
+    public function auth()
     {
-        if (!empty($url)) {
-            header("location: {$url}");
+        if (isset($_SESSION['is_login'])&&isset($_SESSION['user_login'])) {
+            return true;
         }
+        return false;
     }
 }

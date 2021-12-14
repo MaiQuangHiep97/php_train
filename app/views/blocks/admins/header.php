@@ -28,9 +28,10 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><form method="GET" action="<?php echo _WEB_ROOT;?>/admin/authcontroller/change">
+                    <li><form method="GET" action="<?php echo _WEB_ROOT;?>/admin/authcontroller/getChange">
                         <button class="btn dropdown-item">Change password</button>
-                        </form></li>
+                        </form>
+                        </li>
                         <li><form method="POST" action="<?php echo _WEB_ROOT;?>/admin/authcontroller/logout">
                         <button class="btn dropdown-item">Logout</button>
                         </form></li>

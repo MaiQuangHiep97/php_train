@@ -25,35 +25,62 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
-jQuery.validator.addMethod("noSpace", function(value, element) { 
-  return value == '' || value.trim().length != 0;  
+jQuery.validator.addMethod("noSpace", function (value, element) {
+    return value == '' || value.trim().length != 0;
 }, "No space please and don't leave it empty");
-jQuery.validator.addMethod("customEmail", function(value, element) { 
-return this.optional( element ) || /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test( value ); 
+jQuery.validator.addMethod("customEmail", function (value, element) {
+    return this.optional(element) || /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(value);
 }, "Please enter valid email address!");
-$.validator.addMethod( "alphanumeric", function( value, element ) {
-return this.optional( element ) || /^\w+$/i.test( value );
-}, "Letters, numbers, and underscores only please" );
+$.validator.addMethod("alphanumeric", function (value, element) {
+    return this.optional(element) || /^\w+$/i.test(value);
+}, "Letters, numbers, and underscores only please");
 var $loginForm = $('#login-form');
-if($loginForm.length){
-$loginForm.validate({
-    rules:{
-        email: {
-            required: true,
-            customEmail: true
+if ($loginForm.length) {
+    $loginForm.validate({
+        rules: {
+            email: {
+                required: true,
+                customEmail: true
+            },
+            password: {
+                required: true
+            },
         },
-        password: {
-            required: true
+        messages: {
+            email: {
+                required: 'Please enter email!',
+                email: 'Please enter valid email!'
+            },
+            password: {
+                required: 'Please enter password!'
+            },
         },
-    },
-    messages:{
-        email: {
-            required: 'Please enter email!',
-            email: 'Please enter valid email!'
-        },
-        password: {
-            required: 'Please enter password!'
-        },
-    },
-});
+    });
 }
+jQuery.validator.addMethod("noSpace", function (value, element) {
+    return value == '' || value.trim().length != 0;
+}, "No space please and don't leave it empty");
+$.validator.addMethod("alphanumeric", function (value, element) {
+    return this.optional(element) || /^\w+$/i.test(value);
+}, "Letters, numbers, and underscores only please");
+var $changeForm = $('#change-form');
+if ($changeForm.length) {
+    $changeForm.validate({
+        rules: {
+            password: {
+                required: true
+            },
+            passwordConfirm: {
+                required: true
+            }
+      },
+messages: {
+    password: {
+        required: 'Please enter password!'
+    },
+    passwordConfirm: {
+        required: 'Please enter password confirm!'
+    },
+},
+  });
+  }
