@@ -24,15 +24,9 @@
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="<?php echo _WEB_ROOT;?>/admin/usercontroller/" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        List User
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <a class="nav-link collapsed" href="<?php echo _WEB_ROOT;?>/admin/usercontroller/" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                        Add User
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
+                            <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/usercontroller/store">Add User</a>
+                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/usercontroller/">List User</a>
                                 </nav>
                             </div>
                             <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/adminordercontroller/">

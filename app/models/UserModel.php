@@ -7,6 +7,11 @@ class UserModel extends Model
         $data = $this->db->table('tbl_users')->where('email', '=', $_POST['email'])->where('type', '=', 'admin')->first();
         return $data;
     }
+    public function getAll()
+    {
+        $data = $this->db->table('tbl_users')->get();
+        return $data;
+    }
     public function updateUser($data)
     {
         if (!empty($data)) {
