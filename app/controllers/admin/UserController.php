@@ -36,18 +36,23 @@ class UserController extends Controller
     public function store()
     {
         if (isset($_POST)) {
-            $data = [
+            $response = new Response();
+            if ($data = $this->db->table('tbl_users')->where('email', '=', $_POST['email'])->where('type', '=', 'admin')->get()) {
+                $_SESSION['error'] = "Email already exists";
+                $response->redirect('admin/usercontroller/add');
+            } else {
+                $data = [
             'name'=>$_POST['username'],
             'email'=>$_POST['email'],
             'phone'=>$_POST['phone'],
             'password'=>md5($_POST['password']),
             'type'=>'admin',
         ];
-            $user = $this->model('UserModel');
-            $user->insertUser($data);
-            $_SESSION['success'] = "Add user successfully";
-            $response = new Response();
-            $response->redirect('admin/usercontroller');
+                $user = $this->model('UserModel');
+                $user->insertUser($data);
+                $_SESSION['success'] = "Add user successfully";
+                $response->redirect('admin/usercontroller');
+            }
         }
     }
 }
