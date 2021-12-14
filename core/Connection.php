@@ -25,7 +25,6 @@ class Connection
     {
         if (self::$instance == null) {
             $connection = new Connection($config);
-            // self::$instance = new Connection($config);
             self::$instance = self::$conn;
         }
 

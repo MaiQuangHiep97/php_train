@@ -59,5 +59,20 @@ class AuthController extends Controller
     }
     public function postChange()
     {
+        if ($this->auth()) {
+            if (!empty($_POST['password'])&&$_POST['password']==$_POST['passwordConfirm']) {
+                $data = [
+                    'password'=>md5($_POST['password'])
+                ];
+                $user = $this->model('UserModel');
+                $user->updateUser($data);
+                $_SESSION['success'] = "Changed password successfully";
+                $response = new Response();
+                $response->redirect('admin/dashboardcontroller');
+            }
+        } else {
+            $response = new Response();
+            $response->redirect('admin/authcontroller/');
+        }
     }
 }
