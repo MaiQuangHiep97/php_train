@@ -27,7 +27,23 @@ class UserController extends Controller
     }
     public function edit()
     {
-        echo $_GET['id'];
+        $id = $_GET['id'];
+        $users = $this->model('UserModel');
+        $this->data['user'] = $users->find($id);
+        $this->render('admins/user/edit', $this->data);
+    }
+    public function update()
+    {
+        if (isset($_POST)) {
+            $data = [
+                    'name'=>$_POST['username'],
+                    'phone'=>$_POST['phone']
+                ];
+            $this->db->table('tbl_users')->where('id', '=', $_POST['id'])->update($data);
+            $_SESSION['success'] = "Update successfully";
+            $response = new Response();
+            $response->redirect('admin/usercontroller');
+        }
     }
     public function add()
     {

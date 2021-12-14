@@ -122,3 +122,26 @@ if ($addForm.length) {
         },
     });
 }
+var $editForm = $('#edit-form');
+if ($editForm.length) {
+    $editForm.validate({
+        rules: {
+            username: {
+                required: true,
+            },
+            phone: {
+                required: true,
+                customPhone: true
+            }
+        },
+        messages: {
+            username: {
+                required: 'Please enter username!'
+            },
+            phone: {
+                required: 'Please enter phone!',
+                customPhone: "Please enter valid phone!"
+            }
+        },
+    });
+}
