@@ -46,4 +46,7 @@ class AuthController extends Controller
         $response = new Response();
         $response->redirect('admin/authcontroller/');
     }
+    public function change()
+    {
+    }
 }
