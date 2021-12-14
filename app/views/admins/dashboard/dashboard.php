@@ -1,4 +1,4 @@
-<?php $this->render('blocks/admins/header')?>
+<?php $this->render('blocks/admins/header', $this->data)?>
 <?php $this->render('blocks/admins/sidebar')?>
             <div id="layoutSidenav_content">
                 <main>
