@@ -18,22 +18,27 @@ class AuthController extends Controller
     }
     public function login()
     {
-        if (!empty($_POST['email'] && $_POST['password'])) {
-            $user = $this->model('UserModel');
-            $this->data['user']=$user->getUser();
-            $response = new Response();
-            if (md5($_POST['password'])==$this->data['user']['password']) {
-                $_SESSION['is_login']=true;
-                $_SESSION['user_login']=$this->data['user'];
-                if (!empty($_POST['remember'])) {
-                    setcookie('is_login', $_SESSION['is_login'], time() + (3600));
-                    setcookie('user_login', $_SESSION['user_login']['id'], time() + (3600));
+        try {
+            if (!empty($_POST['email'] && $_POST['password'])) {
+                $user = $this->model('UserModel');
+                $this->data['user']=$user->getUser();
+                $response = new Response();
+                if (md5($_POST['password'])==$this->data['user']['password']) {
+                    $_SESSION['is_login']=true;
+                    $_SESSION['user_login']=$this->data['user'];
+                    if (!empty($_POST['remember'])) {
+                        setcookie('is_login', $_SESSION['is_login'], time() + (3600));
+                        setcookie('user_login', $_SESSION['user_login']['id'], time() + (3600));
+                    }
+                    $response->redirect('admin/dashboardcontroller/');
+                } else {
+                    $_SESSION['error'] = "Incorrect account or password information";
+                    $response->redirect('admin/authcontroller/');
                 }
-                $response->redirect('admin/dashboardcontroller/');
-            } else {
-                $_SESSION['error'] = "Incorrect account or password information";
-                $response->redirect('admin/authcontroller/');
             }
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            echo "Database error: $error_message";
         }
     }
     public function logout()
@@ -59,20 +64,25 @@ class AuthController extends Controller
     }
     public function postChange()
     {
-        if ($this->auth()) {
-            if (!empty($_POST['password'])&&$_POST['password']==$_POST['passwordConfirm']) {
-                $data = [
+        try {
+            if ($this->auth()) {
+                if (!empty($_POST['password'])&&$_POST['password']==$_POST['passwordConfirm']) {
+                    $data = [
                     'password'=>md5($_POST['password'])
                 ];
-                $user = $this->model('UserModel');
-                $user->updateUser($data);
-                $_SESSION['success'] = "Changed password successfully";
+                    $user = $this->model('UserModel');
+                    $user->updateUser($data);
+                    $_SESSION['success'] = "Changed password successfully";
+                    $response = new Response();
+                    $response->redirect('admin/dashboardcontroller');
+                }
+            } else {
                 $response = new Response();
-                $response->redirect('admin/dashboardcontroller');
+                $response->redirect('admin/authcontroller/');
             }
-        } else {
-            $response = new Response();
-            $response->redirect('admin/authcontroller/');
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            echo "Database error: $error_message";
         }
     }
 }

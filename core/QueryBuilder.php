@@ -63,10 +63,7 @@ trait QueryBuilder
         return $this;
     }
 
-    /*ORDER BY id DESC
-    $this->db->orderBy('id', 'DESC')
-    $this->db->orderBy('id ASC, name DESC');
-    */
+    
     public function orderBy($field, $type='ASC')
     {
         $fieldArr = array_filter(explode(',', $field));

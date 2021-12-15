@@ -145,3 +145,57 @@ if ($editForm.length) {
         },
     });
 }
+var $addProductForm = $('#addProduct');
+if($addProductForm.length){
+  $addProductForm.validate({
+      rules:{
+          product_name: {
+              required: true
+          },
+          product_desc: {
+              required: true
+          },
+          product_detail: {
+              required: true
+          },
+          product_price: {
+              required: true,
+              customPhone: true
+          },
+          product_cat: {
+              required: true
+          },
+          product_thumb: {
+              required: true
+          },
+          product_images: {
+              required: true
+          },
+      },
+      messages:{
+          product_name: {
+              required: 'Please enter product name!'
+          },
+          product_desc: {
+              required: 'Please enter description!',
+          },
+          product_detail: {
+              required: 'Please enter product detail!'
+          },
+          product_price: {
+              required: 'Please enter product price!',
+              customPhone:"Please enter valid price!"
+          },
+          product_cat: {
+              required: 'Please select category!'
+          },
+          product_thumb: {
+              required: 'Please select thumbnail!'
+          },
+          product_images: {
+              required: 'Please select country!'
+          },
+      },
+      
+  });
+}
