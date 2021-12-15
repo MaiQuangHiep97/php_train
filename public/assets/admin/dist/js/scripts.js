@@ -37,6 +37,9 @@ jQuery.validator.addMethod("customPhone", function (value, element) {
 $.validator.addMethod("alphanumeric", function (value, element) {
     return this.optional(element) || /^\w+$/i.test(value);
 }, "Letters, numbers, and underscores only please");
+$.validator.addMethod('filesize', function (value, element, param) {
+    return this.optional(element) || (element.files[0].size <= param)
+});
 var $loginForm = $('#login-form');
 if ($loginForm.length) {
     $loginForm.validate({
@@ -146,56 +149,76 @@ if ($editForm.length) {
     });
 }
 var $addProductForm = $('#addProduct');
-if($addProductForm.length){
-  $addProductForm.validate({
-      rules:{
-          product_name: {
-              required: true
-          },
-          product_desc: {
-              required: true
-          },
-          product_detail: {
-              required: true
-          },
-          product_price: {
-              required: true,
-              customPhone: true
-          },
-          product_cat: {
-              required: true
-          },
-          product_thumb: {
-              required: true
-          },
-          product_images: {
-              required: true
-          },
-      },
-      messages:{
-          product_name: {
-              required: 'Please enter product name!'
-          },
-          product_desc: {
-              required: 'Please enter description!',
-          },
-          product_detail: {
-              required: 'Please enter product detail!'
-          },
-          product_price: {
-              required: 'Please enter product price!',
-              customPhone:"Please enter valid price!"
-          },
-          product_cat: {
-              required: 'Please select category!'
-          },
-          product_thumb: {
-              required: 'Please select thumbnail!'
-          },
-          product_images: {
-              required: 'Please select country!'
-          },
-      },
-      
-  });
+if ($addProductForm.length) {
+    $addProductForm.validate({
+        rules: {
+            product_name: {
+                required: true
+            },
+            product_desc: {
+                required: true
+            },
+            product_detail: {
+                required: true
+            },
+            product_price: {
+                required: true,
+                customPhone: true
+            },
+            product_cat: {
+                required: true
+            },
+            product_thumb: {
+                required: true,
+                extension: "png|jpeg|jpg",
+                filesize: 1048576,
+            },
+            product_images: {
+                required: true,
+            },
+        },
+        messages: {
+            product_name: {
+                required: 'Please enter product name!'
+            },
+            product_desc: {
+                required: 'Please enter description!',
+            },
+            product_detail: {
+                required: 'Please enter product detail!'
+            },
+            product_price: {
+                required: 'Please enter product price!',
+                customPhone: "Please enter valid price!"
+            },
+            product_cat: {
+                required: 'Please select category!'
+            },
+            product_thumb: {
+                required: 'Please select thumbnail!',
+                extension: 'File must be JPEG or PNG'
+            },
+            product_images: {
+                required: 'Please select country!'
+            },
+        },
+        // highlight: function (element) {
+        //     $(element).closest('.form-group').addClass('has-error');
+        // },
+        // unhighlight: function (element) {
+        //     $(element).closest('.form-group').removeClass('has-error');
+        // },
+    
+        // errorPlacement: function (error, element) {
+        //     if (element.parent('.input-group').length) {
+        //         error.insertAfter(element.parent());
+        //     } else {
+        //         error.insertAfter(element);
+        //     }
+        // }
+
+    });
 }
+
+
+
