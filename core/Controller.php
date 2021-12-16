@@ -28,4 +28,22 @@ class Controller
         }
         return false;
     }
+    public function handleFile($file_name, $upload_dir)
+    {
+        $upload_file = $upload_dir.$file_name;
+        $type = pathinfo($file_name, PATHINFO_EXTENSION);
+        if (file_exists($upload_file)) {
+            $file_name = pathinfo($file_name, PATHINFO_FILENAME);
+            $new_file_name = $file_name.'-Copy.';
+            $new_upload_file = $upload_dir.$new_file_name.$type;
+            $k = 1;
+            while (file_exists($new_upload_file)) {
+                $new_file_name = $file_name."-Copy({$k}).";
+                $k++;
+                $new_upload_file = $upload_dir.$new_file_name.$type;
+            }
+            $file_name = $new_file_name.$type;
+        }
+        return $file_name;
+    }
 }

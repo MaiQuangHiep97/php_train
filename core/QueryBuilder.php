@@ -96,7 +96,7 @@ trait QueryBuilder
     //Inner join
     public function join($tableName, $relationship)
     {
-        $this->innerJoin.='INNER JOIN '.$tableName.' ON '.$relationship.' ';
+        $this->innerJoin.='JOIN '.$tableName.' ON '.$relationship.' ';
         return $this;
     }
 

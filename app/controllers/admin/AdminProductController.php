@@ -14,6 +14,9 @@ class AdminProductController extends Controller
     public function index()
     {
         $this->data['user'] = $_SESSION['user_login']['name'];
+        $this->data['products'] = $this->db->table('tbl_products')
+        ->join('tbl_product_cats', 'tbl_product_cats.id=tbl_products.cat_id')
+        ->select('tbl_products.id as id_pr, tbl_product_cats.id as id_cat, product_name, product_detail, product_thumb, product_price, cat_name')->get();
         $this->render('admins/product/list', $this->data);
     }
     public function add()
@@ -23,9 +26,6 @@ class AdminProductController extends Controller
         $this->data['user'] = $_SESSION['user_login']['name'];
         $this->render('admins/product/add', $this->data);
     }
-
-
-    // Hàm này em sẽ tối ưu sau
 
     public function store()
     {
@@ -39,21 +39,9 @@ class AdminProductController extends Controller
                     $response->redirect('admin/adminproductcontroller/add');
                 } else {
                     $upload_dir = 'public/uploads/';
-                    $upload_file = $upload_dir.$file_name;
-                    if (file_exists($upload_file)) {
-                        $file_name = pathinfo($_FILES['product_thumb']['name'], PATHINFO_FILENAME);
-                        $new_file_name = $file_name.'-Copy.';
-                        $new_upload_file = $upload_dir.$new_file_name.$type;
-                        $k = 1;
-                        while (file_exists($new_upload_file)) {
-                            $new_file_name = $file_name."-Copy({$k}).";
-                            $k++;
-                            $new_upload_file = $upload_dir.$new_file_name.$type;
-                        }
-                        $file_name = $new_file_name.$type;
-                        $upload_file = $new_upload_file;
-                    }
-                    move_uploaded_file($_FILES['product_thumb']['tmp_name'], $upload_file);
+                    $file_name = $this->handleFile($file_name, $upload_dir);
+                    
+                    move_uploaded_file($_FILES['product_thumb']['tmp_name'], $upload_dir.$file_name);
                     $data = [
                     'product_name'=>$_POST['product_name'],
                     'product_des'=>$_POST['product_desc'],
@@ -74,20 +62,8 @@ class AdminProductController extends Controller
                         //
                         $file_name = $value;
                         $type = pathinfo($file_name, PATHINFO_EXTENSION);
+                        $file_name = $this->handleFile($file_name, $upload_dir);
                         $upload_file = $upload_dir.$file_name;
-                        if (file_exists($upload_file)) {
-                            $file_name = pathinfo($file_name, PATHINFO_FILENAME);
-                            $new_file_name = $file_name.'-Copy.';
-                            $new_upload_file = $upload_dir.$new_file_name.$type;
-                            $k = 1;
-                            while (file_exists($new_upload_file)) {
-                                $new_file_name = $file_name."-Copy({$k}).";
-                                $k++;
-                                $new_upload_file = $upload_dir.$new_file_name.$type;
-                            }
-                            $file_name = $new_file_name.$type;
-                            $upload_file = $new_upload_file;
-                        }
                         move_uploaded_file($files['tmp_name'][$key], $upload_file);
                         $image = [
                             'image'=>$file_name,
@@ -103,5 +79,27 @@ class AdminProductController extends Controller
             $error_message = $e->getMessage();
             echo "Database error: $error_message";
         }
+    }
+    public function delete()
+    {
+    }
+    public function edit()
+    {
+        try {
+            $id = $_GET['id'];
+            $cats = $this->model('ProductCatModel');
+            $this->data['user'] = $_SESSION['user_login']['name'];
+            $this->data['cats'] = $cats->getALL();
+            $product = $this->model('ProductModel');
+            $this->data['product'] = $product->getProduct($id);
+            $this->data['product_images'] = $product->getProductImages($id);
+            $this->render('admins/product/edit', $this->data);
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            echo "Database error: $error_message";
+        }
+    }
+    public function update()
+    {
     }
 }

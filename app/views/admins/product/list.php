@@ -10,7 +10,7 @@
                         <h1 class="mt-4">List user</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="<?php echo _DIR_ROOT;?>/dashboardcontroller/">Dashboard</a></li>
-                            <li class="breadcrumb-item active">List User</li>
+                            <li class="breadcrumb-item active">List Product</li>
                         </ol>
                         
                         <div class="card mb-4">
@@ -22,32 +22,28 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
+                                            <th>Image</th>
                                             <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>Type</th>
+                                            <th>Category</th>
+                                            <th>Price</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php
-                                        foreach ($users as $value) {
-                                            ?>
-                                            <tr>
-                                            <td><?=$value['name']?></td>
-                                            <td><?=$value['email']?></td>
-                                            <td><?=$value['phone']?></td>
-                                            <td><?=$value['type']?></td>
-                                            <td>    
-                                                <a href="<?=URL?>admin/usercontroller/edit?id=<?php echo $value['id']?>">Edit</a>
-                                                <span>/</span>
-                                                <?php if ($value['id'] !== $_SESSION['user_login']['id']) {?><a href="<?=URL?>admin/usercontroller/delete?id=<?php echo $value['id']?>">Delete</a>  
-                                                <?php } ?>                   
-                                            </td>
-                                        </tr>
-                                        <?php
-                                        }
-                                        ?>
+                                        <?php foreach ($products as $product) {?>
+                                           <tr>
+                                           <td><img class="w-25" style="width:100px; height:100px;" src="<?=URL_ASSET.$product['product_thumb'] ?>" alt=""></a></td>
+                                           <td><?=$product['product_name']?></td>
+                                           <td><?=$product['cat_name']?></td>
+                                           <td><?=number_format($product['product_price']).'đ'?></td>
+                                           <td>    
+                                               <a href="<?=URL?>admin/adminproductcontroller/edit?id=<?php echo $product['id_pr']?>">Edit</a>
+                                               <span>/</span>
+                                               <a href="<?=URL?>admin/adminproductcontroller/delete?id=<?php echo $product['id_pr']?>">Delete</a>                   
+                                           </td>
+                                       </tr>
+                                       <?php } ?>
+                                        
                                     </tbody>
                                 </table>
                             </div>

@@ -196,26 +196,68 @@ if ($addProductForm.length) {
             },
             product_thumb: {
                 required: 'Please select thumbnail!',
-                extension: 'File must be JPEG or PNG'
+                extension: 'File must be JPEG, JPG or PNG'
             },
             product_images: {
-                required: 'Please select country!'
+                required: 'Please select images!'
             },
         },
-        // highlight: function (element) {
-        //     $(element).closest('.form-group').addClass('has-error');
-        // },
-        // unhighlight: function (element) {
-        //     $(element).closest('.form-group').removeClass('has-error');
-        // },
-    
-        // errorPlacement: function (error, element) {
-        //     if (element.parent('.input-group').length) {
-        //         error.insertAfter(element.parent());
-        //     } else {
-        //         error.insertAfter(element);
-        //     }
-        // }
+
+    });
+}
+var $editProductForm = $('#editProduct');
+if ($editProductForm.length) {
+    $editProductForm.validate({
+        rules: {
+            product_name: {
+                required: true
+            },
+            product_desc: {
+                required: true
+            },
+            product_detail: {
+                required: true
+            },
+            product_price: {
+                required: true,
+                customPhone: true
+            },
+            product_cat: {
+                required: true
+            },
+            product_thumb: {
+                extension: "png|jpeg|jpg",
+                filesize: 1048576,
+            },
+            product_images: {
+                extension: "png|jpeg|jpg",
+                filesize: 1048576,
+            },
+        },
+        messages: {
+            product_name: {
+                required: 'Please enter product name!'
+            },
+            product_desc: {
+                required: 'Please enter description!',
+            },
+            product_detail: {
+                required: 'Please enter product detail!'
+            },
+            product_price: {
+                required: 'Please enter product price!',
+                customPhone: "Please enter valid price!"
+            },
+            product_cat: {
+                required: 'Please select category!'
+            },
+            product_thumb: {
+                extension: 'File must be JPEG, JPG or PNG'
+            },
+            product_images: {
+                required: 'Please select images!'
+            },
+        },
 
     });
 }
