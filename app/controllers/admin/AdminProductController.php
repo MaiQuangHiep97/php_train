@@ -107,7 +107,7 @@ class AdminProductController extends Controller
             $product = $this->model('ProductModel');
             $image = $product->getProduct($id);
             $upload_dir = 'public/uploads/';
-            if (isset($_POST)) {
+            if (!empty($_POST)) {
                 $data = [
                     'product_name'=>$_POST['product_name'],
                     'product_des'=>$_POST['product_desc'],
@@ -119,7 +119,7 @@ class AdminProductController extends Controller
                 $this->db->table('tbl_products')->where('id', '=', $id)->update($data);
             }
             
-            if (isset($_FILES['product_thumb'])) {
+            if (!empty($_FILES['product_thumb'])) {
                 $file_name = $_FILES['product_thumb']['name'];
                 $type = pathinfo($file_name, PATHINFO_EXTENSION);
                 $type_allow = array('png','jpg','jpeg','gift');
@@ -138,28 +138,26 @@ class AdminProductController extends Controller
                 ];
                 $this->db->table('tbl_products')->where('id', '=', $id)->update($data);
             }
-            // if (isset($_FILES['product_images'])) {
-            //     $files = $_FILES['product_images']['name'];
-            //     $images= $product->getProductImages($id);
-            //     foreach ($images as $value) {
-            //         $this->db->table('tbl_product_images')->where('id', '=', $value['image_id'])->delete();
-            //     }
-            //     foreach ($images as $value) {
-            //         if (file_exists($upload_dir.$value['image'])) {
-            //             unlink($upload_dir.$value['image']);
-            //         }
-            //     }
-            //     foreach ($files as $key => $file_name) {
-            //         $file_name = $this->handleFile($file_name, $upload_dir);
-            //         $upload_file = $upload_dir.$file_name;
-            //         move_uploaded_file($_FILES['product_images']['tmp_name'][$key], $upload_file);
-            //         $image = [
-            //             'image'=>$file_name,
-            //             'product_id'=>$id
-            //         ];
-            //         $this->db->table('tbl_product_images')->insert($image);
-            //     }
-            // }
+            if (!empty($_FILES['product_images'])) {
+                $files = $_FILES['product_images']['name'];
+                $images= $product->getProductImages($id);
+                $this->db->table('tbl_product_images')->where('product_id', '=', $id)->delete();
+                foreach ($images as $value) {
+                    if (file_exists($upload_dir.$value['image'])) {
+                        unlink($upload_dir.$value['image']);
+                    }
+                }
+                foreach ($files as $key => $file_name) {
+                    $file_name = $this->handleFile($file_name, $upload_dir);
+                    $upload_file = $upload_dir.$file_name;
+                    move_uploaded_file($_FILES['product_images']['tmp_name'][$key], $upload_file);
+                    $image = [
+                        'image'=>$file_name,
+                        'product_id'=>$id
+                    ];
+                    $this->db->table('tbl_product_images')->insert($image);
+                }
+            }
             $_SESSION['success'] = "Update product successfully";
             $response->redirect('admin/adminproductcontroller/');
         } catch (PDOException $e) {
