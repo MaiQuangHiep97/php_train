@@ -32,7 +32,7 @@
                                     <tbody>
                                         <?php foreach ($products as $product) {?>
                                            <tr>
-                                           <td><img class="" style="width:75px; height:75px;" src="<?=URL_ASSET.$product['product_thumb'] ?>" alt=""></a></td>
+                                           <td><img class="" style="width:75px; height:75px;" src="<?=URL_ASSET.'products/'.$product['product_thumb'] ?>" alt=""></a></td>
                                            <td><?=$product['product_name']?></td>
                                            <td><?=$product['cat_name']?></td>
                                            <td><?=number_format($product['product_price']).'đ'?></td>

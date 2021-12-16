@@ -19,8 +19,8 @@
                                 Edit Product
                             </div>
                             <div class="card-body">
-                            <form method="POST" action="<?php echo _WEB_ROOT;?>/admin/adminproductcontroller/update" id="editProduct" enctype="multipart/form-data">
-                            <input type="hidden" name="id" value="<?= $product['id'] ?>">
+                            <form method="POST" action="<?php echo _WEB_ROOT;?>/admin/adminproductcontroller/update?id=<?= $product['id'] ?>" id="editProduct" enctype="multipart/form-data">
+                            
                             <div class="form-group">
                     <label for="product-name">Name</label>
                     <input class="form-control" id="product-name" type="text" name="product_name" value="<?=$product['product_name']?>">
@@ -55,7 +55,7 @@
                         <div class="custom-file">
                         <input type="file" id="product-thumb" name="product_thumb" accept=".png,.gif,.jpg,.jpeg">
                         </div>
-                        <img class="my-3" style="width:100px; height:100px;" src="<?=URL_ASSET.$product['product_thumb'] ?>" alt="">
+                        <img class="my-3" style="width:100px; height:100px;" src="<?=URL_ASSET.'products/'.$product['product_thumb'] ?>" alt="">
                 </div>
                 <div class="form-group">
                         <label for="product-images">Images</label>
@@ -64,7 +64,7 @@
                     </div>
                     <div class="d-flex">
                     <?php foreach ($product_images as $image) {?>
-                        <img class="my-3" style="width:100px; height:100px; margin-right: 16px;" src="<?=URL_ASSET.$image['image'] ?>" alt="">
+                        <img class="my-3" style="width:100px; height:100px; margin-right: 16px;" src="<?=URL_ASSET.'images/'.$image['image'] ?>" alt="">
                     <?php } ?>
                     </div>
                 </div>

@@ -5,14 +5,17 @@ class ProductModel extends Model
     
     public function getProductImages($id)
     {
-        $data = $this->db->table('tbl_product_images')->where('product_id', '=', $id)
-        ->join('tbl_products', 'tbl_product_images.product_id=tbl_products.id')->select('tbl_product_images.id as image_id,image, product_id')->get();
+        $data = $this->db->table('tbl_product_images')->where('product_id', '=', $id)->get();
         return $data;
     }
     public function getProduct($id)
     {
         $data = $this->db->table('tbl_products')->where('id', '=', $id)->first();
         return $data;
+    }
+    public function deleteProduct($id)
+    {
+        $this->db->table('tbl_products')->where('id', '=', $id)->delete();
     }
     
     public function insertProduct($data)

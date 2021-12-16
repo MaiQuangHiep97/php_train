@@ -31,14 +31,14 @@ class AdminProductController extends Controller
     {
         try {
             $response = new Response();
-            if (isset($_POST) && isset($_FILES)) {
+            if (!empty($_POST) && !empty($_FILES)) {
                 $file_name = $_FILES['product_thumb']['name'];
                 $type = pathinfo($file_name, PATHINFO_EXTENSION);
                 $type_allow = array('png','jpg','jpeg','gift');
                 if (!in_array(strtolower($type), $type_allow)) {
                     $response->redirect('admin/adminproductcontroller/add');
                 } else {
-                    $upload_dir = 'public/uploads/';
+                    $upload_dir = 'public/uploads/products/';
                     $file_name = $this->handleFile($file_name, $upload_dir);
                     
                     move_uploaded_file($_FILES['product_thumb']['tmp_name'], $upload_dir.$file_name);
@@ -58,6 +58,7 @@ class AdminProductController extends Controller
                 if (isset($id)) {
                     $files = $_FILES['product_images'];
                     $filenames = $files['name'];
+                    $upload_dir = 'public/uploads/images/';
                     foreach ($filenames as $key => $value) {
                         //
                         $file_name = $value;
@@ -80,9 +81,21 @@ class AdminProductController extends Controller
             echo "Database error: $error_message";
         }
     }
-    public function delete()
-    {
-    }
+    // public function delete()
+    // {
+    //     try {
+    //         $id = $_GET['id'];
+    //         $product = $this->model('ProductModel');
+    //         $this->data['product'] = $product->deleteProduct();
+    //         $this->data['product_images'] = $product->getProductImages($id)->delete();
+    //         $response = new Response();
+    //         $_SESSION['success'] = "Delete product successfully";
+    //         $response->redirect('admin/adminproductcontroller/');
+    //     } catch (PDOException $e) {
+    //         $error_message = $e->getMessage();
+    //         echo "Database error: $error_message";
+    //     }
+    // }
     public function edit()
     {
         try {
@@ -103,10 +116,9 @@ class AdminProductController extends Controller
     {
         try {
             $response = new Response();
-            $id = $_POST['id'];
+            $id = $_GET['id'];
             $product = $this->model('ProductModel');
-            $image = $product->getProduct($id);
-            $upload_dir = 'public/uploads/';
+            $thumb = $product->getProduct($id);
             if (!empty($_POST)) {
                 $data = [
                     'product_name'=>$_POST['product_name'],
@@ -119,17 +131,11 @@ class AdminProductController extends Controller
                 $this->db->table('tbl_products')->where('id', '=', $id)->update($data);
             }
             
-            if (!empty($_FILES['product_thumb'])) {
+            if (!empty($_FILES['product_thumb']['name'])) {
                 $file_name = $_FILES['product_thumb']['name'];
-                $type = pathinfo($file_name, PATHINFO_EXTENSION);
-                $type_allow = array('png','jpg','jpeg','gift');
-                if (!in_array(strtolower($type), $type_allow)) {
-                    $_SESSION['erorr'] = "The file is not in the correct format";
-                    $response->redirect('admin/adminproductcontroller/edit');
-                }
-                $upload_dir = 'public/uploads/';
-                if (file_exists($upload_dir.$image['product_thumb'])) {
-                    unlink($upload_dir.$image['product_thumb']);
+                $upload_dir = 'public/uploads/products/';
+                if (file_exists($upload_dir.$thumb['product_thumb'])) {
+                    unlink($upload_dir.$thumb['product_thumb']);
                 }
                 $file_name = $this->handleFile($file_name, $upload_dir);
                 move_uploaded_file($_FILES['product_thumb']['tmp_name'], $upload_dir.$file_name);
@@ -138,24 +144,28 @@ class AdminProductController extends Controller
                 ];
                 $this->db->table('tbl_products')->where('id', '=', $id)->update($data);
             }
-            if (!empty($_FILES['product_images'])) {
+            if (!empty($_FILES['product_images']['name'])) {
+                $upload_dire = 'public/uploads/images/';
                 $files = $_FILES['product_images']['name'];
-                $images= $product->getProductImages($id);
-                $this->db->table('tbl_product_images')->where('product_id', '=', $id)->delete();
-                foreach ($images as $value) {
-                    if (file_exists($upload_dir.$value['image'])) {
-                        unlink($upload_dir.$value['image']);
+                $image = $this->model('ImagesModel');
+                $images= $image->getImages($id);
+                if (!empty($images)) {
+                    $image->deleteImage($id);
+                    foreach ($images as $fileImage) {
+                        if (file_exists($upload_dire.$fileImage['image'])) {
+                            unlink($upload_dire.$fileImage['image']);
+                        }
                     }
                 }
-                foreach ($files as $key => $file_name) {
-                    $file_name = $this->handleFile($file_name, $upload_dir);
-                    $upload_file = $upload_dir.$file_name;
+                foreach ($files as $key => $fileName) {
+                    $fileName = $this->handleFile($fileName, $upload_dire);
+                    $upload_file = $upload_dire.$fileName;
                     move_uploaded_file($_FILES['product_images']['tmp_name'][$key], $upload_file);
-                    $image = [
-                        'image'=>$file_name,
+                    $data = [
+                        'image'=>$fileName,
                         'product_id'=>$id
                     ];
-                    $this->db->table('tbl_product_images')->insert($image);
+                    $this->db->table('tbl_product_images')->insert($data);
                 }
             }
             $_SESSION['success'] = "Update product successfully";
