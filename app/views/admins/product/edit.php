@@ -19,8 +19,9 @@
                                 Edit Product
                             </div>
                             <div class="card-body">
-                            <form method="POST" action="<?php echo _WEB_ROOT;?>/admin/adminproductcontroller/update?id=<?=$product['id']?>" id="editProduct" enctype="multipart/form-data">
-                <div class="form-group">
+                            <form method="POST" action="<?php echo _WEB_ROOT;?>/admin/adminproductcontroller/update" id="editProduct" enctype="multipart/form-data">
+                            <input type="hidden" name="id" value="<?= $product['id'] ?>">
+                            <div class="form-group">
                     <label for="product-name">Name</label>
                     <input class="form-control" id="product-name" type="text" name="product_name" value="<?=$product['product_name']?>">
                 </div>

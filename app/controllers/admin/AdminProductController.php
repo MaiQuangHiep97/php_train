@@ -101,5 +101,70 @@ class AdminProductController extends Controller
     }
     public function update()
     {
+        try {
+            $response = new Response();
+            $id = $_POST['id'];
+            $product = $this->model('ProductModel');
+            $image = $product->getProduct($id);
+            $upload_dir = 'public/uploads/';
+            if (isset($_POST)) {
+                $data = [
+                    'product_name'=>$_POST['product_name'],
+                    'product_des'=>$_POST['product_desc'],
+                    'product_price'=>$_POST['product_price'],
+                    'product_detail'=>$_POST['product_detail'],
+                    'cat_id'=>$_POST['product_cat'],
+                    'user_id'=>$_SESSION['user_login']['id']
+                ];
+                $this->db->table('tbl_products')->where('id', '=', $id)->update($data);
+            }
+            
+            if (isset($_FILES['product_thumb'])) {
+                $file_name = $_FILES['product_thumb']['name'];
+                $type = pathinfo($file_name, PATHINFO_EXTENSION);
+                $type_allow = array('png','jpg','jpeg','gift');
+                if (!in_array(strtolower($type), $type_allow)) {
+                    $_SESSION['erorr'] = "The file is not in the correct format";
+                    $response->redirect('admin/adminproductcontroller/edit');
+                }
+                $upload_dir = 'public/uploads/';
+                if (file_exists($upload_dir.$image['product_thumb'])) {
+                    unlink($upload_dir.$image['product_thumb']);
+                }
+                $file_name = $this->handleFile($file_name, $upload_dir);
+                move_uploaded_file($_FILES['product_thumb']['tmp_name'], $upload_dir.$file_name);
+                $data=[
+                    'product_thumb'=>$file_name
+                ];
+                $this->db->table('tbl_products')->where('id', '=', $id)->update($data);
+            }
+            // if (isset($_FILES['product_images'])) {
+            //     $files = $_FILES['product_images']['name'];
+            //     $images= $product->getProductImages($id);
+            //     foreach ($images as $value) {
+            //         $this->db->table('tbl_product_images')->where('id', '=', $value['image_id'])->delete();
+            //     }
+            //     foreach ($images as $value) {
+            //         if (file_exists($upload_dir.$value['image'])) {
+            //             unlink($upload_dir.$value['image']);
+            //         }
+            //     }
+            //     foreach ($files as $key => $file_name) {
+            //         $file_name = $this->handleFile($file_name, $upload_dir);
+            //         $upload_file = $upload_dir.$file_name;
+            //         move_uploaded_file($_FILES['product_images']['tmp_name'][$key], $upload_file);
+            //         $image = [
+            //             'image'=>$file_name,
+            //             'product_id'=>$id
+            //         ];
+            //         $this->db->table('tbl_product_images')->insert($image);
+            //     }
+            // }
+            $_SESSION['success'] = "Update product successfully";
+            $response->redirect('admin/adminproductcontroller/');
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            echo "Database error: $error_message";
+        }
     }
 }

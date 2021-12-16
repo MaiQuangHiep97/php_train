@@ -6,7 +6,7 @@ class ProductModel extends Model
     public function getProductImages($id)
     {
         $data = $this->db->table('tbl_product_images')->where('product_id', '=', $id)
-        ->join('tbl_products', 'tbl_product_images.product_id=tbl_products.id')->select('image')->get();
+        ->join('tbl_products', 'tbl_product_images.product_id=tbl_products.id')->select('tbl_product_images.id as image_id,image, product_id')->get();
         return $data;
     }
     public function getProduct($id)
