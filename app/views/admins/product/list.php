@@ -12,8 +12,8 @@
                             <li class="breadcrumb-item"><a href="<?php echo _DIR_ROOT;?>/dashboardcontroller/">Dashboard</a></li>
                             <li class="breadcrumb-item active">List Product</li>
                         </ol>
-                        
-                        <div class="card mb-4">
+                        <?php if (count($products)>0) {?>
+                            <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 DataTable Example
@@ -39,7 +39,8 @@
                                            <td>    
                                                <a href="<?=URL?>admin/adminproductcontroller/edit?id=<?php echo $product['id_pr']?>">Edit</a>
                                                <span>/</span>
-                                               <a href="<?=URL?>admin/adminproductcontroller/delete?id=<?php echo $product['id_pr']?>">Delete</a>                   
+                                               <a href="<?=URL?>admin/adminproductcontroller/delete?id=<?php echo $product['id_pr']?>"
+                                               >Delete</a>             
                                            </td>
                                        </tr>
                                        <?php } ?>
@@ -48,6 +49,13 @@
                                 </table>
                             </div>
                         </div>
+                        <?php
+                        } else {?>
+                            <div><h4>No product exist!</h4></div>
+                            <?php
+                        }
+                        ?>
+                        
                     </div>
                 </main>        
 <?php $this->render('blocks/admins/footer')?>

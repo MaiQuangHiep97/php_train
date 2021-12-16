@@ -12,7 +12,7 @@
                             <li class="breadcrumb-item"><a href="<?php echo _DIR_ROOT;?>/dashboardcontroller/">Dashboard</a></li>
                             <li class="breadcrumb-item active">List User</li>
                         </ol>
-                        
+                        <?php if (count($users)>0) {?>
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
@@ -53,6 +53,9 @@
                             </div>
                         </div>
                     </div>
+                    <?php } else {?>
+                        <div><h4>No users exist!</h4></div>
+                        <?php }?>
                 </main>        
 <?php $this->render('blocks/admins/footer')?>
                 

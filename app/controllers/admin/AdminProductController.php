@@ -81,21 +81,34 @@ class AdminProductController extends Controller
             echo "Database error: $error_message";
         }
     }
-    // public function delete()
-    // {
-    //     try {
-    //         $id = $_GET['id'];
-    //         $product = $this->model('ProductModel');
-    //         $this->data['product'] = $product->deleteProduct();
-    //         $this->data['product_images'] = $product->getProductImages($id)->delete();
-    //         $response = new Response();
-    //         $_SESSION['success'] = "Delete product successfully";
-    //         $response->redirect('admin/adminproductcontroller/');
-    //     } catch (PDOException $e) {
-    //         $error_message = $e->getMessage();
-    //         echo "Database error: $error_message";
-    //     }
-    // }
+    public function delete()
+    {
+        try {
+            $id = $_GET['id'];
+            $products = $this->model('ProductModel');
+            $product = $products->getProduct($id);
+            $upload_dir='public/uploads/products/';
+            if (file_exists($upload_dir.$product['product_thumb'])) {
+                unlink($upload_dir.$product['product_thumb']);
+            }
+            $products->deleteProduct($id);
+            $images = $this->model('ImagesModel');
+            $image = $images->getImages($id);
+            $upload_dire='public/uploads/images/';
+            foreach ($image as $value) {
+                if (file_exists($upload_dire.$value['image'])) {
+                    unlink($upload_dire.$value['image']);
+                }
+            }
+            $images->deleteImage($id);
+            $response = new Response();
+            $_SESSION['success'] = "Delete product successfully";
+            $response->redirect('admin/adminproductcontroller/');
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            echo "Database error: $error_message";
+        }
+    }
     public function edit()
     {
         try {
