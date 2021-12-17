@@ -11,13 +11,6 @@ class UserController extends Controller
         }
         $this->model = $this->model('UserModel');
     }
-    // public function detail($id)
-    // {
-    //     $this->data['id'] = $id;
-    //     $product = $this->model('UserModel');
-    //     $this->data['ab'] = $product->getUser($id);
-    //     $this->render('layouts/client', $this->data);
-    // }
     public function index()
     {
         try {
