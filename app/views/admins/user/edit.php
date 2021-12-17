@@ -37,6 +37,7 @@
                                             <label for="username">Name</label>
                                             <div class="form-floating mb-3">
                                             <input type = "text" id="username" class = "form-control" value="<?= $user['name']?>" name = "username" placeholder = "Name"/>
+                                            <?php echo(!empty($errors)&& array_key_exists('username', $errors))?'<span style="color: red;">'.$errors['username'].'</span>':false?>
                                             </div>
                                             <label for="email">Email address</label>
                                             <div class="form-floating mb-3">
@@ -45,6 +46,7 @@
                                             <label for="phone">Phone</label>
                                             <div class="form-floating mb-3">
                                             <input type = "text" id="phone" class = "form-control" value="<?= $user['phone']?>" name = "phone" placeholder = "Phone"/>
+                                            <?php echo(!empty($errors)&& array_key_exists('phone', $errors))?'<span style="color: red;">'.$errors['phone'].'</span>':false?>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                             <button type = "submit" class = "form-control btn btn-primary">Update User</button>

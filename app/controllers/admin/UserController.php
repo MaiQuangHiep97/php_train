@@ -29,6 +29,8 @@ class UserController extends Controller
             $id = $_GET['id'];
             $users = $this->model('UserModel');
             $this->data['user'] = $users->find($id);
+            $this->data['errors'] = Session::flash('errors');
+            $this->data['old'] = Session::flash('old');
             $this->render('admins/user/edit', $this->data);
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
@@ -38,6 +40,33 @@ class UserController extends Controller
     public function update()
     {
         try {
+            //Validate form
+            $id = $_POST['id'];
+            $request = new Request();
+            if ($request->isPost()) {
+                $request->rules([
+                    'username'=>'required|max:20|regex:/^[a-zA-z0-9]*$/',
+                    'phone'=>'required|regex:/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/',
+                ]);
+                $request->message([
+                    'username.required'=>'Please enter username',
+                    'username.regex'=>'Please enter valid username',
+                    'username.min'=>'Username up to 20 characters',
+                    'phone.required'=>'Please enter phone',
+                    'phone.regex'=>'Please enter valid phone',
+                ]);
+                $validate = $request->validate();
+                if (!$validate) {
+                    Session::flash('errors', $request->errors());
+                    Session::flash('old', $request->getFields());
+                    $response = new Response();
+                    $response->redirect('admin/usercontroller/edit?id='.$id);
+                }
+            } else {
+                $response = new Response();
+                $response->redirect('admin/usercontroller/edit?id='.$id);
+            }
+            //Update
             if (isset($_POST)) {
                 $data = [
                     'name'=>$_POST['username'],
@@ -55,11 +84,43 @@ class UserController extends Controller
     }
     public function add()
     {
-        $this->render('admins/user/add');
+        $this->data['errors'] = Session::flash('errors');
+        $this->data['old'] = Session::flash('old');
+        $this->render('admins/user/add', $this->data);
     }
     public function store()
     {
         try {
+            //Validate form
+            $request = new Request();
+            if ($request->isPost()) {
+                $request->rules([
+                    'username'=>'required|max:20',
+                    'email'=>'required|email',
+                    'phone'=>'required',
+                    'password'=>'required|min:3'
+                ]);
+                $request->message([
+                    'username.required'=>'Please enter username',
+                    'username.min'=>'Username up to 20 characters',
+                    'email.required'=>'Please enter email',
+                    'email.email'=>'Please enter valid email!',
+                    'phone.required'=>'Please enter phone',
+                    'password.required'=>'Please enter password',
+                    'password.min'=>'Password must be more than 3 characters',
+                ]);
+                $validate = $request->validate();
+                if (!$validate) {
+                    Session::flash('errors', $request->errors());
+                    Session::flash('old', $request->getFields());
+                    $response = new Response();
+                    $response->redirect('admin/usercontroller/add');
+                }
+            } else {
+                $response = new Response();
+                $response->redirect('admin/usercontroller/add');
+            }
+            // Store
             if (isset($_POST)) {
                 $response = new Response();
                 if ($data = $this->db->table('tbl_users')->where('email', '=', $_POST['email'])->where('type', '=', 'admin')->get()) {

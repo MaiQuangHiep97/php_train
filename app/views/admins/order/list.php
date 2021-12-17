@@ -10,7 +10,7 @@
                         <h1 class="mt-4">List user</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="<?php echo _DIR_ROOT;?>/dashboardcontroller/">Dashboard</a></li>
-                            <li class="breadcrumb-item active">List Product</li>
+                            <li class="breadcrumb-item active">List Order</li>
                         </ol>
                         <?php if (count($products)>0) {?>
                             <div class="card mb-4">
@@ -30,20 +30,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($products as $product) {?>
-                                           <tr>
-                                           <td><img class="" style="width:75px; height:75px;" src="<?=URL_ASSET.'products/'.$product['product_thumb'] ?>" alt=""></a></td>
-                                           <td><?=$product['product_name']?></td>
-                                           <td><?=$product['cat_name']?></td>
-                                           <td><?=number_format($product['product_price']).'đ'?></td>
-                                           <td>    
-                                               <a href="<?=URL?>admin/adminproductcontroller/edit?id=<?php echo $product['id_pr']?>">Edit</a>
-                                               <span>/</span>
-                                               <a href="<?=URL?>admin/adminproductcontroller/delete?id=<?php echo $product['id_pr']?>"
-                                               >Delete</a>             
-                                           </td>
-                                       </tr>
-                                       <?php } ?>
                                         
                                     </tbody>
                                 </table>

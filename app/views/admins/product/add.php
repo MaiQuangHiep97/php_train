@@ -24,21 +24,25 @@
                 <div class="form-group">
                     <label for="product-name">Name</label>
                     <input class="form-control" id="product-name" type="text" name="product_name" value="">
+                    <?php echo(!empty($errors)&& array_key_exists('product_name', $errors))?'<span style="color: red;">'.$errors['product_name'].'</span>':false?>
                 </div>
               
                 <div class="form-group">
                     <label for="product-desc">Description</label>
                     <textarea class="form-control" type="text" id="product-desc" name="product_desc" rows="3" value=""></textarea>
+                    <?php echo(!empty($errors)&& array_key_exists('product_desc', $errors))?'<span style="color: red;">'.$errors['product_desc'].'</span>':false?>
                 </div>
                 <div class="form-group">
                     <label for="product-detail">Detail</label>
                     <textarea class="form-control" type="text" id="product-detail" name="product_detail" rows="3" value=""></textarea>
+                    <?php echo(!empty($errors)&& array_key_exists('product_detail', $errors))?'<span style="color: red;">'.$errors['product_detail'].'</span>':false?>
                 </div>
                 
                 
                 <div class="form-group">
                     <label for="product-price">Price</label>
                     <input class="form-control" type="text" id="product-price" name="product_price" value="">
+                    <?php echo(!empty($errors)&& array_key_exists('product_price', $errors))?'<span style="color: red;">'.$errors['product_price'].'</span>':false?>
                 </div>
                 
                 <div class="form-group">
@@ -49,18 +53,22 @@
                             <option value="<?= $value['id'] ?>"><?= $value['cat_name']?></option>
                        <?php } ?>
                     </select>
+                    <?php echo(!empty($errors)&& array_key_exists('product_cat', $errors))?'<span style="color: red;">'.$errors['product_cat'].'</span>':false?>
                 </div> 
                 
                 <div class="form-group">
                         <label for="product-thumb">Product thumb</label>
                         <div class="custom-file">
                         <input type="file" id="product-thumb" name="product_thumb" accept=".png,.gif,.jpg,.jpeg">
+                        <?php echo(!empty($errors)&& array_key_exists('product_thumb', $errors))?'<span style="color: red;">'.$errors['product_thumb'].'</span>':false?>
                         </div>
                 </div>
                 <div class="form-group">
                         <label for="product-images">Images</label>
                     <div class="custom-file">
                         <input type="file" id="product-images" multiple="multiple" name="product_images[]" accept=".png,.gif,.jpg,.jpeg">
+                        <?php echo(!empty($errors)&& array_key_exists('product_images', $errors))?'<span style="color: red;">'.$errors['product_images'].'</span>':false?>
+                        
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary mt-4">Add Product</button>

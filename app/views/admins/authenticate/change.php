@@ -39,10 +39,12 @@
                                             </div>
                                             <label for="password">Password</label>
                                             <div class="form-floating mb-3">
-                                            <input type = "password" class = "form-control" name = "password" placeholder = "Password" id = "password"/></div>
+                                            <input type = "password" class = "form-control" name = "password" placeholder = "Password" id = "password"/>
+                                            <?php echo(!empty($errors)&& array_key_exists('password', $errors))?'<span style="color: red;">'.$errors['password'].'</span>':false?></div>
                                             <label for="password-confirm">Password Confirm</label>
                                             <div class="form-floating mb-3">
-                                            <input type = "password" class = "form-control" name = "passwordConfirm" placeholder = "Password" id = "password-confirm"/></div>
+                                            <input type = "password" class = "form-control" name = "confirm_password" placeholder = "Password" id = "password-confirm"/>
+                                            <?php echo(!empty($errors)&& array_key_exists('confirm_password', $errors))?'<span style="color: red;">'.$errors['confirm_password'].'</span>':false?></div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                             <button type = "submit" class = "form-control btn btn-primary">Change Password</button>
                                             </div>

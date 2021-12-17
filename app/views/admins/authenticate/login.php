@@ -31,15 +31,17 @@
     <div class="alert alert-danger text-danger text-center"><?php echo $_SESSION['error']?></div>
     <?php unset($_SESSION['error']);
 } ?>
-                                            
                                         <form method="POST" id="login-form" action="<?php echo _WEB_ROOT;?>/admin/authcontroller/login">
                                             <label for="email">Email address</label>
                                             <div class="form-floating mb-3">
-                                            <input type = "text" id="email" class = "form-control" name = "email" placeholder = "Email"/>
+                                            <input type = "text" id="email" class = "form-control" value="<?php echo !empty($old['email'])?$old['email']:false?>" name = "email" placeholder = "Email"/>
+                                            <?php echo(!empty($errors)&& array_key_exists('email', $errors))?'<span style="color: red;">'.$errors['email'].'</span>':false?>
                                             </div>
                                             <label for="password">Password</label>
                                             <div class="form-floating mb-3">
-                                            <input type = "password" class = "form-control" name = "password" placeholder = "Password" id = "password"/></div>            
+                                            <input type = "password" class = "form-control" name = "password" placeholder = "Password" id = "password"/>
+                                            <?php echo(!empty($errors)&& array_key_exists('password', $errors))?'<span style="color: red;">'.$errors['password'].'</span>':false?>
+                                            </div>         
                                             <div class="form-check mb-3">
                                                 <input class="form-check-input" id="inputRememberPassword" type="checkbox" name="remember" value="remember" />
                                                 <label class="form-check-label" for="inputRememberPassword">Remember Password</label>

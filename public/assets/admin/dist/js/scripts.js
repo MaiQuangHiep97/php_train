@@ -92,7 +92,6 @@ if ($addForm.length) {
         rules: {
             username: {
                 required: true,
-                // alphanumeric: true
             },
             email: {
                 required: true,

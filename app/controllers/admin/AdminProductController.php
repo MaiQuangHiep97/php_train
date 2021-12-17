@@ -14,14 +14,15 @@ class AdminProductController extends Controller
     public function index()
     {
         $this->data['user'] = $_SESSION['user_login']['name'];
-        $this->data['products'] = $this->db->table('tbl_products')
-        ->join('tbl_product_cats', 'tbl_product_cats.id=tbl_products.cat_id')
-        ->select('tbl_products.id as id_pr, tbl_product_cats.id as id_cat, product_name, product_detail, product_thumb, product_price, cat_name')->get();
+        $products = $this->model('ProductModel');
+        $this->data['products'] = $products->getAll();
         $this->render('admins/product/list', $this->data);
     }
     public function add()
     {
         $cats = $this->model('ProductCatModel');
+        $this->data['errors'] = Session::flash('errors');
+        $this->data['old'] = Session::flash('old');
         $this->data['cats'] = $cats->getALL();
         $this->data['user'] = $_SESSION['user_login']['name'];
         $this->render('admins/product/add', $this->data);
@@ -31,6 +32,33 @@ class AdminProductController extends Controller
     {
         try {
             $response = new Response();
+            // Validate form
+            $request = new Request();
+            if ($request->isPost()) {
+                $request->rules([
+                    'product_name'=>'required',
+                    'product_desc'=>'required',
+                    'product_detail'=>'required',
+                    'product_price'=>'required|regex:/^[0-9]*$/',
+                    'product_cat'=>'required',
+                ]);
+                $request->message([
+                    'product_name.required'=>'Please enter product name',
+                    'product_desc.required'=>'Please enter description',
+                    'product_detail.required'=>'Please enter detail',
+                    'product_price.required'=>'Please enter price',
+                    'product_price.regex'=>'Please enter valid price!',
+                    'product_cat.required'=>'Please select category',
+                ]);
+                $validate = $request->validate();
+                if (!$validate) {
+                    Session::flash('errors', $request->errors());
+                    Session::flash('old', $request->getFields());
+                    $response->redirect('admin/adminproductcontroller/add');
+                }
+            } else {
+                $response->redirect('admin/adminproductcontroller/add');
+            }
             if (!empty($_POST) && !empty($_FILES)) {
                 $file_name = $_FILES['product_thumb']['name'];
                 $type = pathinfo($file_name, PATHINFO_EXTENSION);
@@ -130,6 +158,33 @@ class AdminProductController extends Controller
         try {
             $response = new Response();
             $id = $_GET['id'];
+            // Validate form
+            $request = new Request();
+            if ($request->isPost()) {
+                $request->rules([
+                    'product_name'=>'required',
+                    'product_desc'=>'required',
+                    'product_detail'=>'required',
+                    'product_price'=>'required|regex:/^[0-9]*$/',
+                    'product_cat'=>'required',
+                ]);
+                $request->message([
+                    'product_name.required'=>'Please enter product name',
+                    'product_desc.required'=>'Please enter description',
+                    'product_detail.required'=>'Please enter detail',
+                    'product_price.required'=>'Please enter price',
+                    'product_price.regex'=>'Please enter valid price!',
+                    'product_cat.required'=>'Please select category',
+                ]);
+                $validate = $request->validate();
+                if (!$validate) {
+                    Session::flash('errors', $request->errors());
+                    Session::flash('old', $request->getFields());
+                    $response->redirect('admin/adminproductcontroller/edit?id='.$id);
+                }
+            } else {
+                $response->redirect('admin/adminproductcontroller/edit?id='.$id);
+            }
             $product = $this->model('ProductModel');
             $thumb = $product->getProduct($id);
             if (!empty($_POST)) {

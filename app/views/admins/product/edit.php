@@ -20,25 +20,31 @@
                             </div>
                             <div class="card-body">
                             <form method="POST" action="<?php echo _WEB_ROOT;?>/admin/adminproductcontroller/update?id=<?= $product['id'] ?>" id="editProduct" enctype="multipart/form-data">
-                            
                             <div class="form-group">
                     <label for="product-name">Name</label>
                     <input class="form-control" id="product-name" type="text" name="product_name" value="<?=$product['product_name']?>">
+                    <?php echo(!empty($errors)&& array_key_exists('product_name', $errors))?'<span style="color: red;">'.$errors['product_name'].'</span>':false?>
                 </div>
               
                 <div class="form-group">
                     <label for="product-desc">Description</label>
                     <textarea class="form-control" type="text" id="product-desc" name="product_desc" rows="3" value=""><?=$product['product_des']?></textarea>
+                    <?php echo(!empty($errors)&& array_key_exists('product_desc', $errors))?'<span style="color: red;">'.$errors['product_desc'].'</span>':false?>
+               
                 </div>
                 <div class="form-group">
                     <label for="product-detail">Detail</label>
                     <textarea class="form-control" type="text" id="product-detail" name="product_detail" rows="3" value=""><?=$product['product_detail']?></textarea>
+                    <?php echo(!empty($errors)&& array_key_exists('product_detail', $errors))?'<span style="color: red;">'.$errors['product_detail'].'</span>':false?>
+               
                 </div>
                 
                 
                 <div class="form-group">
                     <label for="product-price">Price</label>
                     <input class="form-control" type="text" id="product-price" name="product_price" value="<?=$product['product_price']?>">
+                    <?php echo(!empty($errors)&& array_key_exists('product_price', $errors))?'<span style="color: red;">'.$errors['product_price'].'</span>':false?>
+               
                 </div>
                 
                 <div class="form-group">
@@ -48,6 +54,7 @@
                             <option value="<?= $value['id'] ?>"<?php ($product['cat_id']==$value)?'selected':''; ?>><?= $value['cat_name']?></option>
                        <?php } ?>
                     </select>
+                    <?php echo(!empty($errors)&& array_key_exists('product_cat', $errors))?'<span style="color: red;">'.$errors['product_cat'].'</span>':false?>
                 </div> 
                 
                 <div class="form-group">

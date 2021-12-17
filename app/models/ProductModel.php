@@ -17,7 +17,13 @@ class ProductModel extends Model
     {
         $this->db->table('tbl_products')->where('id', '=', $id)->delete();
     }
-    
+    public function getAll()
+    {
+        $data = $this->db->table('tbl_products')
+        ->join('tbl_product_cats', 'tbl_product_cats.id=tbl_products.cat_id')
+        ->select('tbl_products.id as id_pr, tbl_product_cats.id as id_cat, product_name, product_detail, product_thumb, product_price, cat_name')->get();
+        return $data;
+    }
     public function insertProduct($data)
     {
         if (!empty($data)) {
