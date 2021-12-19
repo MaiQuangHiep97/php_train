@@ -7,7 +7,7 @@ class AdminProductController extends Controller
     {
         if (!$this->auth()) {
             $response = new Response();
-            $response->redirect('admin/authcontroller/');
+            $response->redirect('admin/login');
         }
         $this->model = $this->model('ProductModel');
     }
@@ -15,7 +15,24 @@ class AdminProductController extends Controller
     {
         $this->data['user'] = $_SESSION['user_login']['name'];
         $products = $this->model('ProductModel');
-        $this->data['products'] = $products->getAll();
+        $products = $products->getAll();
+        $limit = 1;
+        if (!empty($_GET['page'])) {
+            $page = $_GET['page'];
+        } else {
+            $page = 1;
+        }
+        $total_rows = count($products);
+        $total_page = ceil($total_rows/$limit);
+        $start = ($page-1)*$limit;
+        if ($total_rows>0) {
+            $this->data['products'] = $this->db->table('tbl_products')
+            ->join('tbl_product_cats', 'tbl_product_cats.id=tbl_products.cat_id')
+            ->select('tbl_products.id as id_pr, tbl_product_cats.id as id_cat, product_name, product_detail, product_thumb, product_price, cat_name')
+            ->limit($limit, $start)->get();
+        }
+        $button_pagination = $this->pagination($total_page, $page);
+        $this->data['pagination']=$button_pagination;
         $this->render('admins/product/list', $this->data);
     }
     public function add()
@@ -54,17 +71,17 @@ class AdminProductController extends Controller
                 if (!$validate) {
                     Session::flash('errors', $request->errors());
                     Session::flash('old', $request->getFields());
-                    $response->redirect('admin/adminproductcontroller/add');
+                    $response->redirect('admin/product/add');
                 }
             } else {
-                $response->redirect('admin/adminproductcontroller/add');
+                $response->redirect('admin/product/add');
             }
             if (!empty($_POST) && !empty($_FILES)) {
                 $file_name = $_FILES['product_thumb']['name'];
                 $type = pathinfo($file_name, PATHINFO_EXTENSION);
                 $type_allow = array('png','jpg','jpeg','gift');
                 if (!in_array(strtolower($type), $type_allow)) {
-                    $response->redirect('admin/adminproductcontroller/add');
+                    $response->redirect('admin/product/add');
                 } else {
                     $upload_dir = 'public/uploads/products/';
                     $file_name = $this->handleFile($file_name, $upload_dir);
@@ -102,7 +119,7 @@ class AdminProductController extends Controller
                     }
                 }
                 $_SESSION['success'] = "Add product successfully";
-                $response->redirect('admin/adminproductcontroller/');
+                $response->redirect('admin/product/list');
             }
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
@@ -131,7 +148,7 @@ class AdminProductController extends Controller
             $images->deleteImage($id);
             $response = new Response();
             $_SESSION['success'] = "Delete product successfully";
-            $response->redirect('admin/adminproductcontroller/');
+            $response->redirect('admin/product/list');
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             echo "Database error: $error_message";
@@ -180,10 +197,10 @@ class AdminProductController extends Controller
                 if (!$validate) {
                     Session::flash('errors', $request->errors());
                     Session::flash('old', $request->getFields());
-                    $response->redirect('admin/adminproductcontroller/edit?id='.$id);
+                    $response->redirect('admin/product/edit?id='.$id);
                 }
             } else {
-                $response->redirect('admin/adminproductcontroller/edit?id='.$id);
+                $response->redirect('admin/product/edit?id='.$id);
             }
             $product = $this->model('ProductModel');
             $thumb = $product->getProduct($id);
@@ -237,7 +254,7 @@ class AdminProductController extends Controller
                 }
             }
             $_SESSION['success'] = "Update product successfully";
-            $response->redirect('admin/adminproductcontroller/');
+            $response->redirect('admin/product/list');
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             echo "Database error: $error_message";

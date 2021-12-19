@@ -11,11 +11,10 @@ class AuthController extends Controller
     {
         if ($this->auth()) {
             $response = new Response();
-            $response->redirect('admin/dashboardcontroller/');
+            $response->redirect('dashboard');
         } else {
             $this->data['errors'] = Session::flash('errors');
             $this->data['old'] = Session::flash('old');
-            //var_dump($this->data['errors']);
             $this->render('admins/authenticate/login', $this->data);
         }
     }
@@ -40,11 +39,11 @@ class AuthController extends Controller
                     Session::flash('errors', $request->errors());
                     Session::flash('old', $request->getFields());
                     $response = new Response();
-                    $response->redirect('admin/authcontroller/');
+                    $response->redirect('admin/login');
                 }
             } else {
                 $response = new Response();
-                $response->redirect('admin/authcontroller/');
+                $response->redirect('admin/login');
             }
             //Check Login
             if (!empty($_POST['email'] && $_POST['password'])) {
@@ -58,10 +57,10 @@ class AuthController extends Controller
                         setcookie('is_login', $_SESSION['is_login'], time() + (3600));
                         setcookie('user_login', $_SESSION['user_login']['id'], time() + (3600));
                     }
-                    $response->redirect('admin/dashboardcontroller/');
+                    $response->redirect('dashboard');
                 } else {
                     $_SESSION['error'] = "Incorrect account or password information";
-                    $response->redirect('admin/authcontroller/');
+                    $response->redirect('admin/login');
                 }
             }
         } catch (PDOException $e) {
@@ -78,7 +77,7 @@ class AuthController extends Controller
         unset($_SESSION['is_login']);
         unset($_SESSION['user_login']);
         $response = new Response();
-        $response->redirect('admin/authcontroller/');
+        $response->redirect('admin/login');
     }
     public function getChange()
     {
@@ -88,7 +87,7 @@ class AuthController extends Controller
             $this->render('admins/authenticate/change', $this->data);
         } else {
             $response = new Response();
-            $response->redirect('admin/authcontroller/');
+            $response->redirect('admin/login');
         }
     }
     public function postChange()
@@ -112,11 +111,11 @@ class AuthController extends Controller
                     if (!$validate) {
                         Session::flash('errors', $request->errors());
                         $response = new Response();
-                        $response->redirect('admin/authcontroller/getChange');
+                        $response->redirect('admin/getChange');
                     }
                 } else {
                     $response = new Response();
-                    $response->redirect('admin/authcontroller/getChange');
+                    $response->redirect('admin/getChange');
                 }
                 // Change Password
                 if (!empty($_POST['password'])&&$_POST['password']==$_POST['confirm_password']) {
@@ -127,11 +126,11 @@ class AuthController extends Controller
                     $user->updateUser($data);
                     $_SESSION['success'] = "Changed password successfully";
                     $response = new Response();
-                    $response->redirect('admin/dashboardcontroller');
+                    $response->redirect('dashboard');
                 }
             } else {
                 $response = new Response();
-                $response->redirect('admin/authcontroller/');
+                $response->redirect('admin/login');
             }
         } catch (PDOException $e) {
             $error_message = $e->getMessage();

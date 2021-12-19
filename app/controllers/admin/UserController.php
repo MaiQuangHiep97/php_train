@@ -7,7 +7,7 @@ class UserController extends Controller
     {
         if (!$this->auth()) {
             $response = new Response();
-            $response->redirect('admin/authcontroller/');
+            $response->redirect('admin/login');
         }
         $this->model = $this->model('UserModel');
     }
@@ -16,7 +16,21 @@ class UserController extends Controller
         try {
             $users = $this->model('UserModel');
             $this->data['user'] = $_SESSION['user_login']['name'];
-            $this->data['users'] = $users->getAll();
+            $admin = $users->getAll();
+            $limit = 1;
+            if (!empty($_GET['page'])) {
+                $page = $_GET['page'];
+            } else {
+                $page = 1;
+            }
+            $total_rows = count($admin);
+            $total_page = ceil($total_rows/$limit);
+            $start = ($page-1)*$limit;
+            if ($total_rows>0) {
+                $this->data['users'] = $this->db->table('tbl_users')->limit($limit, $start)->get();
+            }
+            $button_pagination = $this->pagination($total_page, $page);
+            $this->data['pagination']=$button_pagination;
             $this->render('admins/user/list', $this->data);
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
@@ -45,8 +59,8 @@ class UserController extends Controller
             $request = new Request();
             if ($request->isPost()) {
                 $request->rules([
-                    'username'=>'required|max:20|regex:/^[a-zA-z0-9]*$/',
-                    'phone'=>'required|regex:/^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/',
+                    'username'=>'required|max:20|regex:/^[^0-9]*$/',
+                    'phone'=>'required|regex:/^[0-9]*$/',
                 ]);
                 $request->message([
                     'username.required'=>'Please enter username',
@@ -64,7 +78,7 @@ class UserController extends Controller
                 }
             } else {
                 $response = new Response();
-                $response->redirect('admin/usercontroller/edit?id='.$id);
+                $response->redirect('admin/user/edit?id='.$id);
             }
             //Update
             if (isset($_POST)) {
@@ -75,7 +89,7 @@ class UserController extends Controller
                 $this->db->table('tbl_users')->where('id', '=', $_POST['id'])->update($data);
                 $_SESSION['success'] = "Update successfully";
                 $response = new Response();
-                $response->redirect('admin/usercontroller');
+                $response->redirect('admin/user/list');
             }
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
@@ -95,17 +109,19 @@ class UserController extends Controller
             $request = new Request();
             if ($request->isPost()) {
                 $request->rules([
-                    'username'=>'required|max:20',
+                    'username'=>'required|max:20|regex:/^[^0-9]*$/',
                     'email'=>'required|email',
-                    'phone'=>'required',
+                    'phone'=>'required|regex:/^[0-9]*$/',
                     'password'=>'required|min:3'
                 ]);
                 $request->message([
                     'username.required'=>'Please enter username',
+                    'username.regex'=>'Please enter valid username',
                     'username.min'=>'Username up to 20 characters',
                     'email.required'=>'Please enter email',
                     'email.email'=>'Please enter valid email!',
                     'phone.required'=>'Please enter phone',
+                    'phone.regex'=>'Please enter valid phone',
                     'password.required'=>'Please enter password',
                     'password.min'=>'Password must be more than 3 characters',
                 ]);
@@ -114,18 +130,18 @@ class UserController extends Controller
                     Session::flash('errors', $request->errors());
                     Session::flash('old', $request->getFields());
                     $response = new Response();
-                    $response->redirect('admin/usercontroller/add');
+                    $response->redirect('admin/user/add');
                 }
             } else {
                 $response = new Response();
-                $response->redirect('admin/usercontroller/add');
+                $response->redirect('admin/user/add');
             }
             // Store
             if (isset($_POST)) {
                 $response = new Response();
                 if ($data = $this->db->table('tbl_users')->where('email', '=', $_POST['email'])->where('type', '=', 'admin')->get()) {
                     $_SESSION['error'] = "Email already exists";
-                    $response->redirect('admin/usercontroller/add');
+                    $response->redirect('admin/user/add');
                 } else {
                     $data = [
             'name'=>$_POST['username'],
@@ -137,7 +153,7 @@ class UserController extends Controller
                     $user = $this->model('UserModel');
                     $user->insertUser($data);
                     $_SESSION['success'] = "Add user successfully";
-                    $response->redirect('admin/usercontroller');
+                    $response->redirect('admin/user/list');
                 }
             }
         } catch (PDOException $e) {
@@ -154,10 +170,10 @@ class UserController extends Controller
                 $user = $this->model('UserModel');
                 $user->deleteUser($id);
                 $_SESSION['success'] = "Delete user successfully";
-                $response->redirect('admin/usercontroller');
+                $response->redirect('admin/user/list');
             }
             $_SESSION['error'] = "Can not delele this user";
-            $response->redirect('admin/usercontroller');
+            $response->redirect('admin/user/list');
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             echo "Database error: $error_message";

@@ -5,7 +5,7 @@ class DashboardController extends Controller
     {
         if (!$this->auth()) {
             $response = new Response();
-            $response->redirect('admin/authcontroller/');
+            $response->redirect('admin/login');
         }
     }
     public function index()

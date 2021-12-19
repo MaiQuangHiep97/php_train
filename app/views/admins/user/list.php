@@ -7,13 +7,14 @@
     <div class="alert alert-success text-success text-center"><?php echo $_SESSION['success']?></div>
     <?php unset($_SESSION['success']);
 } ?>
+
                         <h1 class="mt-4">List user</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="<?php echo _DIR_ROOT;?>/dashboardcontroller/">Dashboard</a></li>
                             <li class="breadcrumb-item active">List User</li>
                         </ol>
                         <?php if (count($users)>0) {?>
-                        <div class="card mb-4">
+                        <div class="card mb-4" >
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 DataTable Example
@@ -29,6 +30,7 @@
                                             <th>Action</th>
                                         </tr>
                                     </thead>
+                                     
                                     <tbody>
                                         <?php
                                         foreach ($users as $value) {
@@ -39,7 +41,7 @@
                                             <td><?=$value['phone']?></td>
                                             <td><?=$value['type']?></td>
                                             <td>    
-                                                <a href="<?=URL?>admin/usercontroller/edit?id=<?php echo $value['id']?>">Edit</a>
+                                                <a href="<?=URL?>admin/user/edit?id=<?php echo $value['id']?>">Edit</a>
                                                 <span>/</span>
                                                 <?php if ($value['id'] !== $_SESSION['user_login']['id']) {?><a href="<?=URL?>admin/usercontroller/delete?id=<?php echo $value['id']?>">Delete</a>  
                                                 <?php } ?>                   
@@ -50,12 +52,20 @@
                                         ?>
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
+                                <div>
+                                    <ul class="pagination" id="pagi-users">
+                                        <?= $pagination ?>
+                                        </ul>
+                                </div>
+                                </div>
+                                  
                     </div>
+                    
                     <?php } else {?>
                         <div><h4>No users exist!</h4></div>
                         <?php }?>
-                </main>        
+                        </div>
+                </main>      
 <?php $this->render('blocks/admins/footer')?>
+
                 

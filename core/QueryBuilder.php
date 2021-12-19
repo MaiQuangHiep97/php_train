@@ -62,7 +62,6 @@ trait QueryBuilder
         $this->limit = "LIMIT $offset, $number";
         return $this;
     }
-
     
     public function orderBy($field, $type='ASC')
     {

@@ -9,7 +9,7 @@
 } ?>
                         <h1 class="mt-0">Add Product</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="<?php echo _DIR_ROOT;?>/dashboardcontroller/">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="<?php echo _DIR_ROOT;?>/dashboard">Dashboard</a></li>
                             <li class="breadcrumb-item active">Add Product</li>
                         </ol>
                         
@@ -19,7 +19,7 @@
                                 Add Product
                             </div>
                             <div class="card-body">
-                            <form method="POST" action="<?php echo _WEB_ROOT;?>/admin/adminproductcontroller/store" id="addProduct" enctype="multipart/form-data">
+                            <form method="POST" action="<?php echo _WEB_ROOT;?>/admin/product/store" id="addProduct" enctype="multipart/form-data">
                  
                 <div class="form-group">
                     <label for="product-name">Name</label>
@@ -37,7 +37,6 @@
                     <textarea class="form-control" type="text" id="product-detail" name="product_detail" rows="3" value=""></textarea>
                     <?php echo(!empty($errors)&& array_key_exists('product_detail', $errors))?'<span style="color: red;">'.$errors['product_detail'].'</span>':false?>
                 </div>
-                
                 
                 <div class="form-group">
                     <label for="product-price">Price</label>

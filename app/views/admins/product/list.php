@@ -7,7 +7,7 @@
     <div class="alert alert-success text-success text-center"><?php echo $_SESSION['success']?></div>
     <?php unset($_SESSION['success']);
 } ?>
-                        <h1 class="mt-4">List user</h1>
+                        <h1 class="mt-4">List product</h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="<?php echo _DIR_ROOT;?>/dashboardcontroller/">Dashboard</a></li>
                             <li class="breadcrumb-item active">List Product</li>
@@ -19,6 +19,7 @@
                                 DataTable Example
                             </div>
                             <div class="card-body">
+                                <div id="products">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
@@ -37,9 +38,9 @@
                                            <td><?=$product['cat_name']?></td>
                                            <td><?=number_format($product['product_price']).'đ'?></td>
                                            <td>    
-                                               <a href="<?=URL?>admin/adminproductcontroller/edit?id=<?php echo $product['id_pr']?>">Edit</a>
+                                               <a href="<?=URL?>admin/product/edit?id=<?php echo $product['id_pr']?>">Edit</a>
                                                <span>/</span>
-                                               <a href="<?=URL?>admin/adminproductcontroller/delete?id=<?php echo $product['id_pr']?>"
+                                               <a href="<?=URL?>admin/product/delete?id=<?php echo $product['id_pr']?>"
                                                >Delete</a>             
                                            </td>
                                        </tr>
@@ -47,6 +48,12 @@
                                         
                                     </tbody>
                                 </table>
+                                <div>
+                                    <ul class="pagination">
+                                        <?= $pagination ?>
+                                    </ul>
+                                </div>
+                                </div>
                             </div>
                         </div>
                         <?php

@@ -90,9 +90,10 @@ class App
             } else {
                 $this->loadError();
             }
-        } else {
-            $this->loadError();
         }
+        //  else {
+        //     $this->loadError();
+        // }
 
         //Xử lý action
         if (!empty($urlArr[1])) {
@@ -107,9 +108,10 @@ class App
         //Kiểm tra method tồn tại
         if (method_exists($this->__controller, $this->__action)) {
             call_user_func_array([$this->__controller, $this->__action], $this->__params);
-        } else {
-            $this->loadError();
         }
+        //  else {
+        //     $this->loadError();
+        // }
     }
     public function loadError($name = '404')
     {

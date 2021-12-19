@@ -1,8 +1,8 @@
 /*!
-    * Start Bootstrap - SB Admin v7.0.4 (https://startbootstrap.com/template/sb-admin)
-    * Copyright 2013-2021 Start Bootstrap
-    * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin/blob/master/LICENSE)
-    */
+ * Start Bootstrap - SB Admin v7.0.4 (https://startbootstrap.com/template/sb-admin)
+ * Copyright 2013-2021 Start Bootstrap
+ * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin/blob/master/LICENSE)
+ */
 // 
 // Scripts
 // 
@@ -25,19 +25,19 @@ window.addEventListener('DOMContentLoaded', event => {
 
 });
 
-jQuery.validator.addMethod("noSpace", function (value, element) {
+jQuery.validator.addMethod("noSpace", function(value, element) {
     return value == '' || value.trim().length != 0;
 }, "No space please and don't leave it empty");
-jQuery.validator.addMethod("customEmail", function (value, element) {
+jQuery.validator.addMethod("customEmail", function(value, element) {
     return this.optional(element) || /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(value);
 }, "Please enter valid email address!");
-jQuery.validator.addMethod("customPhone", function (value, element) {
-    return this.optional(element) || /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/.test(value);
+jQuery.validator.addMethod("customPhone", function(value, element) {
+    return this.optional(element) || /^[0-9]*$/.test(value);
 }, "Please enter valid phone!");
-$.validator.addMethod("alphanumeric", function (value, element) {
+$.validator.addMethod("alphanumeric", function(value, element) {
     return this.optional(element) || /^\w+$/i.test(value);
 }, "Letters, numbers, and underscores only please");
-$.validator.addMethod('filesize', function (value, element, param) {
+$.validator.addMethod('filesize', function(value, element, param) {
     return this.optional(element) || (element.files[0].size <= param)
 });
 var $loginForm = $('#login-form');
@@ -124,29 +124,29 @@ if ($addForm.length) {
         },
     });
 }
-var $editForm = $('#edit-form');
-if ($editForm.length) {
-    $editForm.validate({
-        rules: {
-            username: {
-                required: true,
-            },
-            phone: {
-                required: true,
-                customPhone: true
-            }
-        },
-        messages: {
-            username: {
-                required: 'Please enter username!'
-            },
-            phone: {
-                required: 'Please enter phone!',
-                customPhone: "Please enter valid phone!"
-            }
-        },
-    });
-}
+// var $editForm = $('#edit-form');
+// if ($editForm.length) {
+//     $editForm.validate({
+//         rules: {
+//             username: {
+//                 required: true,
+//             },
+//             phone: {
+//                 required: true,
+//                 customPhone: true
+//             }
+//         },
+//         messages: {
+//             username: {
+//                 required: 'Please enter username!'
+//             },
+//             phone: {
+//                 required: 'Please enter phone!',
+//                 customPhone: "Please enter valid phone!"
+//             }
+//         },
+//     });
+// }
 var $addProductForm = $('#addProduct');
 if ($addProductForm.length) {
     $addProductForm.validate({
@@ -260,6 +260,25 @@ if ($editProductForm.length) {
 
     });
 }
+$(document).ready(function() {
+    let data;
+    let page = 1;
+    $('.pagination li a.page-link').click(function() {
+        page = $(this).attr('num-page');
+        data = {
+            page: page
+        }
+        callback('<?=URL?>admin/usercontroller/', data);
+    })
 
-
-
+    function callback(url, data) {
+        $.ajax({
+            url: url,
+            method: "post",
+            data: data,
+            success: function(response) {
+                $('#users').html(response);
+            }
+        })
+    }
+});

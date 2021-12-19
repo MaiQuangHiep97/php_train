@@ -19,7 +19,7 @@
                                 Edit Product
                             </div>
                             <div class="card-body">
-                            <form method="POST" action="<?php echo _WEB_ROOT;?>/admin/adminproductcontroller/update?id=<?= $product['id'] ?>" id="editProduct" enctype="multipart/form-data">
+                            <form method="POST" action="<?php echo _WEB_ROOT;?>/admin/product/update?id=<?= $product['id'] ?>" id="editProduct" enctype="multipart/form-data">
                             <div class="form-group">
                     <label for="product-name">Name</label>
                     <input class="form-control" id="product-name" type="text" name="product_name" value="<?=$product['product_name']?>">
@@ -42,7 +42,7 @@
                 
                 <div class="form-group">
                     <label for="product-price">Price</label>
-                    <input class="form-control" type="text" id="product-price" name="product_price" value="<?=$product['product_price']?>">
+                    <input class="form-control" type="text" id="product-price" name="product_price" value="<?=number_format($product['product_price']).'đ'?>">
                     <?php echo(!empty($errors)&& array_key_exists('product_price', $errors))?'<span style="color: red;">'.$errors['product_price'].'</span>':false?>
                
                 </div>
