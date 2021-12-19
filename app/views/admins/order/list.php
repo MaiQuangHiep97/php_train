@@ -7,12 +7,12 @@
     <div class="alert alert-success text-success text-center"><?php echo $_SESSION['success']?></div>
     <?php unset($_SESSION['success']);
 } ?>
-                        <h1 class="mt-4">List user</h1>
+                        <h1 class="mt-4">List Order</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="<?php echo _DIR_ROOT;?>/dashboardcontroller/">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
                             <li class="breadcrumb-item active">List Order</li>
                         </ol>
-                        <?php if (count($products)>0) {?>
+                        <!-- <?php if (count($orders)>0) {?> -->
                             <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
@@ -22,22 +22,52 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Image</th>
+                                            <th>ID</th>
                                             <th>Name</th>
-                                            <th>Category</th>
-                                            <th>Price</th>
+                                            <th>Phone</th>
+                                            <th>Address</th>
+                                            <th>Status</th>
+                                            <th>Total Price</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        
+                                        <?php
+                                        foreach ($orders as $value) {
+                                            ?>
+                                            <tr>
+                                            <td><?=$value['code']?></td>
+                                            <td><?=$value['name']?></td>
+                                            <td><?=$value['phone']?></td>
+                                            <td><?=$value['address']?></td>
+                                            <td class="<?php
+                                            if ($value['status']=='handle') {
+                                                echo 'text-danger';
+                                            } elseif ($value['status']=='done') {
+                                                echo 'text-success';
+                                            } else {
+                                                echo 'text-warning';
+                                            } ?>"><?=$value['status']?></td>
+                                            <td><?=$value['total_price']?></td>
+                                            <td>
+                                                <a href="detail?id=<?=$value['id_order'] ?>">Detail</a>
+                                            </td>
+                                        </tr>
+                                        <?php
+                                        }
+                                        ?>
                                     </tbody>
                                 </table>
+                                <div>
+                                    <ul class="pagination" id="pagi-orders">
+                                        <?= $pagination ?>
+                                        </ul>
+                                </div>
                             </div>
                         </div>
                         <?php
                         } else {?>
-                            <div><h4>No product exist!</h4></div>
+                            <div><h4>No order exist!</h4></div>
                             <?php
                         }
                         ?>

@@ -38,9 +38,9 @@
                                            <td><?=$product['cat_name']?></td>
                                            <td><?=number_format($product['product_price']).'đ'?></td>
                                            <td>    
-                                               <a href="<?=URL?>admin/product/edit?id=<?php echo $product['id_pr']?>">Edit</a>
+                                               <a href="edit?id=<?= $product['id_pr']?>">Edit</a>
                                                <span>/</span>
-                                               <a href="<?=URL?>admin/product/delete?id=<?php echo $product['id_pr']?>"
+                                               <a href="delete?id=<?=$product['id_pr']?>"
                                                >Delete</a>             
                                            </td>
                                        </tr>

@@ -74,7 +74,7 @@ class UserController extends Controller
                     Session::flash('errors', $request->errors());
                     Session::flash('old', $request->getFields());
                     $response = new Response();
-                    $response->redirect('admin/usercontroller/edit?id='.$id);
+                    $response->redirect('admin/user/edit?id='.$id);
                 }
             } else {
                 $response = new Response();

@@ -41,9 +41,9 @@
                                             <td><?=$value['phone']?></td>
                                             <td><?=$value['type']?></td>
                                             <td>    
-                                                <a href="<?=URL?>admin/user/edit?id=<?php echo $value['id']?>">Edit</a>
+                                                <a href="edit?id=<?= $value['id']?>">Edit</a>
                                                 <span>/</span>
-                                                <?php if ($value['id'] !== $_SESSION['user_login']['id']) {?><a href="<?=URL?>admin/usercontroller/delete?id=<?php echo $value['id']?>">Delete</a>  
+                                                <?php if ($value['id'] !== $_SESSION['user_login']['id']) {?><a href="delete?id=<?= $value['id']?>">Delete</a>  
                                                 <?php } ?>                   
                                             </td>
                                         </tr>
