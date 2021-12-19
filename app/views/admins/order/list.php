@@ -42,13 +42,15 @@
                                             <td><?=$value['address']?></td>
                                             <td class="<?php
                                             if ($value['status']=='handle') {
-                                                echo 'text-danger';
-                                            } elseif ($value['status']=='done') {
                                                 echo 'text-success';
-                                            } else {
+                                            } elseif ($value['status']=='done') {
+                                                echo 'text-primary';
+                                            } elseif ($value['status']=='transport') {
                                                 echo 'text-warning';
-                                            } ?>"><?=$value['status']?></td>
-                                            <td><?=$value['total_price']?></td>
+                                            } else {
+                                                echo 'text-danger';
+                                            } ?>"><p class="text-capitalize"><?=$value['status']?></p></td>
+                                            <td><?=number_format($value['total_price']).'đ'?></td>
                                             <td>
                                                 <a href="detail?id=<?=$value['id_order'] ?>">Detail</a>
                                             </td>

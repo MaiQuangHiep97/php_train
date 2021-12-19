@@ -15,7 +15,10 @@ class OrderModel extends Model
         ->select('tbl_orders.id as id_order, tbl_users.id as id_user, status, total_price, address, name, phone, code')->get();
         return $data;
     }
-    
+    public function updateStatus($id, $data)
+    {
+        $this->db->table('tbl_orders')->where('id', '=', $id)->update($data);
+    }
     public function tableFill()
     {
         return 'tbl_orders';

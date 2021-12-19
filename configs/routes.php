@@ -25,3 +25,4 @@ $routes['admin/product/delete'] = 'admin/adminproductcontroller/delete';
 //AdminOrderController
 $routes['admin/order/list'] = 'admin/adminordercontroller';
 $routes['admin/order/detail'] = 'admin/adminordercontroller/show';
+$routes['admin/order/status'] = 'admin/adminordercontroller/status';

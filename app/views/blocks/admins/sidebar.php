@@ -3,11 +3,11 @@
                 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                     <div class="sb-sidenav-menu">
                         <div class="nav">
-                            <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/dashboardcontroller/">
+                            <a class="nav-link" href="<?php echo _WEB_ROOT;?>/dashboard">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
-                            <a class="nav-link collapsed" href="<?php echo _WEB_ROOT;?>/admin/adminproductcontroller/" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link collapsed" href="<?php echo _WEB_ROOT;?>/admin/product/list" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Product
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
