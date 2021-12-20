@@ -28,6 +28,13 @@ class Controller
         }
         return false;
     }
+    public function authCustomer()
+    {
+        if (isset($_SESSION['is_login'])&&isset($_SESSION['customer_login'])&&$_SESSION['customer_login']['type']=='user') {
+            return true;
+        }
+        return false;
+    }
     public function handleFile($file_name, $upload_dir)
     {
         $upload_file = $upload_dir.$file_name;

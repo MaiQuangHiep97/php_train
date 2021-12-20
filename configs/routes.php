@@ -34,3 +34,5 @@ $routes['customer/postLogin'] = 'customer/customercontroller/login';
 $routes['customer/logout'] = 'customer/customercontroller/logout';
 $routes['customer/register'] = 'customer/customercontroller/getregister';
 $routes['customer/postRegister'] = 'customer/customercontroller/postregister';
+$routes['customer/change'] = 'customer/customerController/getChange';
+$routes['customer/postChange'] = 'customer/customerController/postChange';

@@ -5,7 +5,10 @@ class HomeController extends Controller
     public $data = array();
     public function index()
     {
-        var_dump($this->db->table('tbl_users')->where('id', '=', 2)->get());
+        if (isset($_SESSION['customer_login'])) {
+            $this->data['customer'] = $_SESSION['customer_login'];
+        }
+        $this->render('clients/home/index', $this->data);
     }
     public function __construct()
     {
