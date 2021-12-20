@@ -28,3 +28,9 @@ $routes['admin/product/delete'] = 'admin/adminproductcontroller/delete';
 $routes['admin/order/list'] = 'admin/adminordercontroller';
 $routes['admin/order/detail'] = 'admin/adminordercontroller/show';
 $routes['admin/order/status'] = 'admin/adminordercontroller/status';
+//CustomerController
+$routes['customer/login'] = 'customer/customercontroller';
+$routes['customer/postLogin'] = 'customer/customercontroller/login';
+$routes['customer/logout'] = 'customer/customercontroller/logout';
+$routes['customer/register'] = 'customer/customercontroller/getregister';
+$routes['customer/postRegister'] = 'customer/customercontroller/postregister';

@@ -47,11 +47,11 @@ class AuthController extends Controller
             }
             //Check Login
             if (!empty($_POST['email'] && $_POST['password'])) {
-                $this->data['user']=$this->model->getUser();
+                $user=$this->model->getUser();
                 $response = new Response();
-                if (md5($_POST['password'])==$this->data['user']['password']) {
+                if (md5($_POST['password'])==$user['password']) {
                     $_SESSION['is_login']=true;
-                    $_SESSION['user_login']=$this->data['user'];
+                    $_SESSION['user_login']=$user;
                     if (!empty($_POST['remember'])) {
                         setcookie('is_login', $_SESSION['is_login'], time() + (3600));
                         setcookie('user_login', $_SESSION['user_login']['id'], time() + (3600));

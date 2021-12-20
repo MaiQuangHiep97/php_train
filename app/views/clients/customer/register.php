@@ -25,13 +25,14 @@
                         <div class="row justify-content-center">
                             <div class="col-lg-5">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login Admin</h3></div>
+                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login Customer</h3></div>
                                     <div class="card-body">
                                         <?php if (!empty($_SESSION['error'])) {?>
     <div class="alert alert-danger text-danger text-center"><?php echo $_SESSION['error']?></div>
     <?php unset($_SESSION['error']);
 } ?>
-                                        <form method="POST" id="login-form" action="<?php echo _WEB_ROOT;?>/admin/postLogin">
+                                        <form method="POST" id="login-form" action="<?php echo _WEB_ROOT;?>/customer/postLogin">
+                                        <input type="hidden" name="type" value="user">
                                             <label for="email">Email address</label>
                                             <div class="form-floating mb-3">
                                             <input type = "text" id="email" class = "form-control" value="<?php echo !empty($old['email'])?$old['email']:false?>" name = "email" placeholder = "Email"/>
