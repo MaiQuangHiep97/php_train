@@ -19,6 +19,26 @@ class OrderModel extends Model
     {
         $this->db->table('tbl_orders')->where('id', '=', $id)->update($data);
     }
+    public function countCancel()
+    {
+        $data=$this->db->table('tbl_orders')->where('status', '=', 'cancel')->get();
+        return count($data);
+    }
+    public function countHandle()
+    {
+        $data=$this->db->table('tbl_orders')->where('status', '=', 'handle')->get();
+        return count($data);
+    }
+    public function countTransport()
+    {
+        $data=$this->db->table('tbl_orders')->where('status', '=', 'transport')->get();
+        return count($data);
+    }
+    public function countDone()
+    {
+        $data=$this->db->table('tbl_orders')->where('status', '=', 'done')->get();
+        return count($data);
+    }
     public function tableFill()
     {
         return 'tbl_orders';

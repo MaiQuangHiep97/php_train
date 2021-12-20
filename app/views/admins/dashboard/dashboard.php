@@ -8,87 +8,107 @@
     <?php unset($_SESSION['success']);
 } ?>
                         <h1 class="mt-4">Dashboard</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Dashboard</li>
-                        </ol>
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Primary Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                <div class="card-body d-flex align-items-center justify-content-between">
+                                        <div class="text-white">Done</div>
+                                        <div class="text-white"><?= $done?></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Warning Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                <div class="card-body d-flex align-items-center justify-content-between">
+                                        <div class="text-white">Transport</div>
+                                        <div class="text-white"><?= $transport?></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-success text-white mb-4">
-                                    <div class="card-body">Success Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                <div class="card-body d-flex align-items-center justify-content-between">
+                                        <div class="text-white">Handle</div>
+                                        <div class="text-white"><?= $handle?></div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Danger Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                    <div class="card-body d-flex align-items-center justify-content-between">
+                                        <div class="text-white">Cancel</div>
+                                        <div class="text-white"><?= $cancel?></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class = "list-group-item mb-4">
+                                    <h6 class = "list-group-item-heading">
+                                    Total Revenue: <?= number_format($total_revenue).'đ' ?>
+                                    </h6>
+                        </div>
+                        <?php if (count($orders)>0) {?>
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
-                                DataTable Example
+                                Order Table
                             </div>
                             <div class="card-body">
-                                <table id="datatablesSimple">
+                                <table class="table table-hover">
                                     <thead>
                                         <tr>
+                                            <th>ID</th>
                                             <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
+                                            <th>Phone</th>
+                                            <th>Address</th>
+                                            <th>Status</th>
+                                            <th>Total Price</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
-                                        </tr>
-                                    </tfoot>
                                     <tbody>
-                                        <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
+                                        <?php
+                                        foreach ($orders as $value) {
+                                            ?>
+                                            <tr>
+                                            <td><?=$value['code']?></td>
+                                            <td><?=$value['name']?></td>
+                                            <td><?=$value['phone']?></td>
+                                            <td><?=$value['address']?></td>
+                                            <td class="<?php
+                                            if ($value['status']=='handle') {
+                                                echo 'text-success';
+                                            } elseif ($value['status']=='done') {
+                                                echo 'text-primary';
+                                            } elseif ($value['status']=='transport') {
+                                                echo 'text-warning';
+                                            } else {
+                                                echo 'text-danger';
+                                            } ?>"><p class="text-capitalize"><?=$value['status']?></p></td>
+                                            <td><?=number_format($value['total_price']).'đ'?></td>
+                                            <td>
+                                                <a href="admin/order/detail?id=<?=$value['id_order'] ?>">Detail</a>
+                                            </td>
                                         </tr>
+                                        <?php
+                                        }
+                                        ?>
                                     </tbody>
                                 </table>
+                                <div>
+                                    <ul class="pagination" id="pagi-orders">
+                                        <?= $pagination ?>
+                                        </ul>
+                                </div>
                             </div>
                         </div>
+                        <?php
+                        } else {?>
+                            <div><h4>No order exist!</h4></div>
+                            <?php
+                        }
+                        ?>
+                        
                     </div>
                 </main>
                 <?php $this->render('blocks/admins/footer')?>

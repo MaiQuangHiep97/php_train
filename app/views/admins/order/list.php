@@ -12,7 +12,7 @@
                             <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
                             <li class="breadcrumb-item active">List Order</li>
                         </ol>
-                        <!-- <?php if (count($orders)>0) {?> -->
+                        <?php if (count($orders)>0) {?>
                             <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>

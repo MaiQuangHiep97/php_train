@@ -1,10 +1,12 @@
 <?php
 
 $routes['default_controller'] = 'homecontroller';
+//DashboardController
+$routes['dashboard'] = 'admin/dashboardcontroller';
+$routes['dashboard/status'] = 'admin/dashboardcontroller/status';
 //AuthController
 $routes['admin/login'] = 'admin/authcontroller';
 $routes['admin/postLogin'] = 'admin/authcontroller/login';
-$routes['dashboard'] = 'admin/dashboardcontroller';
 $routes['admin/logout'] = 'admin/authcontroller/logout';
 $routes['admin/getChange'] = 'admin/authcontroller/getChange';
 $routes['admin/postChange'] = 'admin/authcontroller/postChange';

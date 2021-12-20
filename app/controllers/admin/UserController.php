@@ -14,9 +14,8 @@ class UserController extends Controller
     public function index()
     {
         try {
-            $users = $this->model('UserModel');
             $this->data['user'] = $_SESSION['user_login']['name'];
-            $admin = $users->getAll();
+            $admin = $this->model->getAll();
             $limit = 1;
             if (!empty($_GET['page'])) {
                 $page = $_GET['page'];
@@ -41,8 +40,7 @@ class UserController extends Controller
     {
         try {
             $id = $_GET['id'];
-            $users = $this->model('UserModel');
-            $this->data['user'] = $users->find($id);
+            $this->data['user'] = $this->model->find($id);
             $this->data['errors'] = Session::flash('errors');
             $this->data['old'] = Session::flash('old');
             $this->render('admins/user/edit', $this->data);
@@ -144,14 +142,13 @@ class UserController extends Controller
                     $response->redirect('admin/user/add');
                 } else {
                     $data = [
-            'name'=>$_POST['username'],
-            'email'=>$_POST['email'],
-            'phone'=>$_POST['phone'],
-            'password'=>md5($_POST['password']),
-            'type'=>'admin',
-        ];
-                    $user = $this->model('UserModel');
-                    $user->insertUser($data);
+                            'name'=>$_POST['username'],
+                            'email'=>$_POST['email'],
+                            'phone'=>$_POST['phone'],
+                            'password'=>md5($_POST['password']),
+                            'type'=>'admin',
+                        ];
+                    $this->model->insertUser($data);
                     $_SESSION['success'] = "Add user successfully";
                     $response->redirect('admin/user/list');
                 }
@@ -167,8 +164,7 @@ class UserController extends Controller
             $response = new Response();
             $id = $_GET['id'];
             if ($id !== $_SESSION['user_login']['id']) {
-                $user = $this->model('UserModel');
-                $user->deleteUser($id);
+                $this->model->deleteUser($id);
                 $_SESSION['success'] = "Delete user successfully";
                 $response->redirect('admin/user/list');
             }

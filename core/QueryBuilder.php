@@ -14,7 +14,6 @@ trait QueryBuilder
         $this->tableName = $tableName;
         return $this;
     }
-
     public function where($field, $compare, $value)
     {
         if (empty($this->where)) {

@@ -47,8 +47,7 @@ class AuthController extends Controller
             }
             //Check Login
             if (!empty($_POST['email'] && $_POST['password'])) {
-                $user = $this->model('UserModel');
-                $this->data['user']=$user->getUser();
+                $this->data['user']=$this->model->getUser();
                 $response = new Response();
                 if (md5($_POST['password'])==$this->data['user']['password']) {
                     $_SESSION['is_login']=true;
@@ -122,8 +121,7 @@ class AuthController extends Controller
                     $data = [
                     'password'=>md5($_POST['password'])
                 ];
-                    $user = $this->model('UserModel');
-                    $user->updateUser($data);
+                    $this->model->updateUser($data);
                     $_SESSION['success'] = "Changed password successfully";
                     $response = new Response();
                     $response->redirect('dashboard');

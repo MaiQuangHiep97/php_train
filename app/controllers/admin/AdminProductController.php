@@ -14,8 +14,7 @@ class AdminProductController extends Controller
     public function index()
     {
         $this->data['user'] = $_SESSION['user_login']['name'];
-        $products = $this->model('ProductModel');
-        $products = $products->getAll();
+        $products = $this->model->getAll();
         $limit = 1;
         if (!empty($_GET['page'])) {
             $page = $_GET['page'];
@@ -96,8 +95,7 @@ class AdminProductController extends Controller
                     'cat_id'=>$_POST['product_cat'],
                     'user_id'=>$_SESSION['user_login']['id']
                 ];
-                    $product = $this->model('ProductModel');
-                    $product->insertProduct($data);
+                    $this->model->insertProduct($data);
                     $id = $this->db->lastInsertID();
                 }
                 if (isset($id)) {
@@ -130,13 +128,12 @@ class AdminProductController extends Controller
     {
         try {
             $id = $_GET['id'];
-            $products = $this->model('ProductModel');
-            $product = $products->getProduct($id);
+            $product = $this->model->getProduct($id);
             $upload_dir='public/uploads/products/';
             if (file_exists($upload_dir.$product['product_thumb'])) {
                 unlink($upload_dir.$product['product_thumb']);
             }
-            $products->deleteProduct($id);
+            $this->model->deleteProduct($id);
             $images = $this->model('ImagesModel');
             $image = $images->getImages($id);
             $upload_dire='public/uploads/images/';
@@ -161,9 +158,8 @@ class AdminProductController extends Controller
             $cats = $this->model('ProductCatModel');
             $this->data['user'] = $_SESSION['user_login']['name'];
             $this->data['cats'] = $cats->getALL();
-            $product = $this->model('ProductModel');
-            $this->data['product'] = $product->getProduct($id);
-            $this->data['product_images'] = $product->getProductImages($id);
+            $this->data['product'] = $this->model->getProduct($id);
+            $this->data['product_images'] = $this->model->getProductImages($id);
             $this->render('admins/product/edit', $this->data);
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
@@ -202,8 +198,7 @@ class AdminProductController extends Controller
             } else {
                 $response->redirect('admin/product/edit?id='.$id);
             }
-            $product = $this->model('ProductModel');
-            $thumb = $product->getProduct($id);
+            $thumb = $this->model->getProduct($id);
             if (!empty($_POST)) {
                 $data = [
                     'product_name'=>$_POST['product_name'],

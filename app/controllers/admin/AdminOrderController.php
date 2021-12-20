@@ -14,9 +14,8 @@ class AdminOrderController extends Controller
     public function index()
     {
         try {
-            $order = $this->model('OrderModel');
             $this->data['user'] = $_SESSION['user_login']['name'];
-            $orders = $order->getAll();
+            $orders = $this->model->getAll();
             $limit = 1;
             if (!empty($_GET['page'])) {
                 $page = $_GET['page'];
@@ -27,7 +26,7 @@ class AdminOrderController extends Controller
             $total_page = ceil($total_rows/$limit);
             $start = ($page-1)*$limit;
             if ($total_rows>0) {
-                $this->data['orders'] = $order->pagi_get($limit, $start);
+                $this->data['orders'] = $this->model->pagi_get($limit, $start);
             }
             $button_pagination = $this->pagination($total_page, $page);
             $this->data['pagination']=$button_pagination;
@@ -41,11 +40,10 @@ class AdminOrderController extends Controller
     {
         try {
             $id = $_GET['id'];
-            $order = $this->model('OrderModel');
             $order_product = $this->model('OrderProductModel');
             $customer = $this->model('UserModel');
             $this->data['user'] = $_SESSION['user_login']['name'];
-            $this->data['order'] = $order->find($id);
+            $this->data['order'] = $this->model->find($id);
             $this->data['customer'] = $customer->find($this->data['order']['user_id']);
             $this->data['order_products'] = $order_product->getDetail($id);
             $status = array();
@@ -87,8 +85,7 @@ class AdminOrderController extends Controller
                 $data = [
                     'status'=>$_POST['status']
                 ];
-                $order = $this->model('OrderModel');
-                $order->updateStatus($_POST['id'], $data);
+                $this->model->updateStatus($_POST['id'], $data);
                 $_SESSION['success'] = "Update successfully";
                 
                 $response = new Response();
