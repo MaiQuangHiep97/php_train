@@ -297,3 +297,46 @@ if ($registerForm.length) {
         },
     });
 }
+var $infoForm = $('#info-form');
+if ($infoForm.length) {
+    $infoForm.validate({
+        rules: {
+            username: {
+                required: true,
+            },
+            email: {
+                required: true,
+                customEmail: true
+            },
+            phone: {
+                required: true,
+                customPhone: true
+            },
+            address: {
+                required: true
+            },
+            gender: {
+                required: true
+            }
+        },
+        messages: {
+            username: {
+                required: 'Please enter username!'
+            },
+            email: {
+                required: 'Please enter email!',
+                email: 'Please enter valid email!'
+            },
+            phone: {
+                required: 'Please enter phone!',
+                customPhone: "Please enter valid phone!"
+            },
+            address: {
+                required: 'Please enter address!'
+            },
+            gender: {
+                required: 'Please select address!'
+            }
+        },
+    });
+}

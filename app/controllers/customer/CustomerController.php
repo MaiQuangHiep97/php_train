@@ -49,7 +49,7 @@ class CustomerController extends Controller
                         setcookie('is_login', $_SESSION['is_login'], time() + (3600));
                         setcookie('customer_login', $_SESSION['customer_login']['id'], time() + (3600));
                     }
-                    $response->redirect('/');
+                    $response->redirect('');
                 } else {
                     $_SESSION['error'] = "Incorrect account or password information";
                     $response->redirect('customer/login');
@@ -118,8 +118,14 @@ class CustomerController extends Controller
                     'type'=>'user'
                 ];
                 $this->model->insertUser($data);
-                $_SESSION['success']="Register User success";
-                $response->redirect('/');
+                $id = $this->db->lastInsertID();
+                $data = [
+                    'user_id'=>$id
+                ];
+                if ($this->db->table('tbl_customers')->insert($data)) {
+                    $_SESSION['success']="Register User success";
+                    $response->redirect('');
+                }
             }
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
@@ -142,6 +148,7 @@ class CustomerController extends Controller
         try {
             if ($this->authCustomer()) {
                 // Validate form
+                $response = new Response();
                 $request = new Request();
                 if ($request->isPost()) {
                     $request->rules([
@@ -157,11 +164,9 @@ class CustomerController extends Controller
                     $validate = $request->validate();
                     if (!$validate) {
                         Session::flash('errors', $request->errors());
-                        $response = new Response();
                         $response->redirect('customer/change');
                     }
                 } else {
-                    $response = new Response();
                     $response->redirect('customer/change');
                 }
                 // Change Password
@@ -171,9 +176,67 @@ class CustomerController extends Controller
                 ];
                     $this->model->updateCustomer($data);
                     $_SESSION['success'] = "Changed password successfully";
-                    $response = new Response();
                     $response->redirect('');
                 }
+            } else {
+                $response = new Response();
+                $response->redirect('customer/login');
+            }
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            echo "Database error: $error_message";
+        }
+    }
+    public function info()
+    {
+        if ($this->authCustomer()) {
+            $this->data['customer'] = $this->db->table('tbl_customers')
+        ->join('tbl_users', 'tbl_users.id=tbl_customers.user_id')
+        ->select('tbl_customers.id as id_customer, tbl_users.id as id_user, name, email, phone, gender, address')
+        ->where('user_id', '=', $_SESSION['customer_login']['id'])->get();
+        } else {
+            $response = new Response();
+            $response->redirect('customer/login');
+        }
+        $this->render('clients/customer/info', $this->data);
+    }
+    public function postInfo()
+    {
+        try {
+            //Validate form
+            $response = new Response();
+            $request = new Request();
+            if ($this->authCustomer()) {
+                $request->rules([
+                    'phone'=>'required|regex:/^[0-9]*$/',
+                    'address'=>'required',
+                    'gender'=>'required',
+                    
+                ]);
+                $request->message([
+                    'phone.required'=>'Please enter phone',
+                    'phone.regex'=>'Please enter valid phone!',
+                    'address.required'=>'Please enter address!',
+                    'gender.required'=>'Please select gender!',
+                ]);
+                $validate = $request->validate();
+                if (!$validate) {
+                    Session::flash('errors', $request->errors());
+                    Session::flash('old', $request->getFields());
+                    $response->redirect('customer/info');
+                }
+            
+                //Update
+                $data = [
+                    'phone'=>$_POST['phone'],
+                ];
+                $this->model->updateCustomer($data);
+                $data = [
+                    'address'=>$_POST['address'],
+                    'gender'=>$_POST['gender'],
+                ];
+                $this->db->table('tbl_customers')->where('user_id', '=', $_POST['id'])->update($data);
+                $response->redirect('');
             } else {
                 $response = new Response();
                 $response->redirect('customer/login');
