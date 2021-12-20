@@ -77,6 +77,64 @@ class CustomerController extends Controller
         $this->data['old'] = Session::flash('old');
         $this->render('clients/customer/register', $this->data);
     }
+    public function postRegister()
+    {
+        try {
+            //Validate form
+            $response = new Response();
+            $request = new Request();
+            if ($request->isPost()) {
+                $request->rules([
+                    'email'=>'required|email',
+                    'password'=>'required|min:3',
+                    'passwordConfirm'=>'required|match:password'
+                ]);
+                $request->message([
+                    'email.required'=>'Please enter email',
+                    'email.email'=>'Please enter valid email!',
+                    'password.required'=>'Please enter password',
+                    'password.min'=>'Password must be more than 3 characters',
+                    'passwordConfirm.required'=>'Please enter confirm password',
+                    'passwordConfirm.match'=>'Confirm password does not match',
+                ]);
+                $validate = $request->validate();
+                if (!$validate) {
+                    Session::flash('errors', $request->errors());
+                    Session::flash('old', $request->getFields());
+                    $response->redirect('customer/register');
+                }
+            } else {
+                $response->redirect('customer/register');
+            }
+            //Check register
+            if ($this->model->getCustomer()) {
+                $_SESSION['error']="Email already exists";
+                $response->redirect('customer/register');
+            } else {
+                $data = [
+                    'name'=>$_POST['username'],
+                    'email'=>$_POST['email'],
+                    'password'=>md5($_POST['password']),
+                    'type'=>'user'
+                ];
+                $this->model->insertUser($data);
+                $_SESSION['success']="Register User success";
+                $response->redirect('/');
+            }
+            // if (!empty($_POST['password'])&&$_POST['password']==$_POST['confirm_password']) {
+            //     $data = [
+            //     'password'=>md5($_POST['password'])
+            // ];
+            //     $this->model->updateUser($data);
+            //     $_SESSION['success'] = "Changed password successfully";
+            //     $response = new Response();
+            //     $response->redirect('dashboard');
+            // }
+        } catch (PDOException $e) {
+            $error_message = $e->getMessage();
+            echo "Database error: $error_message";
+        }
+    }
     // public function getChange()
     // {
     //     if ($this->auth()) {

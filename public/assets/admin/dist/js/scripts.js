@@ -124,29 +124,29 @@ if ($addForm.length) {
         },
     });
 }
-// var $editForm = $('#edit-form');
-// if ($editForm.length) {
-//     $editForm.validate({
-//         rules: {
-//             username: {
-//                 required: true,
-//             },
-//             phone: {
-//                 required: true,
-//                 customPhone: true
-//             }
-//         },
-//         messages: {
-//             username: {
-//                 required: 'Please enter username!'
-//             },
-//             phone: {
-//                 required: 'Please enter phone!',
-//                 customPhone: "Please enter valid phone!"
-//             }
-//         },
-//     });
-// }
+var $editForm = $('#edit-form');
+if ($editForm.length) {
+    $editForm.validate({
+        rules: {
+            username: {
+                required: true,
+            },
+            phone: {
+                required: true,
+                customPhone: true
+            }
+        },
+        messages: {
+            username: {
+                required: 'Please enter username!'
+            },
+            phone: {
+                required: 'Please enter phone!',
+                customPhone: "Please enter valid phone!"
+            }
+        },
+    });
+}
 var $addProductForm = $('#addProduct');
 if ($addProductForm.length) {
     $addProductForm.validate({
@@ -260,25 +260,40 @@ if ($editProductForm.length) {
 
     });
 }
-$(document).ready(function() {
-    let data;
-    let page = 1;
-    $('.pagination li a.page-link').click(function() {
-        page = $(this).attr('num-page');
-        data = {
-            page: page
-        }
-        callback('<?=URL?>admin/usercontroller/', data);
-    })
-
-    function callback(url, data) {
-        $.ajax({
-            url: url,
-            method: "post",
-            data: data,
-            success: function(response) {
-                $('#users').html(response);
+var $registerForm = $('#register-form');
+if ($registerForm.length) {
+    $registerForm.validate({
+        rules: {
+            username: {
+                required: true,
+            },
+            email: {
+                required: true,
+                customEmail: true
+            },
+            password: {
+                required: true
+            },
+            passwordConfirm: {
+                required: true,
+                equalTo: '#password'
             }
-        })
-    }
-});
+        },
+        messages: {
+            username: {
+                required: 'Please enter username!'
+            },
+            email: {
+                required: 'Please enter email!',
+                email: 'Please enter valid email!'
+            },
+            password: {
+                required: 'Please enter password!'
+            },
+            passwordConfirm: {
+                required: 'Please enter password confirm!',
+                equalTo: 'Please enter same password!'
+            },
+        },
+    });
+}
