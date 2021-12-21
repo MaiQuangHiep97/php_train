@@ -8,9 +8,9 @@
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
-					<li class="active"><a href="/demo">Home</a></li>
+					<li><a href="/demo">Home</a></li>
 						<?php foreach ($product_cats as $product_cat) {?>
-							<li><a href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
+							<li class="<?= ($product_cat['id']==$cat_id)?'active':'' ?>"><a href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
 						<?php } ?>
 					</ul>
 					<!-- /NAV -->
@@ -36,7 +36,7 @@
 							<div class="section-nav">
 								<ul class="section-tab-nav tab-nav">
 									<?php foreach ($product_cats as $product_cat) {?>
-										<li><a data-toggle="tab" href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
+										<li class="<?= ($product_cat['id']==$cat_id)?'active':'' ?>"><a href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
 									<?php } ?>
 								</ul>
 							</div>
@@ -77,14 +77,13 @@
 										</div>
 										</div>
 										<?php }?>
-										
 										<!-- /product -->
 									<!-- </div>
 								</div> -->
 								<!-- /tab -->
 							
 						</div>
-						<div class="">
+                        <div class="">
 							
                                     <ul class="pagination">
                                         <?= $pagination ?>

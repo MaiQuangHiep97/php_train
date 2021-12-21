@@ -38,3 +38,5 @@ $routes['customer/change'] = 'customer/customerController/getChange';
 $routes['customer/postChange'] = 'customer/customerController/postChange';
 $routes['customer/info'] = 'customer/customercontroller/info';
 $routes['customer/postInfo'] = 'customer/customercontroller/postInfo';
+//HomeController
+$routes['.+-(\d+)'] = 'homecontroller/getProduct/$1';

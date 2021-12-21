@@ -16,22 +16,14 @@ class AdminProductController extends Controller
         $this->data['user'] = $_SESSION['user_login']['name'];
         $products = $this->model->getAll();
         $limit = 1;
-        if (!empty($_GET['page'])) {
-            $page = $_GET['page'];
-        } else {
-            $page = 1;
-        }
-        $total_rows = count($products);
-        $total_page = ceil($total_rows/$limit);
-        $start = ($page-1)*$limit;
-        if ($total_rows>0) {
+        $data = $this->pagi($products, $limit);
+        if ($data['total']>0) {
             $this->data['products'] = $this->db->table('tbl_products')
             ->join('tbl_product_cats', 'tbl_product_cats.id=tbl_products.cat_id')
             ->select('tbl_products.id as id_pr, tbl_product_cats.id as id_cat, product_name, product_detail, product_thumb, product_price, cat_name')
-            ->limit($limit, $start)->get();
+            ->limit($limit, $data['start'])->get();
         }
-        $button_pagination = $this->pagination($total_page, $page);
-        $this->data['pagination']=$button_pagination;
+        $this->data['pagination']=$data['button_pagination'];
         $this->render('admins/product/list', $this->data);
     }
     public function add()

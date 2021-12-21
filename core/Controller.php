@@ -129,4 +129,22 @@ class Controller
                                         
         return $prev_link.$page_link.$next_link;
     }
+    public function pagi($fields, $limit)
+    {
+        if (!empty($_GET['page'])) {
+            $page = $_GET['page'];
+        } else {
+            $page = 1;
+        }
+        $total_rows = count($fields);
+        $total_page = ceil($total_rows/$limit);
+        $start = ($page-1)*$limit;
+        $button_pagination = $this->pagination($total_page, $page);
+        $data=[
+            'total'=>$total_rows,
+            'start'=>$start,
+            'button_pagination' => $button_pagination
+        ];
+        return $data;
+    }
 }

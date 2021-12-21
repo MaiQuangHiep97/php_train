@@ -13,6 +13,16 @@ class ProductModel extends Model
         $data = $this->db->table('tbl_products')->where('id', '=', $id)->first();
         return $data;
     }
+    public function getProducts()
+    {
+        $data = $this->db->table('tbl_products')->get();
+        return $data;
+    }
+    public function getPagi($limit, $start)
+    {
+        $data = $this->db->table('tbl_products')->limit($limit, $start)->get();
+        return $data;
+    }
     public function deleteProduct($id)
     {
         $this->db->table('tbl_products')->where('id', '=', $id)->delete();

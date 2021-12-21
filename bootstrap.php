@@ -1,7 +1,7 @@
 <?php
 define('_DIR_ROOT', __DIR__);
 define('URL_ASSET', 'http://localhost/demo/public/uploads/');
-define('URL', 'http://localhost/demo/');
+define('URL', 'http://localhost/demo');
 require_once "configs/routes.php";
 
 // Xử lý Http
