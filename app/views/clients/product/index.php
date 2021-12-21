@@ -10,7 +10,7 @@
 					<ul class="main-nav nav navbar-nav">
 					<li class="active"><a href="/demo">Home</a></li>
 						<?php foreach ($product_cats as $product_cat) {?>
-							<li><a href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
+							<li><a href="/demo/category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
 						<?php } ?>
 					</ul>
 					<!-- /NAV -->
