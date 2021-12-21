@@ -58,7 +58,7 @@
 												<img src="<?=URL_ASSET.'products/'.$product['product_thumb'] ?>" alt="">
 											</div>
 											<div class="product-body">
-												<h3 class="product-name"><a href="#"><?= $product['product_name'] ?></a></h3>
+												<h3 class="product-name"><a href="/demo/product/detail?id=<?= $product['id'] ?>"><?= $product['product_name'] ?></a></h3>
 												<h4 class="product-price"><?= number_format($product['product_price']).'đ' ?></h4>
 												<div class="product-rating">
 													<i class="fa fa-star"></i>
@@ -66,9 +66,6 @@
 													<i class="fa fa-star"></i>
 													<i class="fa fa-star"></i>
 													<i class="fa fa-star"></i>
-												</div>
-												<div class="product-btns">
-													<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
 												</div>
 											</div>
 											<div class="add-to-cart">
