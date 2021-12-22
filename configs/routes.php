@@ -41,4 +41,6 @@ $routes['customer/postInfo'] = 'customer/customercontroller/postInfo';
 //HomeController
 $routes['.+-(\d+)'] = 'homecontroller/getProduct/$1';
 $routes['product/detail'] = 'customer/productcontroller';
+//CartController
 $routes['cart/add'] = 'customer/cartcontroller/add';
+$routes['cart/show'] = 'customer/cartcontroller';

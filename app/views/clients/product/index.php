@@ -78,15 +78,21 @@
                         </div>
                         <p><?=$product['product_des']?></p>
                         <div class="add-to-cart">
+                        <form action="/demo/cart/add" method="post">
+							<input type="hidden" name="product_id" value="<?= $product['id']?>">
+							<input type="hidden" name="product_name" value="<?= $product['product_name']?>">
+							<input type="hidden" name="product_thumb" value="<?= $product['product_thumb']?>">
+							<input type="hidden" name="product_price" value="<?= $product['product_price']?>">
                             <div class="qty-label">
                                 Qty
                                 <div class="input-number">
-                                    <input type="number">
-                                    <span class="qty-up">+</span>
-                                    <span class="qty-down">-</span>
+                                    <input type="number" name="product_qty" value="1" min="1" max="20" class="input-qty">
+                                    <span class="qty-up is-form">+</span>
+                                    <span class="qty-down is-form">-</span>
                                 </div>
                             </div>
                             <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+                        </form>
                     </div>
                     </div>
                 </div>
@@ -191,3 +197,23 @@
 
 		<!-- NEWSLETTER -->
 		<?php $this->render('blocks/footer') ?>	
+        <script>
+                                $('input.input-qty').each(function() {
+                                    var $this = $(this),
+                                        qty = $this.parent().find('.is-form'),
+                                        min = Number($this.attr('min')),
+                                        max = Number($this.attr('max'))
+                                    if (min == 0) {
+                                        var d = 0
+                                    } else d = min
+                                    $(qty).on('click', function() {
+                                        if ($(this).hasClass('qty-down')) {
+                                        if (d > min) d += -1
+                                        } else if ($(this).hasClass('qty-up')) {
+                                        var x = Number($this.val()) + 1
+                                        if (x <= max) d += 1
+                                        }
+                                        $this.attr('value', d).val(d)
+                                    })
+                                    })
+                            </script>

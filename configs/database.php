@@ -3,5 +3,5 @@ $config['database'] = [
     'host' =>'localhost',
     'user' =>'root',
     'pass' => 'mysql',
-    'db' =>'product_demo'
+    'db' =>'demo_product'
 ];
