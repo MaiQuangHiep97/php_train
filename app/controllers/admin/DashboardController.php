@@ -16,11 +16,15 @@ class DashboardController extends Controller
             $this->data['user'] = $_SESSION['user_login']['name'];
             $orders = $this->model->getAll();
             $limit = 1;
-            $data = $this->pagi($orders, $limit);
-            if ($data['total']>0) {
-                $this->data['orders'] = $this->model->pagi_get($limit, $data['start']);
+            if (count($orders)>$limit) {
+                $data = $this->pagi($orders, $limit);
+                if ($data['total']>0) {
+                    $this->data['orders'] = $this->model->pagi_get($limit, $data['start']);
+                    $this->data['pagination']=$data['button_pagination'];
+                }
+            } else {
+                $this->data['orders'] = $this->model->getAll();
             }
-            $this->data['pagination']=$data['button_pagination'];
             $this->data['cancel']=$this->model->countCancel();
             $this->data['handle']=$this->model->countHandle();
             $this->data['transport']=$this->model->countTransport();

@@ -136,4 +136,13 @@ class CartController extends Controller
             echo json_encode($data);
         }
     }
+    public function destroy()
+    {
+        $response = new Response();
+        if (isset($_SESSION['cart'])) {
+            unset($_SESSION['cart']);
+            $response->redirect('cart/show');
+        }
+        $response->redirect('');
+    }
 }

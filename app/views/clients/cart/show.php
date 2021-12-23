@@ -54,7 +54,7 @@
                     <tr>
                         <td>   </td>
                         <td>   </td>
-                        <td>   </td>
+                        <td><a href="/demo/cart/destroy" class="btn btn-danger">Delete</a></td>
                         <td>
                             <a href="/demo" class="btn btn-primary">Continue Shopping</a>
                         </td>

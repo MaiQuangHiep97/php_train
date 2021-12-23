@@ -49,9 +49,12 @@
                                     </tbody>
                                 </table>
                                 <div>
-                                    <ul class="pagination">
+                                <?php if (isset($pagination)) {?>
+								<ul class="pagination">
                                         <?= $pagination ?>
-                                    </ul>
+                                        </ul>
+                                
+							<?php } ?>
                                 </div>
                                 </div>
                             </div>

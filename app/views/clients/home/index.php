@@ -9,9 +9,12 @@
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
 					<li class="active"><a href="/demo">Home</a></li>
-						<?php foreach ($product_cats as $product_cat) {?>
-							<li><a href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
-						<?php } ?>
+						<?php if (isset($product_cats)) {
+    foreach ($product_cats as $product_cat) {?>
+								<li><a href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
+							<?php }
+}?>
+						 
 					</ul>
 					<!-- /NAV -->
 				</div>
@@ -36,7 +39,7 @@
 							<div class="section-nav">
 								<ul class="section-tab-nav tab-nav">
 									<?php foreach ($product_cats as $product_cat) {?>
-										<li><a data-toggle="tab" href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
+										<li><a href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
 									<?php } ?>
 								</ul>
 							</div>
@@ -88,9 +91,12 @@
 						</div>
 						<div class="">
 							
-                                    <ul class="pagination">
+						<?php if (isset($pagination)) {?>
+								<ul class="pagination">
                                         <?= $pagination ?>
                                         </ul>
+                                
+							<?php } ?>
                                 
 								</div>
 					</div>

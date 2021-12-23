@@ -17,11 +17,15 @@ class UserController extends Controller
             $this->data['user'] = $_SESSION['user_login']['name'];
             $admin = $this->model->getAll();
             $limit = 1;
-            $data = $this->pagi($admin, $limit);
-            if ($data['total']>0) {
-                $this->data['users'] = $this->db->table('tbl_users')->limit($limit, $data['start'])->get();
+            if (count($admin)>$limit) {
+                $data = $this->pagi($admin, $limit);
+                if ($data['total']>0) {
+                    $this->data['users'] = $this->db->table('tbl_users')->limit($limit, $data['start'])->get();
+                }
+                $this->data['pagination']=$data['button_pagination'];
+            } else {
+                $this->data['users'] = $this->model->getAll();
             }
-            $this->data['pagination']=$data['button_pagination'];
             $this->render('admins/user/list', $this->data);
         } catch (PDOException $e) {
             $error_message = $e->getMessage();

@@ -96,9 +96,12 @@
                                     </tbody>
                                 </table>
                                 <div>
-                                    <ul class="pagination" id="pagi-orders">
+                                <?php if (isset($pagination)) {?>
+								<ul class="pagination">
                                         <?= $pagination ?>
                                         </ul>
+                                
+							<?php } ?>
                                 </div>
                             </div>
                         </div>
