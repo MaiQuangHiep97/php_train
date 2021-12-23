@@ -35,7 +35,7 @@
                             <td class="col-sm-1 col-md-1 text-center"><strong><?=number_format($item['product_price']).'đ'?></strong></td>
                             <td class="col-sm-1 col-md-1 text-center"><strong class="sub-total<?=$item['product_id']?>"><?=number_format($item['sub_total']).'đ'?></strong></td>
                             <td class="col-sm-1 col-md-1">
-                            <button type="button" class="btn btn-danger">Remove
+                            <button type="button" class="btn btn-danger remove-cart" data-id="<?= $item['product_id']?>">Remove
                             </button></td>
                         </tr>
                             
@@ -110,9 +110,30 @@ $(document).ready(function(){
                 //console.log(data);
                 $('#total').text(data.total);
                 $('.sub-total'+id).text(data.sub_total);
+                $('#qty').text(data.num_order);
                 if(data.numOrder < 1){
                     $('.item'+id).remove();
                 }
+                if(data.num_order == 0){
+                    $('#cart-table').remove();
+                    $('#cart-none').append(data.display);
+                }
+            }
+        });
+    });
+});
+$(document).ready(function(){
+    $('.remove-cart').click(function(){
+        var id = $(this).attr('data-id');
+        $.ajax({
+            url:'<?=URL?>/cart/delete',
+            method:'POST',
+            data: {id:id},
+            dataType:'json',
+            success: function(data){
+                $('#total').text(data.total);
+                $('#qty').text(data.num_order);
+                $('.item'+id).remove();
                 if(data.num_order == 0){
                     $('#cart-table').remove();
                     $('#cart-none').append(data.display);

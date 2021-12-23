@@ -109,4 +109,31 @@ class CartController extends Controller
         }
         //session_destroy();
     }
+    public function delete()
+    {
+        $id = $_POST['id'];
+        if (!empty($id)) {
+            unset($_SESSION['cart']['buy'][$id]);
+            $total = 0;
+            $num_order = 0;
+            foreach ($_SESSION['cart']['buy'] as $item) {
+                $total += $item['sub_total'];
+                $num_order += $item['qty'];
+            }
+            $_SESSION['cart']['info'] = array(
+            'total'=> $total,
+            'num_order'=> $num_order
+        );
+            $data = array(
+            'id'=>$id,
+            'num_order'=> $num_order,
+            'total'=>number_format($_SESSION['cart']['info']['total']).'đ',
+            'display'=>'<div class="text-center" style="margin-top: 30px;">
+                                <h4 class="">There are no items in the cart </h4>
+                                <a href="/demo">Home page</a>
+                                </div>'
+        );
+            echo json_encode($data);
+        }
+    }
 }

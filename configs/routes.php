@@ -45,3 +45,4 @@ $routes['product/detail'] = 'customer/productcontroller';
 $routes['cart/add'] = 'customer/cartcontroller/add';
 $routes['cart/show'] = 'customer/cartcontroller';
 $routes['cart/update'] = 'customer/cartcontroller/update';
+$routes['cart/delete'] = 'customer/cartcontroller/delete';
