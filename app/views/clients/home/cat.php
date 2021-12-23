@@ -57,6 +57,10 @@
 													<div class="product">
 														<form action="/demo/cart/add" method="post">
 															<input type="hidden" name="product_id" value="<?=$product['id']?>">
+															<input type="hidden" name="product_name" value="<?= $product['product_name']?>">
+															<input type="hidden" name="product_thumb" value="<?= $product['product_thumb']?>">
+															<input type="hidden" name="product_price" value="<?= $product['product_price']?>">
+															<input type="hidden" name="product_qty" value="1">
 														<div class="product-img">
 															<img src="<?=URL_ASSET.'products/'.$product['product_thumb'] ?>" alt="">
 														</div>
