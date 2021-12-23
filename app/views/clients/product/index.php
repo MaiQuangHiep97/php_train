@@ -86,9 +86,9 @@
                             <div class="qty-label">
                                 Qty
                                 <div class="input-number">
-                                    <input type="number" name="product_qty" value="1" min="1" max="20" class="input-qty">
-                                    <span class="qty-up is-form">+</span>
-                                    <span class="qty-down is-form">-</span>
+                                    <input type="number" name="product_qty" value="1" class="input-qty">
+                                    <span class="qty-up">+</span>
+                                    <span class="qty-down">-</span>
                                 </div>
                             </div>
                             <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
@@ -198,22 +198,25 @@
 		<!-- NEWSLETTER -->
 		<?php $this->render('blocks/footer') ?>	
         <script>
-                                $('input.input-qty').each(function() {
-                                    var $this = $(this),
-                                        qty = $this.parent().find('.is-form'),
-                                        min = Number($this.attr('min')),
-                                        max = Number($this.attr('max'))
-                                    if (min == 0) {
-                                        var d = 0
-                                    } else d = min
-                                    $(qty).on('click', function() {
-                                        if ($(this).hasClass('qty-down')) {
-                                        if (d > min) d += -1
-                                        } else if ($(this).hasClass('qty-up')) {
-                                        var x = Number($this.val()) + 1
-                                        if (x <= max) d += 1
-                                        }
-                                        $this.attr('value', d).val(d)
-                                    })
-                                    })
-                            </script>
+            $('.input-number').each(function() {
+        var $this = $(this),
+            $input = $this.find('input[type="number"]'),
+            up = $this.find('.qty-up'),
+            down = $this.find('.qty-down');
+
+        down.on('click', function() {
+            var value = parseInt($input.val()) - 1;
+            value = value < 1 ? 1 : value;
+            $input.val(value);
+            $input.change();
+            updatePriceSlider($this, value)
+        })
+
+        up.on('click', function() {
+            var value = parseInt($input.val()) + 1;
+            $input.val(value);
+            $input.change();
+            updatePriceSlider($this, value)
+        })
+    });
+        </script>

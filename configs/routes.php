@@ -44,3 +44,4 @@ $routes['product/detail'] = 'customer/productcontroller';
 //CartController
 $routes['cart/add'] = 'customer/cartcontroller/add';
 $routes['cart/show'] = 'customer/cartcontroller';
+$routes['cart/update'] = 'customer/cartcontroller/update';
