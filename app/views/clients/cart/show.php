@@ -6,17 +6,22 @@
             <table id="cart-table" class="table table-hover">
                 <thead>
                     <tr>
+                        <th>   </th>
                         <th>Product</th>
                         <th>Quantity</th>
                         <th class="text-center">Price</th>
                         <th class="text-center">Sub Total</th>
-                        <th> </th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                         <?php foreach ($cart['buy'] as $item) {
     if (isset($item)) {?>
+                                <!-- <input type="checkbox" class="form-check-input"> -->
                                 <tr class="item<?=$item['product_id']?>">
+                                <td>
+                                    <input type="checkbox" name="info_item" id="">
+                                </td>
                             <td class="col-sm-8 col-md-6">
                             <div class="media">
                                 <a class="thumbnail pull-left" href="#"> <img class="media-object" src="<?=URL_ASSET.'products/'.$item['product_thumb'] ?>" style="width: 72px; height: 72px;"> </a>
@@ -45,6 +50,7 @@
 } ?>
                     
                     <tr>
+                    <td>   </td>
                         <td>   </td>
                         <td>   </td>
                         <td>   </td>
@@ -52,6 +58,7 @@
                         <td class="text-right"><h3><strong id="total"><?=number_format($cart['info']['total']).'đ'?></strong></h3></td>
                     </tr>
                     <tr>
+                    <td>   </td>
                         <td>   </td>
                         <td>   </td>
                         <td><a href="/demo/cart/destroy" class="btn btn-danger">Delete</a></td>
@@ -59,14 +66,14 @@
                             <a href="/demo" class="btn btn-primary">Continue Shopping</a>
                         </td>
                         <td>
-                            <a href="" class="btn btn-success">Checkout</a>
+                            <a href="/demo/checkout" class="btn btn-success">Checkout</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
             <?php } else {?>
                 <div class="text-center" style="margin-top: 30px;">
-                        <h4 class="">There are no items in the cart </h4>
+                        <h4>There are no items in the cart </h4>
                         <a href="/demo">Home page</a>
                         </div>
                     <?php } ?>

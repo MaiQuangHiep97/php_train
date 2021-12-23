@@ -2,6 +2,10 @@
 class OrderModel extends Model
 {
     protected $_table = 'tbl_orders';
+    public function insertOrder($data)
+    {
+        $this->db->table('tbl_orders')->insert($data);
+    }
     public function pagi_get($limit, $start)
     {
         $data = $this->db->table('tbl_orders')->join('tbl_users', 'tbl_users.id=tbl_orders.user_id')

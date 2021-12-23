@@ -98,7 +98,7 @@
 
 								<!-- Cart -->
 								<div class="dropdown">
-									<a href="/demo/cart/show" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+									<a href="/demo/cart/show" aria-expanded="true">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Your Cart</span>
 										<div class="qty"id="qty"><?php

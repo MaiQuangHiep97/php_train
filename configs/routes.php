@@ -47,3 +47,6 @@ $routes['cart/show'] = 'customer/cartcontroller';
 $routes['cart/update'] = 'customer/cartcontroller/update';
 $routes['cart/delete'] = 'customer/cartcontroller/delete';
 $routes['cart/destroy'] = 'customer/cartcontroller/destroy';
+//OrderController
+$routes['checkout'] = 'customer/ordercontroller';
+$routes['post-checkout'] = 'customer/ordercontroller/postCheckout';
