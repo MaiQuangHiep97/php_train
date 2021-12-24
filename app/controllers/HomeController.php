@@ -43,4 +43,16 @@ class HomeController extends Controller
         $this->data['cat_id'] = $cat_id;
         $this->render('clients/home/cat', $this->data);
     }
+    public function search()
+    {
+        if (isset($_SESSION['customer_login'])) {
+            $this->data['customer'] = $_SESSION['customer_login'];
+        }
+        $this->data['product_cats'] = $this->model('ProductCatModel')->getAll();
+        if (!empty($_POST['search'])) {
+            $this->data['key'] = $_POST['search'];
+            $this->data['products'] = $this->model->getSearch($this->data['key']);
+        }
+        $this->render('clients/home/search', $this->data);
+    }
 }

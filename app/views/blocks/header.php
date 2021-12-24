@@ -70,14 +70,10 @@
 						<!-- SEARCH BAR -->
 						<div class="col-md-6">
 							<div class="header-search">
-								<form>
-									<select class="input-select">
-										<option value="0">All Categories</option>
-										<option value="1">Category 01</option>
-										<option value="1">Category 02</option>
-									</select>
-									<input class="input" placeholder="Search here">
-									<button class="search-btn">Search</button>
+								<form method="POST" action="<?= _WEB_ROOT;?>/search">
+									<input type="text" name="search" class="input" value="<?= (!empty($key))?$key:''?>"
+									style="width: 75%; border-radius: 20px; float:left" placeholder="Search here">
+									<button type="submit" class="search-btn" style="border-radius: 20px; float:right">Search</button>
 								</form>
 							</div>
 						</div>

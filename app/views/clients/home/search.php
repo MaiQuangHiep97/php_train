@@ -32,25 +32,11 @@
 				<!-- row -->
 				<div class="row">
 
-					<!-- section title -->
-					<div class="col-md-12">
-						<div class="section-title">
-							<h3 class="title">List Products</h3>
-							<div class="section-nav">
-								<ul class="section-tab-nav tab-nav">
-									<?php foreach ($product_cats as $product_cat) {?>
-										<li><a href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
-									<?php } ?>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<!-- /section title -->
 
 					<!-- Products tab & slick -->
 					<div class="col-md-12">
 						<div class="row">
-									
+									<h3>Search results for: <?=(!empty($key))?$key:''?></h3>
 										<!-- product -->
 										<?php if (!empty($products)) {
     foreach ($products as $product) {?>
