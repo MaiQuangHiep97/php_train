@@ -367,3 +367,37 @@ if ($checkoutForm.length) {
         },
     });
 }
+var $addCatForm = $('#add-cat-form');
+if ($addCatForm.length) {
+    $addCatForm.validate({
+        rules: {
+            category: {
+                required: true
+            },
+
+        },
+        messages: {
+            category: {
+                required: 'Please enter category!'
+            },
+
+        },
+    });
+}
+var $editCatForm = $('#edit-cat-form');
+if ($editCatForm.length) {
+    $editCatForm.validate({
+        rules: {
+            category: {
+                required: true
+            },
+
+        },
+        messages: {
+            category: {
+                required: 'Please enter category!'
+            },
+
+        },
+    });
+}

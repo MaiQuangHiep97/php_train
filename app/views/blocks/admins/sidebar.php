@@ -7,6 +7,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
+                            <!-- product -->
                             <a class="nav-link collapsed" href="<?php echo _WEB_ROOT;?>/admin/product/list" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Product
@@ -18,6 +19,12 @@
                                     <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/product/list">List Product</a>
                                 </nav>
                             </div>
+                            <!-- category -->
+                            <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/cat/list">
+                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                                Category
+                            </a>
+                            <!-- user -->
                             <a class="nav-link collapsed" href="<?php echo _WEB_ROOT;?>/admin/user/list" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                                 User

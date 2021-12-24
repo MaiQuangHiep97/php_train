@@ -17,6 +17,12 @@ $routes['admin/user/store'] = 'admin/usercontroller/store';
 $routes['admin/user/edit'] = 'admin/usercontroller/edit';
 $routes['admin/user/update'] = 'admin/usercontroller/update';
 $routes['admin/user/delete'] = 'admin/usercontroller/delete';
+//AdminCategoriController
+$routes['admin/cat/list'] = 'admin/adminproductcatcontroller';
+$routes['admin/cat/store'] = 'admin/adminproductcatcontroller/store';
+$routes['admin/cat/edit'] = 'admin/adminproductcatcontroller/edit';
+$routes['admin/cat/update'] = 'admin/adminproductcatcontroller/update';
+$routes['admin/cat/delete'] = 'admin/adminproductcatcontroller/delete';
 //AdminProductController
 $routes['admin/product/list'] = 'admin/adminproductcontroller';
 $routes['admin/product/add'] = 'admin/adminproductcontroller/add';
