@@ -35,7 +35,7 @@
                                     Name
                                     </h6>
                                     <p class = "list-group-item-text">
-                                    <?= $customer['name']?>
+                                    <?= $customer[0]['name']?>
                                     </p>
                                 </a>
                                 <a href = "#" class="list-group-item">
@@ -43,12 +43,12 @@
                                         Phone
                                     </h6>
                                     <p class = "list-group-item-text">
-                                    <?= $customer['phone']?>                                    
+                                    <?= $customer[0]['phone']?>                                    
                                     </p>
                                 </a>
                                 <a href = "#" class = "list-group-item">
                                     <h6 class = "list-group-item-heading">Address</h6>
-                                    <p class = "list-group-item-text"><?= $order['address']?></p>
+                                    <p class = "list-group-item-text"><?=(!empty($order['address'])?$order['address']:$customer[0]['address'])?></p>
                                 </a>
                                 <a href = "#" class = "list-group-item">
                                     <h6 class = "list-group-item-heading">Status</h6>

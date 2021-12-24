@@ -26,7 +26,7 @@
 			<!-- container -->
 			<div class="container">
 				<!-- row -->
-                <form action="<?= _WEB_ROOT;?>/post-checkout" method="post">
+                <form action="<?= _WEB_ROOT;?>/post-checkout" method="post" id="checkout-form">
 				<div class="row">
 
 					<div class="col-md-7">
@@ -42,10 +42,12 @@
 								<input class="input form-control" disabled type="email" name="email" value="<?= $customer['email'] ?>" placeholder="Email">
 							</div>
 							<div class="form-group">
-								<input class="input form-control" disabled type="text" name="address" value="<?= $customer_info['address'] ?>" placeholder="Address">
+								<input class="input form-control" type="text" name="address" value="<?= $customer_info['address'] ?>" placeholder="Address">
+								<?php echo(!empty($errors)&& array_key_exists('address', $errors))?'<span style="color: red;">'.$errors['address'].'</span>':false?>
 							</div>
 							<div class="form-group">
-								<input class="input form-control" disabled type="text" name="phone" value="<?= $customer['phone'] ?>" placeholder="Telephone">
+								<input class="input form-control" type="text" name="phone" value="<?= $customer['phone'] ?>" placeholder="Telephone">
+								<?php echo(!empty($errors)&& array_key_exists('phone', $errors))?'<span style="color: red;">'.$errors['phone'].'</span>':false?>
 							</div>							
 						</div>
 						<!-- /Billing Details -->
@@ -63,7 +65,7 @@
 								</label>
 								<div class="caption">
 									<div class="form-group">
-										<input class="input form-control" type="text" name="address" placeholder="Address">
+										<input class="input form-control" type="text" name="address1" placeholder="Address">
 									</div>
 								</div>
 							</div>

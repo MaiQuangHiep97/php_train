@@ -340,3 +340,30 @@ if ($infoForm.length) {
         },
     });
 }
+var $checkoutForm = $('#checkout-form');
+if ($checkoutForm.length) {
+    $checkoutForm.validate({
+        rules: {
+
+            phone: {
+                required: true,
+                customPhone: true
+            },
+            address: {
+                required: true
+            },
+
+        },
+        messages: {
+
+            phone: {
+                required: 'Please enter phone!',
+                customPhone: "Please enter valid phone!"
+            },
+            address: {
+                required: 'Please enter address!'
+            },
+
+        },
+    });
+}

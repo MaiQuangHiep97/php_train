@@ -39,7 +39,7 @@
                                             <td><?=$value['code']?></td>
                                             <td><?=$value['name']?></td>
                                             <td><?=$value['phone']?></td>
-                                            <td><?=$value['address']?></td>
+                                            <td><?=(!empty($value['address_order'])?$value['address_order']:$value['address_customer'])?></td>
                                             <td class="<?php
                                             if ($value['status']=='handle') {
                                                 echo 'text-success';

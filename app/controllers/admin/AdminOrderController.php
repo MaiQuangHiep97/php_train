@@ -40,7 +40,9 @@ class AdminOrderController extends Controller
             $customer = $this->model('UserModel');
             $this->data['user'] = $_SESSION['user_login']['name'];
             $this->data['order'] = $this->model->find($id);
-            $this->data['customer'] = $customer->find($this->data['order']['user_id']);
+            $this->data['customer'] = $this->db->table('tbl_customers')
+            ->join('tbl_users', 'tbl_users.id=tbl_customers.user_id')->select('tbl_users.id as id_user, tbl_customers.id as id_customer, phone, address, email, name')
+            ->where('user_id', '=', $this->data['order']['user_id'])->get();
             $this->data['order_products'] = $order_product->getDetail($id);
             $status = array();
             if ($this->data['order']['status']=='cancel') {

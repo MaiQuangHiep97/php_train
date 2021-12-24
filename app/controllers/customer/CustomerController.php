@@ -190,6 +190,8 @@ class CustomerController extends Controller
     public function info()
     {
         if ($this->authCustomer()) {
+            $this->data['errors'] = Session::flash('errors');
+            $this->data['old'] = Session::flash('old');
             $this->data['customer'] = $this->db->table('tbl_customers')
         ->join('tbl_users', 'tbl_users.id=tbl_customers.user_id')
         ->select('tbl_customers.id as id_customer, tbl_users.id as id_user, name, email, phone, gender, address')

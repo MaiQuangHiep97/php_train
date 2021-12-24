@@ -15,7 +15,7 @@ class DashboardController extends Controller
         try {
             $this->data['user'] = $_SESSION['user_login']['name'];
             $orders = $this->model->getAll();
-            $limit = 1;
+            $limit = 2;
             if (count($orders)>$limit) {
                 $data = $this->pagi($orders, $limit);
                 if ($data['total']>0) {

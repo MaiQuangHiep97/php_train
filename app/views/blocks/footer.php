@@ -136,6 +136,8 @@
 		<script src="<?php echo _WEB_ROOT;?>/public/assets/clients/js/nouislider.min.js"></script>
 		<script src="<?php echo _WEB_ROOT;?>/public/assets/clients/js/jquery.zoom.min.js"></script>
 		<script src="<?php echo _WEB_ROOT;?>/public/assets/clients/js/main.js"></script>
+  	<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
+    <script src="<?php echo _WEB_ROOT;?>/public/assets/admin/dist/js/scripts.js"></script>
 
 	</body>
 </html>

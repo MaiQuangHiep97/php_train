@@ -50,3 +50,4 @@ $routes['cart/destroy'] = 'customer/cartcontroller/destroy';
 //OrderController
 $routes['checkout'] = 'customer/ordercontroller';
 $routes['post-checkout'] = 'customer/ordercontroller/postCheckout';
+$routes['order/done'] = 'customer/ordercontroller/done';
