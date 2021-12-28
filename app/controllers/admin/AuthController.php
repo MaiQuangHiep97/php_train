@@ -1,13 +1,13 @@
 <?php
 class AuthController extends Controller
 {
-    public $model;
+    public $repoUser;
     public $data = array();
     public $response;
     public function __construct()
     {
         $this->response = new Response();
-        $this->model = $this->model('UserModel');
+        $this->repoUser = new UserRepository();
     }
     public function index()
     {
@@ -46,7 +46,7 @@ class AuthController extends Controller
             }
             //Check Login
             if (!empty($_POST['email'] && $_POST['password'])) {
-                $user = $this->model->getUser();
+                $user = $this->repoUser->getUser($_POST['email'], 'admin');
                 if (md5($_POST['password']) == $user['password']) {
                     $_SESSION['is_login'] = true;
                     $_SESSION['user_login'] = $user;
@@ -115,7 +115,7 @@ class AuthController extends Controller
                     $data = [
                     'password' => md5($_POST['password'])
                 ];
-                    $this->model->updateUser($data);
+                    $this->repoUser->update($_SESSION['user_login']['id'], $data);
                     $_SESSION['success'] = "Changed password successfully";
                     $this->response->redirect('dashboard');
                 }

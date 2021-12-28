@@ -80,9 +80,7 @@ trait QueryBuilder
     {
         $sqlQuery = "SELECT $this->selectField FROM $this->tableName $this->innerJoin $this->where $this->orderBy $this->limit";
         $sqlQuery = trim($sqlQuery);
-
         $query = $this->query($sqlQuery);
-
         //Reset field
         $this->resetQuery();
 

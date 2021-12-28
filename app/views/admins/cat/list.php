@@ -7,10 +7,15 @@
     <div class="alert alert-success text-success text-center"><?php echo $_SESSION['success']?></div>
     <?php unset($_SESSION['success']);
 } ?>
+<?php if (!empty($_SESSION['error'])) {?>
+    <div class="alert alert-danger text-danger text-center"><?php echo $_SESSION['error']?></div>
+    <?php unset($_SESSION['error']);
+} ?>
 
                     <div class="col-md-12">
 						<div class="row">
                         <div class="add-category col-md-6">
+                            <div>
                         <h1 class="mt-4">Add Category</h1>
                             <form method="POST" id="add-cat-form" action="<?php echo _WEB_ROOT;?>/admin/cat/store">
                                             <div class="mt-3">
@@ -22,6 +27,20 @@
                                             </div>
                                         </form>
                             </div>
+                            </div>
+                            <!-- <div style="display: none;">
+                            <h1 class="mt-4">Edit Category</h1>
+                            <form method="POST" id="add-cat-form" action="<?php echo _WEB_ROOT;?>/admin/cat/store">
+                                            <div class="mt-3">
+                                            <input type = "text" id="category" class = "form-control" name = "category" placeholder = "Category"/>
+                                            <?php echo(!empty($errors)&& array_key_exists('category', $errors))?'<span style="color: red;">'.$errors['category'].'</span>':false?>
+                                            </div>
+                                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                            <button type = "submit" class = "form-control btn btn-primary">Add Category</button>
+                                            </div>
+                                        </form>
+                            </div>
+                            </div> -->
                         <div class="col-md-6">
                         <h1 class="mt-4">List Category</h1>
                         <?php if (count($cats)>0) {?>

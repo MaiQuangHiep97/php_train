@@ -1,26 +1,31 @@
 <?php
 class AdminOrderController extends Controller
 {
-    public $model;
+    public $response;
     public $data = array();
+    public $repoOrder;
+    public $repoCustomer;
+    public $repoOrderProduct;
     public function __construct()
     {
+        $this->response = new Response();
         if (!$this->auth()) {
-            $response = new Response();
-            $response->redirect('admin/authcontroller/');
+            $this->response->redirect('admin/login/');
         }
-        $this->model = $this->model('OrderModel');
+        $this->repoOrder = new OrderRepository();
+        $this->repoOrderProduct = new OrderProductRepository();
+        $this->repoCustomer = new CustomerRepository();
     }
     public function index()
     {
         try {
             $this->data['user'] = $_SESSION['user_login']['name'];
-            $this->data['orders'] = $this->model->getAll();
+            $this->data['orders'] = $this->repoOrder->getOrder();
             $limit = 10;
             if (count($this->data['orders']) > $limit) {
                 $data = Paginator::pagi($this->data['orders'], $limit);
                 if ($data['total']>0) {
-                    $this->data['orders'] = $this->model->pagi_get($limit, $data['start']);
+                    $this->data['orders'] = $this->repoOrder->pagiGetOrder($limit, $data['start']);
                 }
                 $this->data['pagination'] = $data['button_pagination'];
             }
@@ -61,11 +66,10 @@ class AdminOrderController extends Controller
     }
     public function getData($id)
     {
-        $order_product = $this->model('OrderProductModel');
         $this->data['user'] = $_SESSION['user_login']['name'];
-        $this->data['order'] = $this->model->find($id);
-        $this->data['customer'] = $order_product->getCustomer($this->data['order']['user_id']);
-        $this->data['order_products'] = $order_product->getDetail($id);
+        $this->data['order'] = $this->repoOrder->find($id);
+        $this->data['customer'] = $this->repoCustomer->getCustomer($this->data['order']['user_id']);
+        $this->data['order_products'] = $this->repoOrderProduct->getDetail($id);
         return $this->data;
     }
     public function show()
@@ -87,11 +91,9 @@ class AdminOrderController extends Controller
                 $data = [
                     'status' => $_POST['status']
                 ];
-                $this->model->updateStatus($_POST['id'], $data);
+                $this->repoOrder->update($_POST['id'], $data);
                 $_SESSION['success'] = "Update successfully";
-                
-                $response = new Response();
-                $response->redirect('admin/order/detail?id='.$_POST['id']);
+                $this->response->redirect('admin/order/detail?id='.$_POST['id']);
             }
         } catch (PDOException $e) {
             $error_message = $e->getMessage();

@@ -1,44 +1,41 @@
 <?php
 class UserController extends Controller
 {
-    public $model;
     public $data = array();
     public $response;
     public $repoUser;
+    public $repoCustomer;
     public function __construct()
     {
         $this->repoUser = new UserRepository();
+        $this->repoCustomer = new CustomerRepository();
         $this->response = new Response();
         if (!$this->auth()) {
             $this->response->redirect('admin/login');
         }
-        $this->model = $this->model('UserModel');
     }
     public function getList($type)
     {
         try {
-            $this->data['users'] = $this->repoUser->getList($type);
-            echo '<pre>';
-            print_r($this->data['users']);
-            // $this->data['user'] = $_SESSION['user_login']['name'];
-            // if (!empty($type)) {
-            //     if ($type == 1) {
-            //         $type = 'admin';
-            //     } elseif ($type == 2) {
-            //         $type = 'user';
-            //     }
-            //     $this->data['users'] = $this->repoUser->getList($type);
-            //     $limit = 10;
-            //     if (count($this->data['users']) > $limit) {
-            //         $data = Paginator::pagi($this->data['users'], $limit);
-            //         if ($data['total'] > 0) {
-            //             $this->data['users'] = $this->model->getPagi($limit, $data['start'], $type);
-            //         }
-            //         $this->data['pagination'] = $data['button_pagination'];
-            //     }
-            //     $this->data['type'] = $type;
-            //     $this->render('admins/user/list', $this->data);
-            // }
+            $this->data['user'] = $_SESSION['user_login']['name'];
+            if (!empty($type)) {
+                if ($type == 1) {
+                    $type = 'admin';
+                } elseif ($type == 2) {
+                    $type = 'user';
+                }
+                $this->data['users'] = $this->repoUser->getList($type);
+                $limit = 2;
+                if (count($this->data['users']) > $limit) {
+                    $data = Paginator::pagi($this->data['users'], $limit);
+                    if ($data['total'] > 0) {
+                        $this->data['users'] = $this->repoUser->getPagi($limit, $data['start'], $type);
+                    }
+                    $this->data['pagination'] = $data['button_pagination'];
+                }
+                $this->data['type'] = $type;
+                $this->render('admins/user/list', $this->data);
+            }
         } catch (PDOException $e) {
             echo $e->getMessage();
         }
@@ -47,7 +44,7 @@ class UserController extends Controller
     {
         try {
             $id = $_GET['id'];
-            $this->data['user'] = $this->model->find($id);
+            $this->data['user'] = $this->repoUser->find($id);
             $this->data['errors'] = Session::flash('errors');
             $this->data['old'] = Session::flash('old');
             $this->render('admins/user/edit', $this->data);
@@ -91,7 +88,7 @@ class UserController extends Controller
             }
             //Update
             if (!empty($_POST)) {
-                $user = $this->model->find($id);
+                $user = $this->repoUser->find($id);
                 $data = [
                     'name' => $_POST['username'],
                     'email' => $_POST['email'],
@@ -99,15 +96,15 @@ class UserController extends Controller
                     'password' => md5($_POST['password']),
                     ];
                 if ($_POST['email'] == $user['email']) {
-                    $this->db->table('tbl_users')->where('id', '=', $_POST['id'])->update($data);
+                    $this->repoUser->update($id, $data);
                     $_SESSION['success'] = "Update successfully";
                     $this->response->redirect('admin/list/type-1');
                 } else {
-                    if ($this->db->table('tbl_users')->where('email', '=', $_POST['email'])->where('type', '=', $user['type'])->get()) {
+                    if ($this->repoUser->getUser($_POST['email'], $user['type'])) {
                         $_SESSION['error'] = "Email already exists";
                         $this->response->redirect('admin/user/edit?id='.$id);
                     } else {
-                        $this->db->table('tbl_users')->where('id', '=', $_POST['id'])->update($data);
+                        $this->repoUser->update($id, $data);
                         $_SESSION['success'] = "Update successfully";
                         $this->response->redirect('admin/list/type-1');
                     }
@@ -127,7 +124,7 @@ class UserController extends Controller
     public function validateAdd($request)
     {
         $request->rules([
-            'username' => 'required|max:20|regex:/^[^0-9]*$/',
+            'username' => 'required|max:20',
             'email' => 'required|email',
             'phone' => 'required|regex:/^[0-9]*$/',
             'password' => 'required|min:3',
@@ -135,7 +132,6 @@ class UserController extends Controller
         ]);
         $request->message([
             'username.required' => 'Please enter username',
-            'username.regex' => 'Please enter valid username',
             'username.min' => 'Username up to 20 characters',
             'email.required' => 'Please enter email',
             'email.email' => 'Please enter valid email!',
@@ -160,7 +156,7 @@ class UserController extends Controller
             }
             // Store
             if (!empty($_POST)) {
-                if ($this->db->table('tbl_users')->where('email', '=', $_POST['email'])->where('type', '=', $_POST['type'])->get()) {
+                if ($this->repoUser->getUser($_POST['email'], $_POST['type'])) {
                     $_SESSION['error'] = "Email already exists";
                     $this->response->redirect('admin/user/add');
                 } else {
@@ -171,12 +167,12 @@ class UserController extends Controller
                             'password' => md5($_POST['password']),
                             'type' => $_POST['type'],
                         ];
-                    $this->model->insertUser($data);
+                    $this->repoUser->insert($data);
                     $id = $this->db->lastInsertID();
                     $data = [
                     'user_id' => $id
                         ];
-                    if ($this->db->table('tbl_customers')->insert($data)) {
+                    if ($this->repoCustomer->insert($data)) {
                         $_SESSION['success'] = "Add user successfully";
                         if ($_POST['type'] == 'admin') {
                             $this->response->redirect('admin/list/type-1');
@@ -193,16 +189,15 @@ class UserController extends Controller
     public function delete()
     {
         try {
-            $response = new Response();
             $id = $_GET['id'];
             if ($id !== $_SESSION['user_login']['id']) {
-                $this->model->deleteUser($id);
-                $this->db->table('tbl_customers')->where('user_id', '=', $id)->delete();
+                $this->repoUser->delete($id);
+                $this->repoCustomer->deleteWithUser($id);
                 $_SESSION['success'] = "Delete user successfully";
-                $response->redirect('admin/list/type-1');
+                $this->response->redirect('admin/list/type-1');
             }
             $_SESSION['error'] = "Can not delele this user";
-            $response->redirect('admin/list/type-1');
+            $this->response->redirect('admin/list/type-1');
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             echo "Database error: $error_message";

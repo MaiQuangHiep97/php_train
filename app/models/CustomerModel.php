@@ -1,11 +1,11 @@
 <?php
-class OrderModel extends Model
+class CustomerModel extends Model
 {
-    protected $_table = 'tbl_orders';
+    protected $_table = 'tbl_customers';
     
     public function tableFill()
     {
-        return 'tbl_orders';
+        return 'tbl_customers';
     }
     public function fieldFill()
     {

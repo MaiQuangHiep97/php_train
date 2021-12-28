@@ -42,7 +42,7 @@
                 
                 <div class="form-group">
                     <label for="product-price">Price</label>
-                    <input class="form-control" type="text" id="product-price" name="product_price" value="<?=number_format($product['product_price']).'đ'?>">
+                    <input class="form-control" type="text" id="product-price" name="product_price" value="<?=$product['product_price']?>">
                     <?php echo(!empty($errors)&& array_key_exists('product_price', $errors))?'<span style="color: red;">'.$errors['product_price'].'</span>':false?>
                
                 </div>

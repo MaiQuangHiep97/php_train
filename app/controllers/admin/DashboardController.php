@@ -1,7 +1,7 @@
 <?php
 class DashboardController extends Controller
 {
-    public $model;
+    public $repoOrder;
     public $response;
     public function __construct()
     {
@@ -9,25 +9,23 @@ class DashboardController extends Controller
         if (!$this->auth()) {
             $this->response->redirect('admin/login');
         }
-        $this->model = $this->model('OrderModel');
+        $this->repoOrder = new OrderRepository();
     }
     public function index()
     {
         try {
             $this->data['user'] = $_SESSION['user_login']['name'];
-            $orders = $this->model->getAll();
+            $this->data['orders'] = $this->repoOrder->getOrder();
             $limit = 10;
-            if (count($orders)>$limit) {
-                $data = Paginator::pagi($orders, $limit);
+            if (count($this->data['orders'])>$limit) {
+                $data = Paginator::pagi($this->data['orders'], $limit);
                 if ($data['total']>0) {
-                    $this->data['orders'] = $this->model->pagi_get($limit, $data['start']);
+                    $this->data['orders'] = $this->repoOrder->pagiGetOrder($limit, $data['start']);
                     $this->data['pagination']=$data['button_pagination'];
                 }
-            } else {
-                $this->data['orders'] = $this->model->getAll();
             }
             $this->data = $this->getCount();
-            $total=$this->model->getTotal();
+            $total=$this->repoOrder->getTotal();
             $sum=0;
             foreach ($total as $value) {
                 $sum += $value['total_price'];
@@ -41,10 +39,10 @@ class DashboardController extends Controller
     }
     public function getCount()
     {
-        $this->data['cancel'] = $this->model->countCancel();
-        $this->data['handle'] = $this->model->countHandle();
-        $this->data['transport'] = $this->model->countTransport();
-        $this->data['done'] = $this->model->countDone();
+        $this->data['cancel'] = $this->repoOrder->countCancel();
+        $this->data['handle'] = $this->repoOrder->countHandle();
+        $this->data['transport'] = $this->repoOrder->countTransport();
+        $this->data['done'] = $this->repoOrder->countDone();
         return $this->data;
     }
 }

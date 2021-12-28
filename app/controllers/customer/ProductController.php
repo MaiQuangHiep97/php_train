@@ -1,11 +1,15 @@
 <?php
 class ProductController extends Controller
 {
-    public $model;
+    public $repoProduct;
+    public $repoCate;
+    public $repoImage;
     public $data = array();
     public function __construct()
     {
-        $this->model = $this->model('ProductModel');
+        $this->repoProduct = new ProductRepository();
+        $this->repoCate = new ProductCatRepository();
+        $this->repoImage = new ProductImageRepository();
     }
     public function index()
     {
@@ -18,11 +22,10 @@ class ProductController extends Controller
             $this->data['customer'] = $_SESSION['customer_login'];
         }
         $id = $_GET['id'];
-        $this->data['product_cats'] = $this->model('ProductCatModel')->getAll();
-        $this->data['product'] = $this->model->find($id);
-        $images = $this->model('ImagesModel');
-        $this->data['images'] = $images->getImages($id);
-        $this->data['products'] = $this->db->table('tbl_products')->limit(4)->get();
+        $this->data['product_cats'] = $this->repoCate->getAll();
+        $this->data['product'] = $this->repoProduct->find($id);
+        $this->data['images'] = $this->repoImage->getImages($id);
+        $this->data['products'] = $this->repoProduct->getLimit();
         return $this->data;
     }
 }

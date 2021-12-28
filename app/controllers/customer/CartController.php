@@ -2,11 +2,12 @@
 class CartController extends Controller
 {
     public $data = array();
+    public $response;
     public function __construct()
     {
+        $this->response = new Response();
         if (!$this->authCustomer()) {
-            $response = new Response();
-            $response->redirect('customer/login');
+            $this->response->redirect('customer/login');
         }
     }
     public function index()
@@ -50,8 +51,7 @@ class CartController extends Controller
             'num_order'=> $num_order,
             'total'=> $total
         );
-        $response = new Response();
-        $response->redirect('cart/show');
+        $this->response->redirect('cart/show');
     }
     public function update()
     {
@@ -137,11 +137,10 @@ class CartController extends Controller
     }
     public function destroy()
     {
-        $response = new Response();
         if (isset($_SESSION['cart'])) {
             unset($_SESSION['cart']);
-            $response->redirect('cart/show');
+            $this->response->redirect('cart/show');
         }
-        $response->redirect('');
+        $this->response->redirect('');
     }
 }

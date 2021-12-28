@@ -1,7 +1,9 @@
 <?php
 class AdminProductController extends Controller
 {
-    public $model;
+    public $repoProduct;
+    public $repoCate;
+    public $repoImage;
     public $data = array();
     public $response;
     public function __construct()
@@ -10,17 +12,19 @@ class AdminProductController extends Controller
         if (!$this->auth()) {
             $this->response->redirect('admin/login');
         }
-        $this->model = $this->model('ProductModel');
+        $this->repoProduct = new ProductRepository();
+        $this->repoCate = new ProductCatRepository();
+        $this->repoImage = new ProductImageRepository();
     }
     public function index()
     {
         $this->data['user'] = $_SESSION['user_login']['name'];
-        $this->data['products'] = $this->model->getAll();
+        $this->data['products'] = $this->repoProduct->getProduct();
         $limit = 8;
         if (count($this->data['products'])>$limit) {
             $data = Paginator::pagi($this->data['products'], $limit);
             if ($data['total']>0) {
-                $this->data['products'] = $this->model->getPagiCms($limit, $data['start']);
+                $this->data['products'] = $this->repoProduct->getPagiCms($limit, $data['start']);
             }
             $this->data['pagination'] = $data['button_pagination'];
         }
@@ -28,10 +32,9 @@ class AdminProductController extends Controller
     }
     public function add()
     {
-        $cats = $this->model('ProductCatModel');
         $this->data['errors'] = Session::flash('errors');
         $this->data['old'] = Session::flash('old');
-        $this->data['cats'] = $cats->getALL();
+        $this->data['cats'] = $this->repoCate->getALL();
         $this->data['user'] = $_SESSION['user_login']['name'];
         $this->render('admins/product/add', $this->data);
     }
@@ -41,7 +44,7 @@ class AdminProductController extends Controller
                 'product_name' => 'required',
                 'product_desc' => 'required',
                 'product_detail' => 'required',
-                'product_price' => 'required|regex:/^[0-9]*$/',
+                'product_price' => 'required',
                 'product_cat' => 'required',
             ]);
         $request->message([
@@ -90,7 +93,7 @@ class AdminProductController extends Controller
                         'cat_id' => $_POST['product_cat'],
                         'user_id' => $_SESSION['user_login']['id']
                 ];
-                    $this->model->insertProduct($data);
+                    $this->repoProduct->insert($data);
                     $id = $this->db->lastInsertID();
                 }
                 if (isset($id)) {
@@ -109,7 +112,7 @@ class AdminProductController extends Controller
                             'image' => $file_name,
                             'product_id' => $id
                         ];
-                            $this->db->table('tbl_product_images')->insert($image);
+                            $this->repoImage->insert($image);
                         }
                     }
                 }
@@ -125,21 +128,21 @@ class AdminProductController extends Controller
     {
         try {
             $id = $_GET['id'];
-            $product = $this->model->getProduct($id);
+            $product = $this->repoProduct->find($id);
             $upload_dir='public/uploads/products/';
             if (file_exists($upload_dir.$product['product_thumb'])) {
                 unlink($upload_dir.$product['product_thumb']);
             }
-            $this->model->deleteProduct($id);
-            $images = $this->model('ImagesModel');
-            $image = $images->getImages($id);
+            $this->repoProduct->delete($id);
+            $image = $this->repoImage->getImages($id);
+            print_r($image);
             $upload_dire='public/uploads/images/';
             foreach ($image as $value) {
                 if (file_exists($upload_dire.$value['image'])) {
                     unlink($upload_dire.$value['image']);
                 }
             }
-            $images->deleteImage($id);
+            $this->repoImage->deleteImages($id);
             $_SESSION['success'] = "Delete product successfully";
             $this->response->redirect('admin/product/list');
         } catch (PDOException $e) {
@@ -151,11 +154,12 @@ class AdminProductController extends Controller
     {
         try {
             $id = $_GET['id'];
-            $cats = $this->model('ProductCatModel');
+            $this->data['errors'] = Session::flash('errors');
+            $this->data['old'] = Session::flash('old');
             $this->data['user'] = $_SESSION['user_login']['name'];
-            $this->data['cats'] = $cats->getALL();
-            $this->data['product'] = $this->model->getProduct($id);
-            $this->data['product_images'] = $this->model->getProductImages($id);
+            $this->data['cats'] = $this->repoCate->getALL();
+            $this->data['product'] = $this->repoProduct->find($id);
+            $this->data['product_images'] = $this->repoImage->getImages($id);
             $this->render('admins/product/edit', $this->data);
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
@@ -173,9 +177,8 @@ class AdminProductController extends Controller
                 Session::flash('old', $request->getFields());
                 $this->response->redirect('admin/product/edit?id='.$id);
             }
-            $thumb = $this->model->getProduct($id);
-            if (!empty($_POST)) {
-                $data = [
+            $thumb = $this->repoProduct->find($id);
+            $data = [
                     'product_name'=>$_POST['product_name'],
                     'product_des'=>$_POST['product_desc'],
                     'product_price'=>$_POST['product_price'],
@@ -183,9 +186,7 @@ class AdminProductController extends Controller
                     'cat_id'=>$_POST['product_cat'],
                     'user_id'=>$_SESSION['user_login']['id']
                 ];
-                $this->db->table('tbl_products')->where('id', '=', $id)->update($data);
-            }
-            
+            $this->repoProduct->update($id, $data);
             if (!empty($_FILES['product_thumb']['name'])) {
                 $file_name = $_FILES['product_thumb']['name'];
                 $upload_dir = 'public/uploads/products/';
@@ -197,15 +198,14 @@ class AdminProductController extends Controller
                 $data=[
                     'product_thumb' => $file_name
                 ];
-                $this->db->table('tbl_products')->where('id', '=', $id)->update($data);
+                $this->repoProduct->update($id, $data);
             }
             if (!empty($_FILES['product_images']['name'])) {
                 $upload_dire = 'public/uploads/images/';
                 $files = $_FILES['product_images']['name'];
-                $image = $this->model('ImagesModel');
-                $images = $image->getImages($id);
+                $images = $this->repoImage->getImages($id);
                 if (!empty($images)) {
-                    $image->deleteImage($id);
+                    $this->repoImage->deleteImages($id);
                     foreach ($images as $fileImage) {
                         if (file_exists($upload_dire.$fileImage['image'])) {
                             unlink($upload_dire.$fileImage['image']);
@@ -220,7 +220,7 @@ class AdminProductController extends Controller
                         'image' => $fileName,
                         'product_id' => $id
                     ];
-                    $this->db->table('tbl_product_images')->insert($data);
+                    $this->repoImage->insert($data);
                 }
             }
             $_SESSION['success'] = "Update product successfully";

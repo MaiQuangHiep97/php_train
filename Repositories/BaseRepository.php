@@ -34,26 +34,16 @@ abstract class BaseRepository implements RepositoryInterface
 
     public function insert($attributes = [])
     {
-        return $this->model->insert($attributes);
+        return $this->model->insertModel($attributes);
     }
 
     public function update($id, $attributes = [])
     {
-        $result = $this->find($id);
-        if ($result) {
-            $result->update($attributes);
-            return $result;
-        }
+        return $this->model->updateModel($attributes, $id);
     }
 
     public function delete($id)
     {
-        $result = $this->find($id);
-        if ($result) {
-            $result->delete();
-
-            return true;
-        }
-        return false;
+        return $this->model->deleteModel($id);
     }
 }

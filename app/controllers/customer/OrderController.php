@@ -1,7 +1,11 @@
 <?php
 class OrderController extends Controller
 {
-    public $model;
+    public $repoOrder;
+    public $repoCate;
+    public $repoUser;
+    public $repoCustomer;
+    public $repoOrderProduct;
     public $data = array();
     public $response;
     public function __construct()
@@ -9,17 +13,19 @@ class OrderController extends Controller
         $this->response = new Response();
         if (!$this->authCustomer()) {
             $this->response->redirect('customer/login');
-        } else {
-            $this->model = $this->model('OrderModel');
         }
+        $this->repoOrder = new OrderRepository();
+        $this->repoCate = new ProductCatRepository();
+        $this->repoUser = new UserRepository();
+        $this->repoCustomer = new CustomerRepository();
+        $this->repoOrderProduct = new OrderProductRepository();
     }
     public function index()
     {
         if (isset($_SESSION['customer_login'])) {
-            $this->data['customer'] = $this->db->table('tbl_users')
-                        ->where('id', '=', $_SESSION['customer_login']['id'])->first();
-            $this->data['customer_info'] = $this->db->table('tbl_customers')
-            ->where('user_id', '=', $_SESSION['customer_login']['id'])->first();
+            $id = $_SESSION['customer_login']['id'];
+            $this->data['customer'] = $this->repoUser->find($id);
+            $this->data['customer_info'] = $this->repoCustomer->find($id);
         }
         if (isset($_SESSION['cart'])) {
             $this->data['cart'] = $_SESSION['cart'];
@@ -27,7 +33,7 @@ class OrderController extends Controller
         } else {
             $this->response->redirect('');
         }
-        $this->data['product_cats'] = $this->model('ProductCatModel')->getAll();
+        $this->data['product_cats'] = $this->repoCate->getAll();
         $this->render('clients/order/index', $this->data);
     }
     public function validateCheckout($request)
@@ -56,11 +62,12 @@ class OrderController extends Controller
             $phone = [
                 'phone'=>$_POST['phone'],
             ];
-            $this->model('UserModel')->updateCustomer($phone);
+            $id = $_SESSION['customer_login']['id'];
+            $this->repoUser->update($id, $phone);
             $address = [
                 'address'=>$_POST['address'],
             ];
-            $this->db->table('tbl_customers')->where('user_id', '=', $_SESSION['customer_login']['id'])->update($address);
+            $this->repoCustomer->updateWithUserId($id, $address);
             //
             $code = 'AP-'.time();
             $data = [
@@ -74,7 +81,7 @@ class OrderController extends Controller
                 $data['address'] = $_POST['address1'];
             }
             try {
-                $this->model->insertOrder($data);
+                $this->repoOrder->insert($data);
                 $id = $this->db->lastInsertID();
                 if (!empty($id)) {
                     foreach ($_SESSION['cart']['buy'] as $item) {
@@ -83,7 +90,7 @@ class OrderController extends Controller
                                 'quantity'=> $item['qty'],
                                 'product_id'=>$item['product_id']
                             );
-                        $this->db->table('tbl_order_products')->insert($data);
+                        $this->repoOrderProduct->insert($data);
                     }
                     unset($_SESSION['cart']);
                     $this->response->redirect('order/done');
@@ -103,7 +110,7 @@ class OrderController extends Controller
         if (isset($_SESSION['customer_login'])) {
             $this->data['customer'] = $_SESSION['customer_login'];
         }
-        $this->data['product_cats'] = $this->model('ProductCatModel')->getAll();
+        $this->data['product_cats'] = $this->repoCate->getAll();
         $this->render('clients/order/done', $this->data);
     }
 }
