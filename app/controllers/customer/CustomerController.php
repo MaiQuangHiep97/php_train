@@ -124,7 +124,7 @@ class CustomerController extends Controller
                 ];
                 if ($this->db->table('tbl_customers')->insert($data)) {
                     $_SESSION['success']="Register User success";
-                    $response->redirect('');
+                    $response->redirect('customer/login');
                 }
             }
         } catch (PDOException $e) {
@@ -140,7 +140,7 @@ class CustomerController extends Controller
             $this->render('clients/customer/change', $this->data);
         } else {
             $response = new Response();
-            $response->redirect('admin/login');
+            $response->redirect('customer/login');
         }
     }
     public function postChange()

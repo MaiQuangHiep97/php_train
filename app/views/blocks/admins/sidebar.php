@@ -8,32 +8,25 @@
                                 Dashboard
                             </a>
                             <!-- product -->
-                            <a class="nav-link collapsed" href="<?php echo _WEB_ROOT;?>/admin/product/list" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/product/list">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Product
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/product/add">Add product</a>
-                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/product/list">List Product</a>
-                                </nav>
-                            </div>
                             <!-- category -->
                             <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/cat/list">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Category
                             </a>
                             <!-- user -->
-                            <a class="nav-link collapsed" href="<?php echo _WEB_ROOT;?>/admin/user/list" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                            <a class="nav-link collapsed" href="<?php echo _WEB_ROOT;?>/admin/list/type-1" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                                 User
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/user/add">Add User</a>
-                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/user/list">List User</a>
+                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/list/type-1">List Admin</a>
+                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/list/type-2">List User</a>
                                 </nav>
                             </div>
                             <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/order/list">

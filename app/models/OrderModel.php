@@ -45,6 +45,11 @@ class OrderModel extends Model
         $data=$this->db->table('tbl_orders')->where('status', '=', 'done')->get();
         return count($data);
     }
+    public function getTotal()
+    {
+        $data = $this->db->table('tbl_orders')->where('status', '=', 'done')->select('total_price')->get();
+        return $data;
+    }
     public function tableFill()
     {
         return 'tbl_orders';

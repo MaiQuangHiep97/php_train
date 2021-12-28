@@ -8,6 +8,7 @@ trait QueryBuilder
     public $limit = '';
     public $orderBy = '';
     public $innerJoin = '';
+    public $leftJoin = '';
 
     public function table($tableName)
     {
@@ -95,6 +96,12 @@ trait QueryBuilder
     public function join($tableName, $relationship)
     {
         $this->innerJoin.='JOIN '.$tableName.' ON '.$relationship.' ';
+        return $this;
+    }
+    //Left join
+    public function leftJoin($tableName, $relationship)
+    {
+        $this->leftJoin.='LEFT JOIN '.$tableName.' ON '.$relationship.' ';
         return $this;
     }
 

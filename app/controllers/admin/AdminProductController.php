@@ -3,30 +3,26 @@ class AdminProductController extends Controller
 {
     public $model;
     public $data = array();
+    public $response;
     public function __construct()
     {
+        $this->response = new Response();
         if (!$this->auth()) {
-            $response = new Response();
-            $response->redirect('admin/login');
+            $this->response->redirect('admin/login');
         }
         $this->model = $this->model('ProductModel');
     }
     public function index()
     {
         $this->data['user'] = $_SESSION['user_login']['name'];
-        $products = $this->model->getAll();
+        $this->data['products'] = $this->model->getAll();
         $limit = 8;
-        if (count($products)>$limit) {
-            $data = $this->pagi($products, $limit);
+        if (count($this->data['products'])>$limit) {
+            $data = Paginator::pagi($this->data['products'], $limit);
             if ($data['total']>0) {
-                $this->data['products'] = $this->db->table('tbl_products')
-            ->join('tbl_product_cats', 'tbl_product_cats.id=tbl_products.cat_id')
-            ->select('tbl_products.id as id_pr, tbl_product_cats.id as id_cat, product_name, product_detail, product_thumb, product_price, cat_name')
-            ->limit($limit, $data['start'])->get();
+                $this->data['products'] = $this->model->getPagiCms($limit, $data['start']);
             }
-            $this->data['pagination']=$data['button_pagination'];
-        } else {
-            $this->data['products'] = $this->model->getAll();
+            $this->data['pagination'] = $data['button_pagination'];
         }
         $this->render('admins/product/list', $this->data);
     }
@@ -39,57 +35,60 @@ class AdminProductController extends Controller
         $this->data['user'] = $_SESSION['user_login']['name'];
         $this->render('admins/product/add', $this->data);
     }
-
+    public function validateProduct($request)
+    {
+        $request->rules([
+                'product_name' => 'required',
+                'product_desc' => 'required',
+                'product_detail' => 'required',
+                'product_price' => 'required|regex:/^[0-9]*$/',
+                'product_cat' => 'required',
+            ]);
+        $request->message([
+                'product_name.required' => 'Please enter product name',
+                'product_desc.required' => 'Please enter description',
+                'product_detail.required' => 'Please enter detail',
+                'product_price.required' => 'Please enter price',
+                'product_price.regex' => 'Please enter valid price!',
+                'product_cat.required' => 'Please select category',
+            ]);
+        $validate = $request->validate();
+        return $validate;
+    }
+    public function validateFile($file_name)
+    {
+        $type = pathinfo($file_name, PATHINFO_EXTENSION);
+        $type_allow = array('png','jpg','jpeg','gift');
+        if (!in_array(strtolower($type), $type_allow)) {
+            return false;
+        }
+        return true;
+    }
     public function store()
     {
         try {
-            $response = new Response();
-            // Validate form
             $request = new Request();
-            if ($request->isPost()) {
-                $request->rules([
-                    'product_name'=>'required',
-                    'product_desc'=>'required',
-                    'product_detail'=>'required',
-                    'product_price'=>'required|regex:/^[0-9]*$/',
-                    'product_cat'=>'required',
-                ]);
-                $request->message([
-                    'product_name.required'=>'Please enter product name',
-                    'product_desc.required'=>'Please enter description',
-                    'product_detail.required'=>'Please enter detail',
-                    'product_price.required'=>'Please enter price',
-                    'product_price.regex'=>'Please enter valid price!',
-                    'product_cat.required'=>'Please select category',
-                ]);
-                $validate = $request->validate();
-                if (!$validate) {
-                    Session::flash('errors', $request->errors());
-                    Session::flash('old', $request->getFields());
-                    $response->redirect('admin/product/add');
-                }
-            } else {
-                $response->redirect('admin/product/add');
+            if (!$this->validateProduct($request)) {
+                Session::flash('errors', $request->errors());
+                Session::flash('old', $request->getFields());
+                $this->response->redirect('admin/product/add');
             }
             if (!empty($_POST) && !empty($_FILES)) {
                 $file_name = $_FILES['product_thumb']['name'];
-                $type = pathinfo($file_name, PATHINFO_EXTENSION);
-                $type_allow = array('png','jpg','jpeg','gift');
-                if (!in_array(strtolower($type), $type_allow)) {
-                    $response->redirect('admin/product/add');
+                if (!$this->validateFile($file_name)) {
+                    $this->response->redirect('admin/product/add');
                 } else {
                     $upload_dir = 'public/uploads/products/';
                     $file_name = $this->handleFile($file_name, $upload_dir);
-                    
                     move_uploaded_file($_FILES['product_thumb']['tmp_name'], $upload_dir.$file_name);
                     $data = [
-                    'product_name'=>$_POST['product_name'],
-                    'product_des'=>$_POST['product_desc'],
-                    'product_price'=>$_POST['product_price'],
-                    'product_detail'=>$_POST['product_detail'],
-                    'product_thumb'=>$file_name,
-                    'cat_id'=>$_POST['product_cat'],
-                    'user_id'=>$_SESSION['user_login']['id']
+                        'product_name' => $_POST['product_name'],
+                        'product_des' => $_POST['product_desc'],
+                        'product_price' => $_POST['product_price'],
+                        'product_detail' => $_POST['product_detail'],
+                        'product_thumb' => $file_name,
+                        'cat_id' => $_POST['product_cat'],
+                        'user_id' => $_SESSION['user_login']['id']
                 ];
                     $this->model->insertProduct($data);
                     $id = $this->db->lastInsertID();
@@ -99,21 +98,23 @@ class AdminProductController extends Controller
                     $filenames = $files['name'];
                     $upload_dir = 'public/uploads/images/';
                     foreach ($filenames as $key => $value) {
-                        //
                         $file_name = $value;
-                        $type = pathinfo($file_name, PATHINFO_EXTENSION);
-                        $file_name = $this->handleFile($file_name, $upload_dir);
-                        $upload_file = $upload_dir.$file_name;
-                        move_uploaded_file($files['tmp_name'][$key], $upload_file);
-                        $image = [
-                            'image'=>$file_name,
-                            'product_id'=>$id
+                        if (!$this->validateFile($file_name)) {
+                            $this->response->redirect('admin/product/add');
+                        } else {
+                            $file_name = $this->handleFile($file_name, $upload_dir);
+                            $upload_file = $upload_dir.$file_name;
+                            move_uploaded_file($files['tmp_name'][$key], $upload_file);
+                            $image = [
+                            'image' => $file_name,
+                            'product_id' => $id
                         ];
-                        $this->db->table('tbl_product_images')->insert($image);
+                            $this->db->table('tbl_product_images')->insert($image);
+                        }
                     }
                 }
                 $_SESSION['success'] = "Add product successfully";
-                $response->redirect('admin/product/list');
+                $this->response->redirect('admin/product/list');
             }
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
@@ -139,9 +140,8 @@ class AdminProductController extends Controller
                 }
             }
             $images->deleteImage($id);
-            $response = new Response();
             $_SESSION['success'] = "Delete product successfully";
-            $response->redirect('admin/product/list');
+            $this->response->redirect('admin/product/list');
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             echo "Database error: $error_message";
@@ -165,34 +165,13 @@ class AdminProductController extends Controller
     public function update()
     {
         try {
-            $response = new Response();
             $id = $_GET['id'];
             // Validate form
             $request = new Request();
-            if ($request->isPost()) {
-                $request->rules([
-                    'product_name'=>'required',
-                    'product_desc'=>'required',
-                    'product_detail'=>'required',
-                    'product_price'=>'required|regex:/^[0-9]*$/',
-                    'product_cat'=>'required',
-                ]);
-                $request->message([
-                    'product_name.required'=>'Please enter product name',
-                    'product_desc.required'=>'Please enter description',
-                    'product_detail.required'=>'Please enter detail',
-                    'product_price.required'=>'Please enter price',
-                    'product_price.regex'=>'Please enter valid price!',
-                    'product_cat.required'=>'Please select category',
-                ]);
-                $validate = $request->validate();
-                if (!$validate) {
-                    Session::flash('errors', $request->errors());
-                    Session::flash('old', $request->getFields());
-                    $response->redirect('admin/product/edit?id='.$id);
-                }
-            } else {
-                $response->redirect('admin/product/edit?id='.$id);
+            if (!$this->validateProduct($request)) {
+                Session::flash('errors', $request->errors());
+                Session::flash('old', $request->getFields());
+                $this->response->redirect('admin/product/edit?id='.$id);
             }
             $thumb = $this->model->getProduct($id);
             if (!empty($_POST)) {
@@ -216,7 +195,7 @@ class AdminProductController extends Controller
                 $file_name = $this->handleFile($file_name, $upload_dir);
                 move_uploaded_file($_FILES['product_thumb']['tmp_name'], $upload_dir.$file_name);
                 $data=[
-                    'product_thumb'=>$file_name
+                    'product_thumb' => $file_name
                 ];
                 $this->db->table('tbl_products')->where('id', '=', $id)->update($data);
             }
@@ -224,7 +203,7 @@ class AdminProductController extends Controller
                 $upload_dire = 'public/uploads/images/';
                 $files = $_FILES['product_images']['name'];
                 $image = $this->model('ImagesModel');
-                $images= $image->getImages($id);
+                $images = $image->getImages($id);
                 if (!empty($images)) {
                     $image->deleteImage($id);
                     foreach ($images as $fileImage) {
@@ -238,14 +217,14 @@ class AdminProductController extends Controller
                     $upload_file = $upload_dire.$fileName;
                     move_uploaded_file($_FILES['product_images']['tmp_name'][$key], $upload_file);
                     $data = [
-                        'image'=>$fileName,
-                        'product_id'=>$id
+                        'image' => $fileName,
+                        'product_id' => $id
                     ];
                     $this->db->table('tbl_product_images')->insert($data);
                 }
             }
             $_SESSION['success'] = "Update product successfully";
-            $response->redirect('admin/product/list');
+            $this->response->redirect('admin/product/list');
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             echo "Database error: $error_message";

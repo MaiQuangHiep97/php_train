@@ -134,7 +134,7 @@ if ($editForm.length) {
             phone: {
                 required: true,
                 customPhone: true
-            }
+            },
         },
         messages: {
             username: {
@@ -143,7 +143,7 @@ if ($editForm.length) {
             phone: {
                 required: 'Please enter phone!',
                 customPhone: "Please enter valid phone!"
-            }
+            },
         },
     });
 }

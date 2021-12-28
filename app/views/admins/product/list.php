@@ -8,6 +8,7 @@
     <?php unset($_SESSION['success']);
 } ?>
                         <h1 class="mt-4">List product</h1>
+                        <a href="<?php echo _WEB_ROOT;?>/admin/product/add" class="btn btn-primary" style="float:right">Add Product</a>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="<?php echo _DIR_ROOT;?>/dashboardcontroller/">Dashboard</a></li>
                             <li class="breadcrumb-item active">List Product</li>

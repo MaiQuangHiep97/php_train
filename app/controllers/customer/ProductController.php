@@ -9,6 +9,11 @@ class ProductController extends Controller
     }
     public function index()
     {
+        $this->data = $this->getData();
+        $this->render('clients/product/index', $this->data);
+    }
+    public function getData()
+    {
         if (isset($_SESSION['customer_login'])) {
             $this->data['customer'] = $_SESSION['customer_login'];
         }
@@ -18,6 +23,6 @@ class ProductController extends Controller
         $images = $this->model('ImagesModel');
         $this->data['images'] = $images->getImages($id);
         $this->data['products'] = $this->db->table('tbl_products')->limit(4)->get();
-        $this->render('clients/product/index', $this->data);
+        return $this->data;
     }
 }

@@ -18,10 +18,27 @@ class ProductModel extends Model
         $data = $this->db->table('tbl_products')->get();
         return $data;
     }
-    
+    public function getWithCat($cat_id)
+    {
+        $data = $this->db->table('tbl_products')->where('cat_id', '=', $cat_id)->get();
+        return $data;
+    }
+    public function getWithCatPagi($limit, $start, $cat_id)
+    {
+        $data = $this->db->table('tbl_products')->where('cat_id', '=', $cat_id)->limit($limit, $start)->get();
+        return $data;
+    }
     public function getPagi($limit, $start)
     {
         $data = $this->db->table('tbl_products')->limit($limit, $start)->get();
+        return $data;
+    }
+    public function getPagiCms($limit, $start)
+    {
+        $data = $this->db->table('tbl_products')
+            ->join('tbl_product_cats', 'tbl_product_cats.id=tbl_products.cat_id')
+            ->select('tbl_products.id as id_pr, tbl_product_cats.id as id_cat, product_name, product_detail, product_thumb, product_price, cat_name')
+            ->limit($limit, $start)->get();
         return $data;
     }
     public function deleteProduct($id)

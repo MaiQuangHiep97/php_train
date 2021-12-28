@@ -22,12 +22,17 @@
                                             </div>
                                             <label for="email">Email address</label>
                                             <div class="form-floating mb-3">
-                                            <input type = "text" id="email" disabled value="<?= $user['email']?>" class = "form-control" name = "email" placeholder = "Email"/>
+                                            <input type = "text" id="email" value="<?= $user['email']?>" class = "form-control" name = "email" placeholder = "Email"/>
                                             </div>
                                             <label for="phone">Phone</label>
                                             <div class="form-floating mb-3">
                                             <input type = "text" id="phone" class = "form-control" value="<?= $user['phone']?>" name = "phone" placeholder = "Phone"/>
                                             <?php echo(!empty($errors)&& array_key_exists('phone', $errors))?'<span style="color: red;">'.$errors['phone'].'</span>':false?>
+                                            </div>
+                                            <label for="password">Password</label>
+                                            <div class="form-floating mb-3">
+                                            <input type = "password" class = "form-control" name = "password" placeholder = "Password" id = "password"/>
+                                            <?php echo(!empty($errors)&& array_key_exists('password', $errors))?'<span style="color: red;">'.$errors['password'].'</span>':false?>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                             <button type = "submit" class = "form-control btn btn-primary">Update User</button>

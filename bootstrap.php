@@ -46,6 +46,11 @@ if (!empty($config['database'])) {
 }
 require_once "core/Controller.php";
 require_once "core/Model.php";
+require_once "Repositories/RepositoryInterface.php";
+require_once "Repositories/BaseRepository.php";
+require_once "Repositories/UserRepositoryInterface.php";
+require_once "Repositories/UserRepository.php";
 require_once "core/Session.php";
 require_once "core/Request.php";
 require_once "core/Response.php";
+require_once "vendor/Paginator.php";

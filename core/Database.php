@@ -23,8 +23,7 @@ class Database
             die($mess);
         }
     }
-
-    
+   
     public function insertData($table, $data)
     {
         if (!empty($data)) {

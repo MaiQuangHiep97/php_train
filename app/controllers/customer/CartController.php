@@ -39,7 +39,6 @@ class CartController extends Controller
                 'sub_total'=> $_POST['product_price']*$qty
                                 
             );
-
         //info
         $num_order = 0;
         $total = 0;

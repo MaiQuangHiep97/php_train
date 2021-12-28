@@ -36,11 +36,11 @@
                                             </div>
                                             <label>Gender</label><br>
                                             <div class="form-check">
-                                            <input class="form-check-input" type="radio"<?= (!empty($customer[0]['gender'])&&$customer[0]['gender']=='female')?'checked':''?> name="gender" id="female" value="female">
+                                            <input class="form-check-input" type="radio"<?= ($customer[0]['gender']=='female')?'checked':''?> name="gender" id="female" value="female">
                                             <label class="form-check-label" for="female">Female</label>
                                             </div>
                                             <div class="form-check">
-                                            <input class="form-check-input" type="radio"<?= (!empty($customer[0]['gender'])&&$customer[0]['gender']=='male')?'checked':''?>  name="gender" id="male" value="male">
+                                            <input class="form-check-input" <?= (!isset($customer[0]['gender']))?'checked':''?> type="radio"<?= ($customer[0]['gender']=='male')?'checked':''?>  name="gender" id="male" value="male">
                                             <label class="form-check-label" for="male">Male</label>
                                             </div>
                                             <?php echo(!empty($errors)&& array_key_exists('gender', $errors))?'<span style="color: red;">'.$errors['gender'].'</span>':false?>

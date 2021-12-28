@@ -10,7 +10,7 @@
 					<ul class="main-nav nav navbar-nav">
 					<li><a href="/demo">Home</a></li>
 						<?php foreach ($product_cats as $product_cat) {?>
-							<li class="<?= ($product_cat['id']==$cat_id)?'active':'' ?>"><a href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
+							<li class="<?= ($product_cat['id']==$cat_id)?'active':'' ?>"><a href="/demo/cate/category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
 						<?php } ?>
 					</ul>
 					<!-- /NAV -->
@@ -36,7 +36,7 @@
 							<div class="section-nav">
 								<ul class="section-tab-nav tab-nav">
 									<?php foreach ($product_cats as $product_cat) {?>
-										<li class="<?= ($product_cat['id']==$cat_id)?'active':'' ?>"><a href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
+										<li class="<?= ($product_cat['id']==$cat_id)?'active':'' ?>"><a href="/demo/cate/category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
 									<?php } ?>
 								</ul>
 							</div>

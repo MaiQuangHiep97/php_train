@@ -33,7 +33,17 @@
                                             <div class="form-floating mb-3">
                                             <input type = "password" class = "form-control" name = "password" placeholder = "Password" id = "password"/>
                                             <?php echo(!empty($errors)&& array_key_exists('password', $errors))?'<span style="color: red;">'.$errors['password'].'</span>':false?>
-                                        </div>
+                                            </div>
+                                            <label>Roles</label><br>
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="radio" checked name="type" id="user" value="user">
+                                            <label class="form-check-label" for="user">User</label>
+                                            </div>
+                                            <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="type" id="admin" value="admin">
+                                            <label class="form-check-label" for="admin">Admin</label>
+                                            </div>
+                                            <?php echo(!empty($errors)&& array_key_exists('type', $errors))?'<span style="color: red;">'.$errors['type'].'</span>':false?>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
                                             <button type = "submit" class = "form-control btn btn-primary">Add User</button>
                                             </div>

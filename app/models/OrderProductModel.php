@@ -9,7 +9,13 @@ class OrderProductModel extends Model
         ->get();
         return $data;
     }
-    
+    public function getCustomer($id)
+    {
+        $data = $this->db->table('tbl_customers')
+            ->join('tbl_users', 'tbl_users.id=tbl_customers.user_id')->select('tbl_users.id as id_user, tbl_customers.id as id_customer, phone, address, email, name')
+            ->where('user_id', '=', $id)->get();
+        return $data;
+    }
     public function tableFill()
     {
         return 'tbl_order_products';

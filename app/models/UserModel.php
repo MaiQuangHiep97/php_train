@@ -17,6 +17,16 @@ class UserModel extends Model
         $data = $this->db->table('tbl_users')->get();
         return $data;
     }
+    // public function getList($type)
+    // {
+    //     $data = $this->db->table('tbl_users')->where('type', '=', $type)->get();
+    //     return $data;
+    // }
+    public function getPagi($limit, $start, $type)
+    {
+        $data = $this->db->table('tbl_users')->where('type', '=', $type)->limit($limit, $start)->get();
+        return $data;
+    }
     public function updateUser($data)
     {
         if (!empty($data)) {

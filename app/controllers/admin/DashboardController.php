@@ -2,11 +2,12 @@
 class DashboardController extends Controller
 {
     public $model;
+    public $response;
     public function __construct()
     {
+        $this->response = new Response();
         if (!$this->auth()) {
-            $response = new Response();
-            $response->redirect('admin/login');
+            $this->response->redirect('admin/login');
         }
         $this->model = $this->model('OrderModel');
     }
@@ -15,9 +16,9 @@ class DashboardController extends Controller
         try {
             $this->data['user'] = $_SESSION['user_login']['name'];
             $orders = $this->model->getAll();
-            $limit = 2;
+            $limit = 10;
             if (count($orders)>$limit) {
-                $data = $this->pagi($orders, $limit);
+                $data = Paginator::pagi($orders, $limit);
                 if ($data['total']>0) {
                     $this->data['orders'] = $this->model->pagi_get($limit, $data['start']);
                     $this->data['pagination']=$data['button_pagination'];
@@ -25,11 +26,8 @@ class DashboardController extends Controller
             } else {
                 $this->data['orders'] = $this->model->getAll();
             }
-            $this->data['cancel']=$this->model->countCancel();
-            $this->data['handle']=$this->model->countHandle();
-            $this->data['transport']=$this->model->countTransport();
-            $this->data['done']=$this->model->countDone();
-            $total=$this->db->table('tbl_orders')->where('status', '=', 'done')->select('total_price')->get();
+            $this->data = $this->getCount();
+            $total=$this->model->getTotal();
             $sum=0;
             foreach ($total as $value) {
                 $sum += $value['total_price'];
@@ -40,5 +38,13 @@ class DashboardController extends Controller
             $error_message = $e->getMessage();
             echo "Database error: $error_message";
         }
+    }
+    public function getCount()
+    {
+        $this->data['cancel'] = $this->model->countCancel();
+        $this->data['handle'] = $this->model->countHandle();
+        $this->data['transport'] = $this->model->countTransport();
+        $this->data['done'] = $this->model->countDone();
+        return $this->data;
     }
 }

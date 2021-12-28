@@ -13,7 +13,10 @@ class Connection
                 PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
             ];
-            $con = new PDO($dsn, $config['user'], "", $options);
+            if (empty($config['pass'])) {
+                $config['pass'] = '';
+            }
+            $con = new PDO($dsn, $config['user'], $config['pass'], $options);
             self::$conn = $con;
         } catch (Exception $exception) {
             $mess = $exception->getMessage();

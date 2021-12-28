@@ -8,10 +8,11 @@
     <?php unset($_SESSION['success']);
 } ?>
 
-                        <h1 class="mt-4">List user</h1>
+                        <h1 class="mt-4"><?= (($type == 'admin')?'List Admin':'List User') ?></h1>
+                        <a href="<?php echo _WEB_ROOT;?>/admin/user/add" class="btn btn-primary" style="float:right">Add User</a>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a href="<?php echo _DIR_ROOT;?>/dashboardcontroller/">Dashboard</a></li>
-                            <li class="breadcrumb-item active">List User</li>
+                            <li class="breadcrumb-item active"></li>
                         </ol>
                         <?php if (count($users)>0) {?>
                         <div class="card mb-4" >
@@ -41,9 +42,9 @@
                                             <td><?=$value['phone']?></td>
                                             <td><?=$value['type']?></td>
                                             <td>    
-                                                <a href="edit?id=<?= $value['id']?>">Edit</a>
+                                                <a href="<?php echo _WEB_ROOT; ?>/admin/user/edit?id=<?= $value['id']?>">Edit</a>
                                                 <span>/</span>
-                                                <?php if ($value['id'] !== $_SESSION['user_login']['id']) {?><a href="delete?id=<?= $value['id']?>">Delete</a>  
+                                                <?php if ($value['id'] !== $_SESSION['user_login']['id']) {?><a href="<?php echo _WEB_ROOT;?>/admin/user/delete?id=<?= $value['id']?>">Delete</a>  
                                                 <?php } ?>                   
                                             </td>
                                         </tr>

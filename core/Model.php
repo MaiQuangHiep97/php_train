@@ -9,6 +9,7 @@ abstract class Model extends Database
     abstract public function tableFill();
     abstract public function fieldFill();
     abstract public function primaryKey();
+    
     public function all()
     {
         $tableName = $this->tableFill();

@@ -11,7 +11,7 @@
 					<li class="active"><a href="/demo">Home</a></li>
 						<?php if (isset($product_cats)) {
     foreach ($product_cats as $product_cat) {?>
-								<li><a href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
+								<li><a href="/demo/cate/category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
 							<?php }
 }?>
 						 
@@ -39,7 +39,7 @@
 							<div class="section-nav">
 								<ul class="section-tab-nav tab-nav">
 									<?php foreach ($product_cats as $product_cat) {?>
-										<li><a href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
+										<li><a href="/demo/cate/category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
 									<?php } ?>
 								</ul>
 							</div>

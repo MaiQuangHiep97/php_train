@@ -8,6 +8,11 @@ class productCatModel extends Model
         $data = $this->db->table('tbl_product_cats')->get();
         return $data;
     }
+    public function pagiGet($limit, $start)
+    {
+        $data = $this->db->table('tbl_product_cats')->limit($limit, $start)->get();
+        return $data;
+    }
     public function insertCat($data)
     {
         $this->db->table('tbl_product_cats')->insert($data);

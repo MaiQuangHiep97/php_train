@@ -3,18 +3,18 @@ class OrderController extends Controller
 {
     public $model;
     public $data = array();
+    public $response;
     public function __construct()
     {
-        $response = new Response();
+        $this->response = new Response();
         if (!$this->authCustomer()) {
-            $response->redirect('customer/login');
+            $this->response->redirect('customer/login');
         } else {
             $this->model = $this->model('OrderModel');
         }
     }
     public function index()
     {
-        $response = new Response();
         if (isset($_SESSION['customer_login'])) {
             $this->data['customer'] = $this->db->table('tbl_users')
                         ->where('id', '=', $_SESSION['customer_login']['id'])->first();
@@ -25,29 +25,32 @@ class OrderController extends Controller
             $this->data['cart'] = $_SESSION['cart'];
             $this->data['errors'] = Session::flash('errors');
         } else {
-            $response->redirect('');
+            $this->response->redirect('');
         }
         $this->data['product_cats'] = $this->model('ProductCatModel')->getAll();
         $this->render('clients/order/index', $this->data);
     }
+    public function validateCheckout($request)
+    {
+        $request->rules([
+            'phone'=>'required|regex:/^[0-9]*$/',
+            'address'=>'required',
+            ]);
+        $request->message([
+            'phone.required'=>'Please enter phone',
+            'phone.regex'=>'Please enter valid phone!',
+            'address.required'=>'Please enter address!',
+            ]);
+        $validate = $request->validate();
+        return $validate;
+    }
     public function postCheckout()
     {
-        $response = new Response();
         if (!empty($_POST)) {
             $request = new Request();
-            $request->rules([
-                'phone'=>'required|regex:/^[0-9]*$/',
-                'address'=>'required',
-                ]);
-            $request->message([
-                'phone.required'=>'Please enter phone',
-                'phone.regex'=>'Please enter valid phone!',
-                'address.required'=>'Please enter address!',
-                ]);
-            $validate = $request->validate();
-            if (!$validate) {
+            if (!$this->validateCheckout($request)) {
                 Session::flash('errors', $request->errors());
-                $response->redirect('checkout');
+                $this->response->redirect('checkout');
             }
             //Update
             $phone = [
@@ -83,7 +86,7 @@ class OrderController extends Controller
                         $this->db->table('tbl_order_products')->insert($data);
                     }
                     unset($_SESSION['cart']);
-                    $response->redirect('order/done');
+                    $this->response->redirect('order/done');
                 } else {
                     $exception = new Exception('Order fails');
                     throw $exception;
@@ -92,7 +95,7 @@ class OrderController extends Controller
                 echo $e->getMessage();
             }
         } else {
-            $response->redirect('');
+            $this->response->redirect('');
         }
     }
     public function done()

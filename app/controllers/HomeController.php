@@ -13,9 +13,9 @@ class HomeController extends Controller
             $this->data['customer'] = $_SESSION['customer_login'];
         }
         $this->data['products'] = $this->model('ProductModel')->getProducts();
-        $limit = 8;
+        $limit = 4;
         if (count($this->data['products'])>$limit) {
-            $data = $this->pagi($this->data['products'], $limit);
+            $data = Paginator::pagi($this->data['products'], $limit);
             if ($data['total']>0) {
                 $this->data['products'] = $this->model->getPagi($limit, $data['start']);
             }
@@ -29,13 +29,12 @@ class HomeController extends Controller
         if (isset($_SESSION['customer_login'])) {
             $this->data['customer'] = $_SESSION['customer_login'];
         }
-        $this->data['products'] = $this->db->table('tbl_products')->where('cat_id', '=', $cat_id)->get();
+        $this->data['products'] = $this->model->getWithCat($cat_id);
         $limit = 4;
         if (count($this->data['products'])>$limit) {
-            $data = $this->pagi($this->data['products'], $limit);
+            $data = Paginator::pagi($this->data['products'], $limit);
             if ($data['total']>0) {
-                $this->data['products'] = $this->db->table('tbl_products')
-            ->where('cat_id', '=', $cat_id)->limit($limit, $data['start'])->get();
+                $this->data['products'] = $this->model->getWithCatPagi($cat_id, $limit, $data['start'])->get();
             }
             $this->data['pagination']=$data['button_pagination'];
         }

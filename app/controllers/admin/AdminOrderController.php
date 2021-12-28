@@ -15,16 +15,14 @@ class AdminOrderController extends Controller
     {
         try {
             $this->data['user'] = $_SESSION['user_login']['name'];
-            $orders = $this->model->getAll();
-            $limit = 1;
-            if (count($orders)>$limit) {
-                $data = $this->pagi($orders, $limit);
+            $this->data['orders'] = $this->model->getAll();
+            $limit = 10;
+            if (count($this->data['orders']) > $limit) {
+                $data = Paginator::pagi($this->data['orders'], $limit);
                 if ($data['total']>0) {
                     $this->data['orders'] = $this->model->pagi_get($limit, $data['start']);
                 }
-                $this->data['pagination']=$data['button_pagination'];
-            } else {
-                $this->data['orders'] = $this->model->getAll();
+                $this->data['pagination'] = $data['button_pagination'];
             }
             $this->render('admins/order/list', $this->data);
         } catch (PDOException $e) {
@@ -32,44 +30,50 @@ class AdminOrderController extends Controller
             echo "Database error: $error_message";
         }
     }
+    public function handleStatus($statusNow)
+    {
+        $status = array();
+        if ($statusNow == 'cancel') {
+            $status = [
+                'cancel' => 'Cancel',
+                'handle' => 'Handle',
+            ];
+        }
+        if ($statusNow == 'handle') {
+            $status = [
+                'cancel' => 'Cancel',
+                'handle' => 'Handle',
+                'transport' => 'Transport',
+            ];
+        }
+        if ($statusNow == 'transport') {
+            $status = [
+                'transport' => 'Transport',
+                'done' => 'Done',
+            ];
+        }
+        if ($statusNow == 'done') {
+            $status = [
+                'done' => 'Done',
+            ];
+        }
+        return $status;
+    }
+    public function getData($id)
+    {
+        $order_product = $this->model('OrderProductModel');
+        $this->data['user'] = $_SESSION['user_login']['name'];
+        $this->data['order'] = $this->model->find($id);
+        $this->data['customer'] = $order_product->getCustomer($this->data['order']['user_id']);
+        $this->data['order_products'] = $order_product->getDetail($id);
+        return $this->data;
+    }
     public function show()
     {
         try {
             $id = $_GET['id'];
-            $order_product = $this->model('OrderProductModel');
-            $customer = $this->model('UserModel');
-            $this->data['user'] = $_SESSION['user_login']['name'];
-            $this->data['order'] = $this->model->find($id);
-            $this->data['customer'] = $this->db->table('tbl_customers')
-            ->join('tbl_users', 'tbl_users.id=tbl_customers.user_id')->select('tbl_users.id as id_user, tbl_customers.id as id_customer, phone, address, email, name')
-            ->where('user_id', '=', $this->data['order']['user_id'])->get();
-            $this->data['order_products'] = $order_product->getDetail($id);
-            $status = array();
-            if ($this->data['order']['status']=='cancel') {
-                $status = array(
-                        'cancel'=>'Cancel',
-                        'handle'=>'Handle',
-                    );
-            }
-            if ($this->data['order']['status']=='handle') {
-                $status = array(
-                        'cancel'=>'Cancel',
-                        'handle'=>'Handle',
-                        'transport'=>'Transport',
-                    );
-            }
-            if ($this->data['order']['status']=='transport') {
-                $status = array(
-                        'transport'=>'Transport',
-                        'done'=>'Done',
-                    );
-            }
-            if ($this->data['order']['status']=='done') {
-                $status = array(
-                        'done'=>'Done',
-                    );
-            }
-            $this->data['status']=$status;
+            $this->data = $this->getData($id);
+            $this->data['status'] = $this->handleStatus($this->data['order']['status']);
             $this->render('admins/order/show', $this->data);
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
@@ -81,7 +85,7 @@ class AdminOrderController extends Controller
         try {
             if (!empty($_POST['status'])) {
                 $data = [
-                    'status'=>$_POST['status']
+                    'status' => $_POST['status']
                 ];
                 $this->model->updateStatus($_POST['id'], $data);
                 $_SESSION['success'] = "Update successfully";

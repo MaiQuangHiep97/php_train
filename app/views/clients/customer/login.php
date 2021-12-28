@@ -12,6 +12,10 @@
     <div class="alert alert-danger text-danger text-center"><?php echo $_SESSION['error']?></div>
     <?php unset($_SESSION['error']);
 } ?>
+<?php if (!empty($_SESSION['success'])) {?>
+    <div class="alert alert-success text-success text-center"><?php echo $_SESSION['success']?></div>
+    <?php unset($_SESSION['success']);
+} ?>
                                         <form method="POST" id="login-form" action="<?php echo _WEB_ROOT;?>/customer/postLogin">
                                         <input type="hidden" name="type" value="user">
                                             <label for="email">Email address</label>

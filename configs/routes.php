@@ -11,7 +11,7 @@ $routes['admin/logout'] = 'admin/authcontroller/logout';
 $routes['admin/getChange'] = 'admin/authcontroller/getChange';
 $routes['admin/postChange'] = 'admin/authcontroller/postChange';
 //UserController
-$routes['admin/user/list'] = 'admin/usercontroller';
+$routes['admin/list/.+-(\d+)'] = 'admin/usercontroller/getList/$1';
 $routes['admin/user/add'] = 'admin/usercontroller/add';
 $routes['admin/user/store'] = 'admin/usercontroller/store';
 $routes['admin/user/edit'] = 'admin/usercontroller/edit';
@@ -45,7 +45,7 @@ $routes['customer/postChange'] = 'customer/customerController/postChange';
 $routes['customer/info'] = 'customer/customercontroller/info';
 $routes['customer/postInfo'] = 'customer/customercontroller/postInfo';
 //HomeController
-$routes['.+-(\d+)'] = 'homecontroller/getProduct/$1';
+$routes['cate/.+-(\d+)'] = 'homecontroller/getProduct/$1';
 $routes['product/detail'] = 'customer/productcontroller';
 $routes['search'] = 'homecontroller/search';
 //CartController
