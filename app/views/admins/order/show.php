@@ -52,7 +52,7 @@
                                 </a>
                                 <a href = "#" class = "list-group-item">
                                     <h6 class = "list-group-item-heading">Status</h6>
-                                    <form action="<?php echo _WEB_ROOT;?>/admin/order/status" method="POST">
+                                    <form action="<?php echo _WEB_ROOT;?>/admin-order-status" method="POST">
                                     <input type="hidden" name="id" value="<?=$order['id']?>">
                                         <?php foreach ($status as $key => $value) {?>
                                             <div class="form-check">

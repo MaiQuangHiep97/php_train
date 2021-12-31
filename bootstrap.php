@@ -1,7 +1,7 @@
 <?php
 define('_DIR_ROOT', __DIR__);
-define('URL_ASSET', 'http://localhost/demo/public/uploads/');
-define('URL', 'http://localhost/demo');
+define('URL_ASSET', 'http://localhost/Fashion/public/uploads/');
+define('URL', 'http://localhost/Fashion/');
 require_once "configs/routes.php";
 
 // Xử lý Http
@@ -65,4 +65,5 @@ require_once "Repositories/ProductImage/ProductImageRepository.php";
 require_once "core/Session.php";
 require_once "core/Request.php";
 require_once "core/Response.php";
+require_once "vendor/myURL.php";
 require_once "vendor/Paginator.php";

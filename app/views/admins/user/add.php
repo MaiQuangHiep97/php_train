@@ -13,7 +13,7 @@
     <?php unset($_SESSION['error']);
 } ?>
                                             
-                                        <form method="POST" id="add-form" action="<?php echo _WEB_ROOT;?>/admin/user/store">
+                                        <form method="POST" id="add-form" action="<?php echo _WEB_ROOT;?>/admin-user-store">
                                             <label for="username">Name</label>
                                             <div class="form-floating mb-3">
                                             <input type = "text" id="username" class = "form-control"value="<?php echo !empty($old['username'])?$old['username']:false?>" name = "username" placeholder = "Name"/>

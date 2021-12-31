@@ -10,25 +10,66 @@ class AdminProductController extends Controller
     {
         $this->response = new Response();
         if (!$this->auth()) {
-            $this->response->redirect('admin/login');
+            $this->response->redirect('admin-login');
         }
         $this->repoProduct = new ProductRepository();
         $this->repoCate = new ProductCatRepository();
         $this->repoImage = new ProductImageRepository();
     }
-    public function index()
+    public function search()
     {
-        $this->data['user'] = $_SESSION['user_login']['name'];
-        $this->data['products'] = $this->repoProduct->getProduct();
-        $limit = 8;
-        if (count($this->data['products'])>$limit) {
+        $this->data['key'] = $_GET['key'];
+        $limit = 2;
+        $this->data['products'] = $this->repoProduct->getSearch($_GET['key']);
+        if (count($this->data['products']) > $limit) {
             $data = Paginator::pagi($this->data['products'], $limit);
-            if ($data['total']>0) {
-                $this->data['products'] = $this->repoProduct->getPagiCms($limit, $data['start']);
+            if ($data['total'] > 0) {
+                $this->data['products'] = $this->repoProduct->getSearchPagi($limit, $data['start'], $_GET['key']);
             }
             $this->data['pagination'] = $data['button_pagination'];
         }
+        return $this->data;
+    }
+    public function index()
+    {
+        $this->data['user'] = $_SESSION['user_login']['name'];
+        if (!empty($_GET['key'])) {
+            $this->data = $this->search();
+        } elseif (!isset($_GET['price'])) {
+            $this->data['products'] = $this->repoProduct->getProduct();
+            $limit = 2;
+            if (count($this->data['products']) > $limit) {
+                $data = Paginator::pagi($this->data['products'], $limit);
+                if ($data['total'] > 0) {
+                    $this->data['products'] = $this->repoProduct->getPagiCms($limit, $data['start']);
+                }
+                $this->data['pagination'] = $data['button_pagination'];
+            }
+        }
+        if (!empty($_GET['price'])) {
+            $this->data = $this->filler_price();
+        }
         $this->render('admins/product/list', $this->data);
+    }
+    public function filler_price()
+    {
+        if (!empty($_GET['price'])) {
+            $price = explode('-', $_GET['price']);
+            $from = (int)$price[0];
+            $to = (int)$price[1];
+            if ($to > $from) {
+                $limit = 2;
+                $this->data['products'] = $this->repoProduct->getFill($from, $to);
+                if (count($this->data['products']) > $limit) {
+                    $data = Paginator::pagi($this->data['products'], $limit);
+                    if ($data['total'] > 0) {
+                        $this->data['products'] = $this->repoProduct->getFillPagi($limit, $data['start'], $from, $to);
+                    }
+                    $this->data['pagination'] = $data['button_pagination'];
+                }
+                return $this->data;
+            }
+        }
     }
     public function add()
     {
@@ -74,12 +115,12 @@ class AdminProductController extends Controller
             if (!$this->validateProduct($request)) {
                 Session::flash('errors', $request->errors());
                 Session::flash('old', $request->getFields());
-                $this->response->redirect('admin/product/add');
+                $this->response->redirect('admin-product-add');
             }
             if (!empty($_POST) && !empty($_FILES)) {
                 $file_name = $_FILES['product_thumb']['name'];
                 if (!$this->validateFile($file_name)) {
-                    $this->response->redirect('admin/product/add');
+                    $this->response->redirect('admin-product-add');
                 } else {
                     $upload_dir = 'public/uploads/products/';
                     $file_name = $this->handleFile($file_name, $upload_dir);
@@ -103,7 +144,7 @@ class AdminProductController extends Controller
                     foreach ($filenames as $key => $value) {
                         $file_name = $value;
                         if (!$this->validateFile($file_name)) {
-                            $this->response->redirect('admin/product/add');
+                            $this->response->redirect('admin-product-add');
                         } else {
                             $file_name = $this->handleFile($file_name, $upload_dir);
                             $upload_file = $upload_dir.$file_name;
@@ -117,17 +158,16 @@ class AdminProductController extends Controller
                     }
                 }
                 $_SESSION['success'] = "Add product successfully";
-                $this->response->redirect('admin/product/list');
+                $this->response->redirect('admin-product-list');
             }
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             echo "Database error: $error_message";
         }
     }
-    public function delete()
+    public function delete($id)
     {
         try {
-            $id = $_GET['id'];
             $product = $this->repoProduct->find($id);
             $upload_dir='public/uploads/products/';
             if (file_exists($upload_dir.$product['product_thumb'])) {
@@ -144,16 +184,15 @@ class AdminProductController extends Controller
             }
             $this->repoImage->deleteImages($id);
             $_SESSION['success'] = "Delete product successfully";
-            $this->response->redirect('admin/product/list');
+            $this->response->redirect('admin-product-list');
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             echo "Database error: $error_message";
         }
     }
-    public function edit()
+    public function edit($id)
     {
         try {
-            $id = $_GET['id'];
             $this->data['errors'] = Session::flash('errors');
             $this->data['old'] = Session::flash('old');
             $this->data['user'] = $_SESSION['user_login']['name'];
@@ -166,16 +205,15 @@ class AdminProductController extends Controller
             echo "Database error: $error_message";
         }
     }
-    public function update()
+    public function update($id)
     {
         try {
-            $id = $_GET['id'];
             // Validate form
             $request = new Request();
             if (!$this->validateProduct($request)) {
                 Session::flash('errors', $request->errors());
                 Session::flash('old', $request->getFields());
-                $this->response->redirect('admin/product/edit?id='.$id);
+                $this->response->redirect('admin-product-edit?id='.$id);
             }
             $thumb = $this->repoProduct->find($id);
             $data = [
@@ -224,7 +262,7 @@ class AdminProductController extends Controller
                 }
             }
             $_SESSION['success'] = "Update product successfully";
-            $this->response->redirect('admin/product/list');
+            $this->response->redirect('admin-product-list');
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             echo "Database error: $error_message";

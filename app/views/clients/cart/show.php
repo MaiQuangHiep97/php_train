@@ -61,12 +61,12 @@
                     <td>   </td>
                         <td>   </td>
                         <td>   </td>
-                        <td><a href="/demo/cart/destroy" class="btn btn-danger">Delete</a></td>
+                        <td><a href="<?=_WEB_ROOT?>/cart-destroy" class="btn btn-danger">Delete</a></td>
                         <td>
-                            <a href="/demo" class="btn btn-primary">Continue Shopping</a>
+                            <a href="<?=_WEB_ROOT?>" class="btn btn-primary">Continue Shopping</a>
                         </td>
                         <td>
-                            <a href="/demo/checkout" class="btn btn-success">Checkout</a>
+                            <a href="<?=_WEB_ROOT?>/checkout" class="btn btn-success">Checkout</a>
                         </td>
                     </tr>
                 </tbody>
@@ -74,7 +74,7 @@
             <?php } else {?>
                 <div class="text-center" style="margin-top: 30px;">
                         <h4>There are no items in the cart </h4>
-                        <a href="/demo">Home page</a>
+                        <a href="<?=_WEB_ROOT?>">Home page</a>
                         </div>
                     <?php } ?>
         </div>
@@ -108,7 +108,7 @@ $(document).ready(function(){
         var numOrder = $(this).val();
         var id = $(this).attr('data-id');
         $.ajax({
-            url:'<?=URL?>/cart/update',
+            url:'<?=URL?>/cart-update',
             method:'POST',
             data: {numOrder:numOrder,
             id:id},
@@ -133,7 +133,7 @@ $(document).ready(function(){
     $('.remove-cart').click(function(){
         var id = $(this).attr('data-id');
         $.ajax({
-            url:'<?=URL?>/cart/delete',
+            url:'<?=URL?>/cart-delete',
             method:'POST',
             data: {id:id},
             dataType:'json',

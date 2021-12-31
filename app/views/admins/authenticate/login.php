@@ -12,7 +12,7 @@
     <div class="alert alert-danger text-danger text-center"><?php echo $_SESSION['error']?></div>
     <?php unset($_SESSION['error']);
 } ?>
-                                        <form method="POST" id="login-form" action="<?php echo _WEB_ROOT;?>/admin/postLogin">
+                                        <form method="POST" id="login-form" action="<?php echo _WEB_ROOT;?>/admin-postLogin">
                                             <label for="email">Email address</label>
                                             <div class="form-floating mb-3">
                                             <input type = "text" id="email" class = "form-control" value="<?php echo !empty($old['email'])?$old['email']:false?>" name = "email" placeholder = "Email"/>

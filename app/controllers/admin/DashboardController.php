@@ -7,7 +7,7 @@ class DashboardController extends Controller
     {
         $this->response = new Response();
         if (!$this->auth()) {
-            $this->response->redirect('admin/login');
+            $this->response->redirect('admin-login');
         }
         $this->repoOrder = new OrderRepository();
     }

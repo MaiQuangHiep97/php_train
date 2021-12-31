@@ -9,13 +9,15 @@
 } ?>
 
                         <h1 class="mt-4"><?= (($type == 'admin')?'List Admin':'List User') ?></h1>
-                        <a href="<?php echo _WEB_ROOT;?>/admin/user/add" class="btn btn-primary" style="float:right">Add User</a>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="<?php echo _DIR_ROOT;?>/dashboardcontroller/">Dashboard</a></li>
-                            <li class="breadcrumb-item active"></li>
-                        </ol>
+                        <form action="<?php echo _WEB_ROOT;?>/admin-list-<?= $type ?>.html" method="GET" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                            <div class="input-group">
+                            <input class="form-control" value="<?= (isset($key))?$key:'' ?>" id="key-search" name="key" type="text" placeholder="Search for..." />
+                            <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search key"></i></button>
+                            </div>
+                        </form>
+                        <a href="<?php echo _WEB_ROOT;?>/admin-user-add" class="btn btn-primary" style="float:right">Add User</a>
                         <?php if (count($users)>0) {?>
-                        <div class="card mb-4" >
+                        <div class="card mb-4 mt-4" >
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 DataTable Example
@@ -42,9 +44,9 @@
                                             <td><?=$value['phone']?></td>
                                             <td><?=$value['type']?></td>
                                             <td>    
-                                                <a href="<?php echo _WEB_ROOT; ?>/admin/user/edit?id=<?= $value['id']?>">Edit</a>
+                                                <a href="<?php echo _WEB_ROOT; ?>/admin-user-edit-<?= $value['id']?>.html">Edit</a>
                                                 <span>/</span>
-                                                <?php if ($value['id'] !== $_SESSION['user_login']['id']) {?><a href="<?php echo _WEB_ROOT;?>/admin/user/delete?id=<?= $value['id']?>">Delete</a>  
+                                                <?php if ($value['id'] !== $_SESSION['user_login']['id']) {?><a href="<?php echo _WEB_ROOT;?>/admin-user-delete?id=<?= $value['id']?>">Delete</a>  
                                                 <?php } ?>                   
                                             </td>
                                         </tr>

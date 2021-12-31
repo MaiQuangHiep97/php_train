@@ -13,7 +13,7 @@
     <?php unset($_SESSION['error']);
 } ?>
                                             
-                                        <form method="POST" id="change-form" action="<?php echo _WEB_ROOT;?>/customer/postChange">
+                                        <form method="POST" id="change-form" action="<?php echo _WEB_ROOT;?>/customer-postChange">
                                             <label for="email">Email address</label>
                                             <div class="form-floating mb-3">
                                             <input type = "text" id="email" disabled class = "form-control" name = "email" value="<?php echo $customer['email']?>"/>

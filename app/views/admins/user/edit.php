@@ -13,7 +13,7 @@
     <?php unset($_SESSION['error']);
 } ?>
                                             
-                                        <form method="POST" id="edit-form" action="<?php echo _WEB_ROOT;?>/admin/user/update">
+                                        <form method="POST" id="edit-form" action="<?php echo _WEB_ROOT;?>/admin-user-update">
                                             <input type="hidden" name="id" value="<?= $user['id'] ?>">
                                             <label for="username">Name</label>
                                             <div class="form-floating mb-3">

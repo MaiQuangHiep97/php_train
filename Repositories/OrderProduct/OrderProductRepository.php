@@ -13,17 +13,18 @@ class OrderProductRepository extends BaseRepository implements OrderProductRepos
         ->select('tbl_order_products.id as id_order_product, tbl_products.id as id_products, order_id,product_thumb,quantity, product_name,product_price')->where('order_id', '=', $id)
         ->get();
     }
-    // public function getOrder()
-    // {
-    //     return $this->model->db->table('tbl_orders')->join('tbl_users', 'tbl_users.id=tbl_orders.user_id')
-    //     ->join('tbl_customers', 'tbl_customers.user_id=tbl_users.id')
-    //     ->select('tbl_orders.id as id_order,tbl_customers.address as address_customer,tbl_orders.address as address_order, tbl_users.id as id_user, status, total_price, name, phone, code')->get();
-    // }
-    // public function pagiGetOrder($limit, $start)
-    // {
-    //     return $this->model->db->table('tbl_orders')->join('tbl_users', 'tbl_users.id=tbl_orders.user_id')
-    //     ->join('tbl_customers', 'tbl_customers.user_id=tbl_users.id')
-    //     ->select('tbl_orders.id as id_order,tbl_customers.address as address_customer,tbl_orders.address as address_order, tbl_users.id as id_user, status, total_price, name, phone, code')
-    //     ->limit($limit, $start)->get();
-    // }
+    public function updateQty($order_id, $product_id, $data)
+    {
+        return $this->model->db->table('tbl_order_products')->where('order_id', '=', $order_id)
+        ->where('product_id', '=', $product_id)->update($data);
+    }
+    public function getWithOrder($id)
+    {
+        return $this->model->db->table('tbl_order_products')->where('order_id', '=', $id)->select('product_id')->get();
+    }
+    public function getQty($order_id, $product_id)
+    {
+        return $this->model->db->table('tbl_order_products')->where('order_id', '=', $order_id)
+        ->where('product_id', '=', $product_id)->select('quantity')->first();
+    }
 }

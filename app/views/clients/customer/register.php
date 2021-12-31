@@ -12,7 +12,7 @@
     <div class="alert alert-danger text-danger text-center"><?php echo $_SESSION['error']?></div>
     <?php unset($_SESSION['error']);
 } ?>
-                                        <form method="POST" id="register-form" action="<?php echo _WEB_ROOT;?>/customer/postRegister">
+                                        <form method="POST" id="register-form" action="<?php echo _WEB_ROOT;?>/customer-postRegister">
                                         <label for="username">Name</label>
                                             <div class="form-floating mb-3">
                                             <input type = "text" id="username" class = "form-control" value="<?php echo !empty($old['username'])?$old['username']:false?>" name = "username" placeholder = "Name"/>
@@ -37,7 +37,7 @@
                                             <button type = "submit" class = "form-control btn btn-primary">Register</button>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4">
-                                            <p>Do you have account? <a href="/demo/customer/login">Login</a></p>
+                                            <p>Do you have account? <a href="<?=_WEB_ROOT?>/customer-login">Login</a></p>
                                             </div>
                                         </form>
                                     </div>

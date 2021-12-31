@@ -12,7 +12,7 @@ class OrderController extends Controller
     {
         $this->response = new Response();
         if (!$this->authCustomer()) {
-            $this->response->redirect('customer/login');
+            $this->response->redirect('customer-login');
         }
         $this->repoOrder = new OrderRepository();
         $this->repoCate = new ProductCatRepository();
@@ -93,7 +93,7 @@ class OrderController extends Controller
                         $this->repoOrderProduct->insert($data);
                     }
                     unset($_SESSION['cart']);
-                    $this->response->redirect('order/done');
+                    $this->response->redirect('order-done');
                 } else {
                     $exception = new Exception('Order fails');
                     throw $exception;

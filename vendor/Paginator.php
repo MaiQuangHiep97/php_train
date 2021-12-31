@@ -1,8 +1,10 @@
 <?php
 class Paginator
 {
+    public $id;
     public static function pagination($total_page, $page)
     {
+        $myUrl = new myURL();
         if ($total_page>5) {
             if ($page<6) {
                 for ($i=1; $i < 6; $i++) {
@@ -39,7 +41,7 @@ class Paginator
         for ($i=0; $i < count($page_array); $i++) {
             if ($page==$page_array[$i]) {
                 $page_link.='<li>
-                <a href="?page='.$page_array[$i].'" class="page-link active disabled" num-page="'.$page_array[$i].'">'.$page_array[$i].'</a>
+                <a href="'.$myUrl->addParams('page', $page_array[$i]).'" class="page-link active disabled" num-page="'.$page_array[$i].'">'.$page_array[$i].'</a>
                 </li>';
                 $prev_id = $page_array[$i]-1;
                 if ($prev_id<=0) {
@@ -48,7 +50,7 @@ class Paginator
                     </li>';
                 } else {
                     $prev_link.='<li>
-                    <a href="?page='.$prev_id.'" class="page-link" num-page="'.$prev_id.'">Prev</a>
+                    <a href="'.$myUrl->addParams('page', $prev_id).'" class="page-link" num-page="'.$prev_id.'">Prev</a>
                     </li>';
                 }
                 $next_id = $page_array[$i]+1;
@@ -58,7 +60,7 @@ class Paginator
                     </li>';
                 } else {
                     $next_link.='<li>
-                    <a href="?page='.$next_id.'" class="page-link" num-page="'.$next_id.'">Next</a>
+                    <a href="'.$myUrl->addParams('page', $next_id).'" class="page-link" num-page="'.$next_id.'">Next</a>
                     </li>';
                 }
             } else {
@@ -68,7 +70,7 @@ class Paginator
                     </li>';
                 } else {
                     $page_link.='<li>
-                    <a href="?page='.$page_array[$i].'" class="page-link" num-page="'.$page_array[$i].'">'.$page_array[$i].'</a>
+                    <a href="'.$myUrl->addParams('page', $page_array[$i]).'" class="page-link" num-page="'.$page_array[$i].'">'.$page_array[$i].'</a>
                     </li>';
                 }
             }

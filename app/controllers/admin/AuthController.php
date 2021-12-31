@@ -23,13 +23,13 @@ class AuthController extends Controller
     {
         $request->rules([
             'email'=>'required|email',
-            'password'=>'required|min:3'
+            'password'=>'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/'
         ]);
         $request->message([
             'email.required'=>'Please enter email',
             'email.email'=>'Please enter valid email!',
             'password.required'=>'Please enter password',
-            'password.min'=>'Password must be more than 3 characters',
+            'password.regex'=>'Minimum eight characters, at least one uppercase letter, one lowercase letter and one number:',
         ]);
         $validate = $request->validate();
         return $validate;
@@ -73,7 +73,7 @@ class AuthController extends Controller
         }
         unset($_SESSION['is_login']);
         unset($_SESSION['user_login']);
-        $this->response->redirect('admin/login');
+        $this->response->redirect('admin-login');
     }
     public function getChange()
     {
@@ -82,18 +82,18 @@ class AuthController extends Controller
             $this->data['user'] = $_SESSION['user_login'];
             $this->render('admins/authenticate/change', $this->data);
         } else {
-            $this->response->redirect('admin/login');
+            $this->response->redirect('admin-login');
         }
     }
     public function validateChange($request)
     {
         $request->rules([
-            'password' => 'required|min:3',
+            'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/',
             'confirm_password' => 'required|match:password'
         ]);
         $request->message([
             'password.required' => 'Please enter password',
-            'password.min' => 'Password must be more than 3 characters',
+            'password.regex'=>'Minimum eight characters, at least one uppercase letter, one lowercase letter and one number:',
             'confirm_password.required' => 'Please enter confirm password',
             'confirm_password.match' => 'Confirm password does not match',
         ]);
@@ -108,7 +108,7 @@ class AuthController extends Controller
                 $request = new Request();
                 if (!$this->validateChange($request)) {
                     Session::flash('errors', $request->errors());
-                    $this->response->redirect('admin/getChange');
+                    $this->response->redirect('admin-getChange');
                 }
                 // Change Password
                 if (!empty($_POST['password'])&&$_POST['password'] == $_POST['confirm_password']) {
@@ -120,7 +120,7 @@ class AuthController extends Controller
                     $this->response->redirect('dashboard');
                 }
             } else {
-                $this->response->redirect('admin/login');
+                $this->response->redirect('admin-login');
             }
         } catch (PDOException $e) {
             $error_message = $e->getMessage();

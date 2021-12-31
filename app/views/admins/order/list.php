@@ -8,12 +8,33 @@
     <?php unset($_SESSION['success']);
 } ?>
                         <h1 class="mt-4">List Order</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="dashboard">Dashboard</a></li>
-                            <li class="breadcrumb-item active">List Order</li>
-                        </ol>
+                        <div class="row">
+                            <div class="col-md-4">
+                        <form action="<?php echo _WEB_ROOT;?>/admin-order-list" class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                            <div class="input-group">
+                            <input class="form-control" value="<?= (isset($key))?$key:'' ?>" id="key-search" name="key" type="text" placeholder="Search for..." />
+                            <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search key"></i></button>
+                            </div>
+                        </form>
+                        </div>
+                        <div class="col-md-4" style="display: flex;justify-content: center;">
+                        <form action="<?php echo _WEB_ROOT;?>/admin-order-list">
+                                <select class="form-control" style="width: 207px; float:left" name="status">
+                                <option disabled selected>Status</option>
+                                <option value="cancel" <?=((isset($status)) && ($status == 'cancel'))?'selected':''?>>Cancel</option>
+                                <option value="handle" <?= ((isset($status)) && ($status == 'handle'))?'selected':'' ?>>Handle</option>
+                                <option value="transport" <?= ((isset($status)) && ($status == 'transport'))?'selected':'' ?>>Transport</option>
+                                <option value="done" <?= ((isset($status)) && ($status == 'done'))?'selected':'' ?>>Done</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary">Fill</button>
+                                </form>
+                                </div>
+                                <div class="col-md-4">
+                                <a href="<?php echo _WEB_ROOT;?>/admin-order-addOrder" class="btn btn-primary" style="float:right">Add Order</a>
+                                </div>
+                        </div>
                         <?php if (count($orders)>0) {?>
-                            <div class="card mb-4">
+                            <div class="card mb-4 mt-3">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 DataTable Example
@@ -52,7 +73,10 @@
                                             } ?>"><p class="text-capitalize"><?=$value['status']?></p></td>
                                             <td><?=number_format($value['total_price']).'đ'?></td>
                                             <td>
-                                                <a href="detail?id=<?=$value['id_order'] ?>">Detail</a>
+                                                <a href="admin-order-detail-<?=$value['id_order'] ?>.html">Detail</a>
+                                                <?php if ($value['status'] == 'handle') { ?>
+                                                    /<a href="admin-order-edit-<?=$value['id_order'] ?>.html">Edit</a>
+                                               <?php } ?>
                                             </td>
                                         </tr>
                                         <?php

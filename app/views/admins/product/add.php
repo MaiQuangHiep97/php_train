@@ -19,7 +19,7 @@
                                 Add Product
                             </div>
                             <div class="card-body">
-                            <form method="POST" action="<?php echo _WEB_ROOT;?>/admin/product/store" id="addProduct" enctype="multipart/form-data">
+                            <form method="POST" action="<?= _WEB_ROOT;?>/admin-product-store" id="addProduct" enctype="multipart/form-data">
                  
                 <div class="form-group">
                     <label for="product-name">Name</label>

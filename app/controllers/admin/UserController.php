@@ -11,39 +11,48 @@ class UserController extends Controller
         $this->repoCustomer = new CustomerRepository();
         $this->response = new Response();
         if (!$this->auth()) {
-            $this->response->redirect('admin/login');
+            $this->response->redirect('admin-login');
         }
     }
     public function getList($type)
     {
-        try {
-            $this->data['user'] = $_SESSION['user_login']['name'];
-            if (!empty($type)) {
-                if ($type == 1) {
-                    $type = 'admin';
-                } elseif ($type == 2) {
-                    $type = 'user';
+        $this->data['user'] = $_SESSION['user_login']['name'];
+        $this->data['type'] = $type;
+        if (!empty($_GET['key']) && isset($type)) {
+            $this->data = $this->search($type);
+        } elseif (!empty($type)) {
+            $this->data['users'] = $this->repoUser->getList($type);
+            $limit = 10;
+            if (count($this->data['users']) > $limit) {
+                $data = Paginator::pagi($this->data['users'], $limit);
+                if ($data['total'] > 0) {
+                    $this->data['users'] = $this->repoUser->getPagi($limit, $data['start'], $type);
                 }
-                $this->data['users'] = $this->repoUser->getList($type);
-                $limit = 2;
-                if (count($this->data['users']) > $limit) {
-                    $data = Paginator::pagi($this->data['users'], $limit);
-                    if ($data['total'] > 0) {
-                        $this->data['users'] = $this->repoUser->getPagi($limit, $data['start'], $type);
-                    }
-                    $this->data['pagination'] = $data['button_pagination'];
-                }
-                $this->data['type'] = $type;
-                $this->render('admins/user/list', $this->data);
+                $this->data['pagination'] = $data['button_pagination'];
             }
-        } catch (PDOException $e) {
-            echo $e->getMessage();
+        }
+        $this->data['type'] = $type;
+        $this->render('admins/user/list', $this->data);
+    }
+    public function search($type)
+    {
+        if (isset($_GET['key'])) {
+            $this->data['key'] = $_GET['key'];
+            $limit = 10;
+            $this->data['users'] = $this->repoUser->getSearch($_GET['key'], $type);
+            if (count($this->data['users'])>$limit) {
+                $data = Paginator::pagi($this->data['users'], $limit);
+                if ($data['total']>0) {
+                    $this->data['users'] = $this->repoUser->getSearchPagi($limit, $data['start'], $_GET['key'], $type);
+                }
+                $this->data['pagination'] = $data['button_pagination'];
+            }
+            return $this->data;
         }
     }
-    public function edit()
+    public function edit($id)
     {
         try {
-            $id = $_GET['id'];
             $this->data['user'] = $this->repoUser->find($id);
             $this->data['errors'] = Session::flash('errors');
             $this->data['old'] = Session::flash('old');
@@ -59,7 +68,7 @@ class UserController extends Controller
             'username' => 'required|max:20|regex:/^[^0-9]*$/',
             'email' => 'required|email',
             'phone' => 'required|regex:/^[0-9]*$/',
-            'password' => 'required|min:3',
+            'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/',
         ]);
         $request->message([
             'username.required' => 'Please enter username',
@@ -70,7 +79,7 @@ class UserController extends Controller
             'phone.required' => 'Please enter phone',
             'phone.regex' => 'Please enter valid phone',
             'password.required' => 'Please enter password',
-            'password.min' => 'Password must be more than 3 characters',
+            'password.regex'=>'Minimum eight characters, at least one uppercase letter, one lowercase letter and one number:',
         ]);
         $validate = $request->validate();
         return $validate;
@@ -84,7 +93,7 @@ class UserController extends Controller
             if (!$this->validateEdit($request)) {
                 Session::flash('errors', $request->errors());
                 Session::flash('old', $request->getFields());
-                $this->response->redirect('admin/user/edit?id='.$id);
+                $this->response->redirect('admin-user-edit-'.$id);
             }
             //Update
             if (!empty($_POST)) {
@@ -98,15 +107,15 @@ class UserController extends Controller
                 if ($_POST['email'] == $user['email']) {
                     $this->repoUser->update($id, $data);
                     $_SESSION['success'] = "Update successfully";
-                    $this->response->redirect('admin/list/type-1');
+                    $this->response->redirect('admin-list-admin.html');
                 } else {
                     if ($this->repoUser->getUser($_POST['email'], $user['type'])) {
                         $_SESSION['error'] = "Email already exists";
-                        $this->response->redirect('admin/user/edit?id='.$id);
+                        $this->response->redirect('admin-user-edit-'.$id);
                     } else {
                         $this->repoUser->update($id, $data);
                         $_SESSION['success'] = "Update successfully";
-                        $this->response->redirect('admin/list/type-1');
+                        $this->response->redirect('admin-list-admin.html');
                     }
                 }
             }
@@ -127,7 +136,7 @@ class UserController extends Controller
             'username' => 'required|max:20',
             'email' => 'required|email',
             'phone' => 'required|regex:/^[0-9]*$/',
-            'password' => 'required|min:3',
+            'password' => 'required|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/',
             'type' => 'required'
         ]);
         $request->message([
@@ -138,7 +147,7 @@ class UserController extends Controller
             'phone.required' => 'Please enter phone',
             'phone.regex' => 'Please enter valid phone',
             'password.required' => 'Please enter password',
-            'password.min' => 'Password must be more than 3 characters',
+            'password.regex'=>'Minimum eight characters, at least one uppercase letter, one lowercase letter and one number:',
             'type' => 'Please select roles'
         ]);
         $validate = $request->validate();
@@ -152,13 +161,13 @@ class UserController extends Controller
             if (!$this->validateAdd($request)) {
                 Session::flash('errors', $request->errors());
                 Session::flash('old', $request->getFields());
-                $this->response->redirect('admin/user/add');
+                $this->response->redirect('admin-user-add');
             }
             // Store
             if (!empty($_POST)) {
                 if ($this->repoUser->getUser($_POST['email'], $_POST['type'])) {
                     $_SESSION['error'] = "Email already exists";
-                    $this->response->redirect('admin/user/add');
+                    $this->response->redirect('admin-user-add');
                 } else {
                     $data = [
                             'name' => $_POST['username'],
@@ -175,9 +184,9 @@ class UserController extends Controller
                     if ($this->repoCustomer->insert($data)) {
                         $_SESSION['success'] = "Add user successfully";
                         if ($_POST['type'] == 'admin') {
-                            $this->response->redirect('admin/list/type-1');
+                            $this->response->redirect('admin-list-admin.html');
                         }
-                        $this->response->redirect('admin/list/type-2');
+                        $this->response->redirect('admin-list-user.html');
                     }
                 }
             }
@@ -194,10 +203,10 @@ class UserController extends Controller
                 $this->repoUser->delete($id);
                 $this->repoCustomer->deleteWithUser($id);
                 $_SESSION['success'] = "Delete user successfully";
-                $this->response->redirect('admin/list/type-1');
+                $this->response->redirect('admin-list-admin.html');
             }
             $_SESSION['error'] = "Can not delele this user";
-            $this->response->redirect('admin/list/type-1');
+            $this->response->redirect('admin-list-admin.html');
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             echo "Database error: $error_message";

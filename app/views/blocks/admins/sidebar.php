@@ -8,28 +8,28 @@
                                 Dashboard
                             </a>
                             <!-- product -->
-                            <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/product/list">
+                            <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin-product-list">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Product
                             </a>
                             <!-- category -->
-                            <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/cat/list">
+                            <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin-cat-list">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Category
                             </a>
                             <!-- user -->
-                            <a class="nav-link collapsed" href="<?php echo _WEB_ROOT;?>/admin/list/type-1" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                            <a class="nav-link collapsed" href="<?php echo _WEB_ROOT;?>/admin-list-admin" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                                 User
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/list/type-1">List Admin</a>
-                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/list/type-2">List User</a>
+                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin-list-admin.html">List Admin</a>
+                                    <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin-list-user.html">List User</a>
                                 </nav>
                             </div>
-                            <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin/order/list">
+                            <a class="nav-link" href="<?php echo _WEB_ROOT;?>/admin-order-list">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                                 Order
                             </a>

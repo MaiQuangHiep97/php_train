@@ -7,7 +7,7 @@ class CartController extends Controller
     {
         $this->response = new Response();
         if (!$this->authCustomer()) {
-            $this->response->redirect('customer/login');
+            $this->response->redirect('customer-login');
         }
     }
     public function index()
@@ -51,7 +51,7 @@ class CartController extends Controller
             'num_order'=> $num_order,
             'total'=> $total
         );
-        $this->response->redirect('cart/show');
+        $this->response->redirect('cart-show');
     }
     public function update()
     {
@@ -80,7 +80,7 @@ class CartController extends Controller
                     'num_order'=>0,
                     'display'=>'<div class="text-center" style="margin-top: 30px;">
                                 <h4 class="">There are no items in the cart </h4>
-                                <a href="/demo">Home page</a>
+                                <a href="/Fashion">Home page</a>
                                 </div>'
                 ];
                 echo json_encode($data);
@@ -129,7 +129,7 @@ class CartController extends Controller
             'total'=>number_format($_SESSION['cart']['info']['total']).'đ',
             'display'=>'<div class="text-center" style="margin-top: 30px;">
                                 <h4 class="">There are no items in the cart </h4>
-                                <a href="/demo">Home page</a>
+                                <a href="/Fashion">Home page</a>
                                 </div>'
         );
             echo json_encode($data);
@@ -139,7 +139,7 @@ class CartController extends Controller
     {
         if (isset($_SESSION['cart'])) {
             unset($_SESSION['cart']);
-            $this->response->redirect('cart/show');
+            $this->response->redirect('cart-show');
         }
         $this->response->redirect('');
     }

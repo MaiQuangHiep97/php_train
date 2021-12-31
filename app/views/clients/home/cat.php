@@ -8,9 +8,9 @@
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
-					<li><a href="/demo">Home</a></li>
-						<?php foreach ($product_cats as $product_cat) {?>
-							<li class="<?= ($product_cat['id']==$cat_id)?'active':'' ?>"><a href="/demo/cate/category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
+					<li><a href="<?=_WEB_ROOT?>">Home</a></li>
+						<?php foreach ($categorys as $category) {?>
+							<li class="<?= ($category['url']==$cate)?'active':'' ?>"><a href="<?=_WEB_ROOT?>/category-<?= $category['url'] ?>.html"><?= $category['cat_name'] ?></a></li>
 						<?php } ?>
 					</ul>
 					<!-- /NAV -->
@@ -35,8 +35,8 @@
 							<h3 class="title">List Products</h3>
 							<div class="section-nav">
 								<ul class="section-tab-nav tab-nav">
-									<?php foreach ($product_cats as $product_cat) {?>
-										<li class="<?= ($product_cat['id']==$cat_id)?'active':'' ?>"><a href="/demo/cate/category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>
+									<?php foreach ($categorys as $category) {?>
+										<li class="<?= ($category['url']==$cate)?'active':'' ?>"><a href="<?=_WEB_ROOT?>/category-<?= $category['url'] ?>.html"><?= $category['cat_name'] ?></a></li>
 									<?php } ?>
 								</ul>
 							</div>
@@ -55,7 +55,7 @@
     foreach ($products as $product) {?>
 												<div class="col-md-3">
 													<div class="product">
-														<form action="/demo/cart/add" method="post">
+														<form action="<?=_WEB_ROOT?>/cart-add" method="post">
 															<input type="hidden" name="product_id" value="<?=$product['id']?>">
 															<input type="hidden" name="product_name" value="<?= $product['product_name']?>">
 															<input type="hidden" name="product_thumb" value="<?= $product['product_thumb']?>">
@@ -65,7 +65,7 @@
 															<img src="<?=URL_ASSET.'products/'.$product['product_thumb'] ?>" alt="">
 														</div>
 														<div class="product-body">
-															<h3 class="product-name"><a href="/demo/product/detail?id=<?= $product['id'] ?>"><?= $product['product_name'] ?></a></h3>
+															<h3 class="product-name"><a href="<?=_WEB_ROOT?>/product-detail?id=<?= $product['id'] ?>"><?= $product['product_name'] ?></a></h3>
 															<h4 class="product-price"><?= number_format($product['product_price']).'đ' ?></h4>
 															<div class="product-rating">
 																<i class="fa fa-star"></i>
@@ -85,7 +85,7 @@
 } else {?>
 <div class="text-center" style="margin-top: 30px;">
                         <h4 class="">There are no items</h4>
-                        <a href="/demo">Home page</a>
+                        <a href="<?=_WEB_ROOT?>">Home page</a>
                         </div>
 <?php } ?>
 										<!-- /product -->

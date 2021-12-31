@@ -6,7 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
 		<title>Electro - HTML Ecommerce Template</title>
-
+		<base href="<?= URL ?>">
 		<!-- Google font -->
 		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
@@ -41,10 +41,11 @@
 					</ul>
 					<ul class="header-links pull-right">
                         <?php if (empty($customer)) {?>
-                            <li><a href="/demo/customer/login"><i class="fa fa-user-o"></i> Login</a></li>
+                            <li><a href="<?=_WEB_ROOT?>/customer-login"><i class="fa fa-user-o"></i> Login</a></li>
                        <?php } else {?>
-                            <li><a href="/demo/customer/info"><i class="fa fa-user-o"></i> Hello, <?= $customer['name'] ?></a></li>
-                            <li><a href="/demo/customer/logout"><i class="fa fa-dollar"></i> Logout</a></li>
+                            <li><a href="<?=_WEB_ROOT?>/customer-info"><i class="fa fa-user-o"></i> Hello, <?= $customer['name'] ?></a></li>
+							<li><a href="<?=_WEB_ROOT?>/customer-change"><i class="fa fa-user-o"></i> Change Pass</a></li>
+                            <li><a href="<?=_WEB_ROOT?>/customer-logout"><i class="fa fa-dollar"></i> Logout</a></li>
                        <?php } ?>
 					</ul>
 				</div>
@@ -82,19 +83,10 @@
 						<!-- ACCOUNT -->
 						<div class="col-md-3 clearfix">
 							<div class="header-ctn">
-								<!-- Wishlist -->
-								<div>
-									<a href="#">
-										<i class="fa fa-heart-o"></i>
-										<span>Your Wishlist</span>
-										<div class="qty">2</div>
-									</a>
-								</div>
-								<!-- /Wishlist -->
 
 								<!-- Cart -->
 								<div class="dropdown">
-									<a href="/demo/cart/show" aria-expanded="true">
+									<a href="<?=_WEB_ROOT?>/cart-show" aria-expanded="true">
 										<i class="fa fa-shopping-cart"></i>
 										<span>Your Cart</span>
 										<div class="qty"id="qty"><?php

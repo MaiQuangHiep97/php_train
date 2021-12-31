@@ -12,7 +12,7 @@
     <div class="alert alert-danger text-danger text-center"><?php echo $_SESSION['error']?></div>
     <?php unset($_SESSION['error']);
 } ?>
-                                        <form method="POST" id="info-form" action="<?php echo _WEB_ROOT;?>/customer/postInfo">
+                                        <form method="POST" id="info-form" action="<?php echo _WEB_ROOT;?>/customer-postInfo">
                                             <input type="hidden" name="id" value="<?=$customer[0]['id_user']?>">
                                             <label for="username">Name</label>
                                             <div class="form-floating mb-3">

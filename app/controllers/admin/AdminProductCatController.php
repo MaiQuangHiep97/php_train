@@ -8,7 +8,7 @@ class AdminProductCatController extends Controller
     {
         $this->response = new Response();
         if (!$this->auth()) {
-            $this->response->redirect('admin/login');
+            $this->response->redirect('admin-login');
         }
         $this->repoCate = new ProductCatRepository();
     }
@@ -35,11 +35,9 @@ class AdminProductCatController extends Controller
     public function edit()
     {
         try {
-            $id = $_GET['id'];
-            $this->data['user'] = $_SESSION['user_login']['name'];
-            $this->data['category'] = $this->repoCate->find($id);
-            $this->data['errors'] = Session::flash('errors');
-            $this->render('admins/cat/edit', $this->data);
+            $id = $_POST['id'];
+            $category = $this->repoCate->find($id);
+            echo json_encode($category);
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             echo "Database error: $error_message";
@@ -64,7 +62,7 @@ class AdminProductCatController extends Controller
             $request = new Request();
             if (!$this->validateCate($request)) {
                 Session::flash('errors', $request->errors());
-                $this->response->redirect('admin/cat/edit?id='.$id);
+                $this->response->redirect('admin-cat-list');
             }
             //Update
             if (!empty($_POST['category'])) {
@@ -76,10 +74,10 @@ class AdminProductCatController extends Controller
                     ];
                     $this->repoCate->update($id, $data);
                     $_SESSION['success'] = "Update Category successfully";
-                    $this->response->redirect('admin/cat/list');
+                    $this->response->redirect('admin-cat-list');
                 } else {
                     $_SESSION['error'] = "Category already exists";
-                    $this->response->redirect('admin/cat/list');
+                    $this->response->redirect('admin-cat-list');
                 }
             }
         } catch (PDOException $e) {
@@ -102,7 +100,7 @@ class AdminProductCatController extends Controller
             $request = new Request();
             if (!$this->validateCate($request)) {
                 Session::flash('errors', $request->errors());
-                $this->response->redirect('admin/cat/list');
+                $this->response->redirect('admin-cat-list');
             }
             // Store
             if (!empty($_POST['category'])) {
@@ -113,10 +111,10 @@ class AdminProductCatController extends Controller
                     ];
                     $this->repoCate->insert($data);
                     $_SESSION['success'] = "Add category successfully";
-                    $this->response->redirect('admin/cat/list');
+                    $this->response->redirect('admin-cat-list');
                 } else {
                     $_SESSION['error'] = "Category already exists";
-                    $this->response->redirect('admin/cat/list');
+                    $this->response->redirect('admin-cat-list');
                 }
             }
         } catch (PDOException $e) {
@@ -130,7 +128,7 @@ class AdminProductCatController extends Controller
             $id = $_GET['id'];
             $this->repoCate->delete($id);
             $_SESSION['success'] = "Delete category successfully";
-            $this->response->redirect('admin/cat/list');
+            $this->response->redirect('admin-cat-list');
         } catch (PDOException $e) {
             $error_message = $e->getMessage();
             echo "Database error: $error_message";

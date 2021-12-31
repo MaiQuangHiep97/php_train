@@ -7,7 +7,7 @@
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
-					<li class="active"><a href="/demo">Home</a></li>
+					<li class="active"><a href="<?=_WEB_ROOT?>">Home</a></li>
 						<?php if (isset($product_cats)) {
     foreach ($product_cats as $product_cat) {?>
 								<li><a href="category-<?= $product_cat['id'] ?>"><?= $product_cat['cat_name'] ?></a></li>

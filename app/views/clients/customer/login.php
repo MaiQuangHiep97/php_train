@@ -16,7 +16,7 @@
     <div class="alert alert-success text-success text-center"><?php echo $_SESSION['success']?></div>
     <?php unset($_SESSION['success']);
 } ?>
-                                        <form method="POST" id="login-form" action="<?php echo _WEB_ROOT;?>/customer/postLogin">
+                                        <form method="POST" id="login-form" action="<?php echo _WEB_ROOT;?>/customer-postLogin">
                                         <input type="hidden" name="type" value="user">
                                             <label for="email">Email address</label>
                                             <div class="form-floating mb-3">
@@ -36,7 +36,7 @@
                                             <button type = "submit" class = "form-control btn btn-primary">Login</button>
                                             </div>
                                             <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                                                <p>Do not have an account? <a href="/demo/customer/register">Register</a></p>
+                                                <p>Do not have an account? <a href="<?=_WEB_ROOT?>/customer-register">Register</a></p>
                                             </div>
                                         </form>
                                     </div>

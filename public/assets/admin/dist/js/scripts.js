@@ -40,6 +40,9 @@ $.validator.addMethod("alphanumeric", function(value, element) {
 $.validator.addMethod('filesize', function(value, element, param) {
     return this.optional(element) || (element.files[0].size <= param)
 });
+$.validator.addMethod('customPassword', function(value, element) {
+    return this.optional(element) || /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/.test(value);
+}, "Please enter valid password!");
 var $loginForm = $('#login-form');
 if ($loginForm.length) {
     $loginForm.validate({
@@ -49,7 +52,8 @@ if ($loginForm.length) {
                 customEmail: true
             },
             password: {
-                required: true
+                required: true,
+                customPassword: true
             },
         },
         messages: {
@@ -58,7 +62,8 @@ if ($loginForm.length) {
                 email: 'Please enter valid email!'
             },
             password: {
-                required: 'Please enter password!'
+                required: 'Please enter password!',
+                password: 'Please enter valid password!'
             },
         },
     });
@@ -68,7 +73,8 @@ if ($changeForm.length) {
     $changeForm.validate({
         rules: {
             password: {
-                required: true
+                required: true,
+                customPassword: true
             },
             passwordConfirm: {
                 required: true,
@@ -77,7 +83,8 @@ if ($changeForm.length) {
         },
         messages: {
             password: {
-                required: 'Please enter password!'
+                required: 'Please enter password!',
+                password: 'Please enter valid password!'
             },
             passwordConfirm: {
                 required: 'Please enter password confirm!',
@@ -98,7 +105,8 @@ if ($addForm.length) {
                 customEmail: true
             },
             password: {
-                required: true
+                required: true,
+                customPassword: true
             },
 
             phone: {
@@ -115,7 +123,8 @@ if ($addForm.length) {
                 email: 'Please enter valid email!'
             },
             password: {
-                required: 'Please enter password!'
+                required: 'Please enter password!',
+                password: 'Please enter valid password!'
             },
             phone: {
                 required: 'Please enter phone!',
@@ -272,7 +281,8 @@ if ($registerForm.length) {
                 customEmail: true
             },
             password: {
-                required: true
+                required: true,
+                customPassword: true
             },
             passwordConfirm: {
                 required: true,
@@ -288,7 +298,8 @@ if ($registerForm.length) {
                 email: 'Please enter valid email!'
             },
             password: {
-                required: 'Please enter password!'
+                required: 'Please enter password!',
+                password: 'Please enter valid password!'
             },
             passwordConfirm: {
                 required: 'Please enter password confirm!',
@@ -396,6 +407,45 @@ if ($editCatForm.length) {
         messages: {
             category: {
                 required: 'Please enter category!'
+            },
+
+        },
+    });
+}
+var $addOrder = $('#add-order');
+if ($addOrder.length) {
+    $addOrder.validate({
+        rules: {
+            username: {
+                required: true,
+            },
+            email: {
+                required: true,
+                customEmail: true
+            },
+            phone: {
+                required: true,
+                customPhone: true
+            },
+            address: {
+                required: true
+            },
+
+        },
+        messages: {
+            username: {
+                required: 'Please enter username!'
+            },
+            email: {
+                required: 'Please enter email!',
+                email: 'Please enter valid email!'
+            },
+            phone: {
+                required: 'Please enter phone!',
+                customPhone: "Please enter valid phone!"
+            },
+            address: {
+                required: 'Please enter address!'
             },
 
         },
