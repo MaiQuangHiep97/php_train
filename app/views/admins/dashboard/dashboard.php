@@ -87,7 +87,7 @@
                                             } ?>"><p class="text-capitalize"><?=$value['status']?></p></td>
                                             <td><?=number_format($value['total_price']).'đ'?></td>
                                             <td>
-                                                <a href="admin-order-detail-<?=$value['id_order'] ?>.html">Detail</a>
+                                                <a href="admin-order-detail-<?=$value['id_order'] ?>.html" class="btn btn-sm btn-primary">Detail</a>
                                             </td>
                                         </tr>
                                         <?php

@@ -29,7 +29,6 @@
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Phone</th>
-                                            <th>Type</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -42,11 +41,9 @@
                                             <td><?=$value['name']?></td>
                                             <td><?=$value['email']?></td>
                                             <td><?=$value['phone']?></td>
-                                            <td><?=$value['type']?></td>
                                             <td>    
-                                                <a href="<?php echo _WEB_ROOT; ?>/admin-user-edit-<?= $value['id']?>.html">Edit</a>
-                                                <span>/</span>
-                                                <?php if ($value['id'] !== $_SESSION['user_login']['id']) {?><a href="<?php echo _WEB_ROOT;?>/admin-user-delete?id=<?= $value['id']?>">Delete</a>  
+                                                <a href="<?php echo _WEB_ROOT; ?>/admin-user-edit-<?= $value['id']?>.html" class="btn btn-sm btn-primary">Edit</a>
+                                                <?php if ($value['id'] !== $_SESSION['user_login']['id']) {?><a href="<?php echo _WEB_ROOT;?>/admin-user-delete?id=<?= $value['id']?>" class="btn btn-sm btn-danger">Delete</a>  
                                                 <?php } ?>                   
                                             </td>
                                         </tr>

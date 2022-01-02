@@ -64,9 +64,8 @@
                                             <tr>
                                             <td><?=$value['cat_name']?></td>
                                             <td>    
-                                                <a href="#" data-id = <?= $value['id']?> class="edit-cate">Edit</a>
-                                                <span>/</span>
-                                                <a href="admin-cat-delete?id=<?= $value['id']?>">Delete</a>                    
+                                                <a href="#" data-id = <?= $value['id']?> class="edit-cate btn btn-sm btn-primary">Edit</a>
+                                                <a href="admin-cat-delete?id=<?= $value['id']?>" class=" btn btn-sm btn-danger">Delete</a>                    
                                             </td>
                                         </tr>
                                         <?php

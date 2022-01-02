@@ -59,9 +59,8 @@
                                            <td><?=$product['cat_name']?></td>
                                            <td><?=number_format($product['product_price']).'đ'?></td>
                                            <td>    
-                                               <a href="<?=_WEB_ROOT?>/admin-product-edit-<?= $product['id_pr']?>.html">Edit</a>
-                                               <span>/</span>
-                                               <a href="<?=_WEB_ROOT?>/admin-product-delete-<?=$product['id_pr']?>.html"
+                                               <a href="<?=_WEB_ROOT?>/admin-product-edit-<?= $product['id_pr']?>.html" class="btn btn-sm btn-primary">Edit</a>
+                                               <a href="<?=_WEB_ROOT?>/admin-product-delete-<?=$product['id_pr']?>.html" class="btn btn-sm btn-danger"
                                                >Delete</a>             
                                            </td>
                                        </tr>

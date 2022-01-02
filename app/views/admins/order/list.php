@@ -73,9 +73,9 @@
                                             } ?>"><p class="text-capitalize"><?=$value['status']?></p></td>
                                             <td><?=number_format($value['total_price']).'đ'?></td>
                                             <td>
-                                                <a href="admin-order-detail-<?=$value['id_order'] ?>.html">Detail</a>
+                                                <a href="admin-order-detail-<?=$value['id_order'] ?>.html" class="btn btn-sm btn-success">Detail</a>
                                                 <?php if ($value['status'] == 'handle') { ?>
-                                                    /<a href="admin-order-edit-<?=$value['id_order'] ?>.html">Edit</a>
+                                                    <a href="admin-order-edit-<?=$value['id_order'] ?>.html" class="btn btn-sm btn-primary">Edit</a>
                                                <?php } ?>
                                             </td>
                                         </tr>

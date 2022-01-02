@@ -57,7 +57,7 @@ class AuthController extends Controller
                     $this->response->redirect('dashboard');
                 } else {
                     $_SESSION['error'] = "Incorrect account or password information";
-                    $this->response->redirect('admin/login');
+                    $this->response->redirect('admin-login');
                 }
             }
         } catch (PDOException $e) {
